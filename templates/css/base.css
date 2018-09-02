@@ -1,3 +1,5 @@
+/* General */
+
 body {
     margin: 0;
     padding: 0;
@@ -8,6 +10,8 @@ body {
     font-family: Roboto, Helvetica, Tahoma, sans-serif;
     font-weight: bold;
 }
+
+/* Header */
 
 .header {
     background-color: red;
@@ -162,4 +166,39 @@ body {
 .profile_nav__item_active {
     background: rgba(240, 240, 242, 1.00);
     border-left: 5px solid red;
+}
+
+/* Footer */
+
+.footer {
+    background: #000;
+    color: #fff;
+    z-index: 50;
+}
+
+.footer__container {
+    margin: 0 auto;
+    padding: 20px 42px;
+    max-width: 1280px;
+    min-width: 820px;
+    display: flex;
+}
+
+.footer__nav {
+    font-size: 12px;
+    line-height: 2em;
+    letter-spacing: 0;
+    white-space: nowrap;
+    font-family: Roboto,Helvetica,Tahoma,sans-serif;
+    font-weight: 400;
+}
+
+.footer_nav__item {
+    text-decoration: none;
+    display: block;
+    color: #9b9b9b;
+}
+
+.footer_nav__item:hover {
+    color: white;
 }
