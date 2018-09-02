@@ -28,7 +28,7 @@ body {
 }
 
 .header__logo {
-    flex: 1 0 100px;
+    flex: 1 0 10px;
 }
 
 .logo__link {
@@ -117,7 +117,7 @@ body {
     cursor: pointer;
 }
 
-.profile__nav_container {
+.profile__profile_nav {
     min-height: 20px;
     min-width: 100px;
     background: white;
@@ -129,7 +129,7 @@ body {
     margin-top: 5px;
 }
 
-.profile__nav_container:before {
+.profile__profile_nav:before {
     content: "";
     top: -15px;
     right: 15px;
@@ -184,7 +184,7 @@ body {
     display: flex;
 }
 
-.footer__nav {
+.footer__footer_nav {
     font-size: 12px;
     line-height: 2em;
     letter-spacing: 0;
