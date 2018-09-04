@@ -62,6 +62,16 @@ module.exports = {
     groups: {
       collection: 'group',
       via: 'user'
+    },
+
+    posts: {
+      collection: 'post',
+      via: 'user'
+    },
+
+    translations: {
+      collection: 'translations',
+      via: 'user'
     }
 
   },
