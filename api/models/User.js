@@ -70,7 +70,7 @@ module.exports = {
     },
 
     translations: {
-      collection: 'translations',
+      collection: 'translation',
       via: 'user'
     }
 

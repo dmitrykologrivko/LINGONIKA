@@ -56,7 +56,6 @@ module.exports = {
 
     group: {
       model: 'group',
-      allowNull: true,
     },
 
     user: {
