@@ -5,6 +5,9 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
+const LANGUAGES = require('./chooses').languages;
+const PARTS_OF_SPEECH = require('./chooses').partsOfSpeech;
+
 module.exports = {
 
   attributes: {
@@ -33,20 +36,20 @@ module.exports = {
 
     fromLanguage: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(LANGUAGES)
     },
 
     toLanguage: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(LANGUAGES)
     },
 
     partOfSpeech: {
       type: 'string',
       allowNull: true,
-      // isIn: []
+      isIn: Object.keys(PARTS_OF_SPEECH)
     },
 
     isLearned: {
@@ -59,7 +62,8 @@ module.exports = {
     },
 
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     }
 
   },

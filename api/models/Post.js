@@ -5,14 +5,22 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
+const LANGUAGES = require('./chooses').languages;
+
+const POST_TYPES = {
+  'question': 'Question'
+};
+
 module.exports = {
+
+  post_types: POST_TYPES,
 
   attributes: {
 
     type: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(POST_TYPES)
     },
 
     question: {
@@ -29,18 +37,19 @@ module.exports = {
 
     fromLanguage: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(LANGUAGES)
     },
 
     toLanguage: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(LANGUAGES)
     },
 
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     }
 
   },

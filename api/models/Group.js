@@ -5,6 +5,8 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
+const LANGUAGES = require('./chooses').languages;
+
 module.exports = {
 
   attributes: {
@@ -17,18 +19,19 @@ module.exports = {
 
     fromLanguage: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(LANGUAGES)
     },
 
     toLanguage: {
       type: 'string',
-      required: true
-      // isIn: []
+      required: true,
+      isIn: Object.keys(LANGUAGES)
     },
 
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     },
 
     cards: {
