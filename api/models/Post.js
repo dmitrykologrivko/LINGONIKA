@@ -50,6 +50,11 @@ module.exports = {
     user: {
       model: 'user',
       required: true
+    },
+
+    translations: {
+      collection: 'translation',
+      via: 'post'
     }
 
   },

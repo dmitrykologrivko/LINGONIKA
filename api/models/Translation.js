@@ -56,6 +56,11 @@ module.exports = {
     user: {
       model: 'user',
       required: true
+    },
+
+    post: {
+      model: 'post',
+      required: true
     }
 
   },
