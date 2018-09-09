@@ -1,4 +1,4 @@
-const schema = require('../../schemas/validation/CardSchema');
+const schema = require('../../schemas/validation/card-schema');
 
 module.exports = async (req, res) => {
 
