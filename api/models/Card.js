@@ -10,6 +10,8 @@ const PARTS_OF_SPEECH = require('./chooses').partsOfSpeech;
 
 module.exports = {
 
+  schema: true,
+
   attributes: {
 
     phrase: {
