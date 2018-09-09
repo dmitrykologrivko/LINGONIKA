@@ -48,6 +48,7 @@ module.exports.routes = {
   'GET     /api/v1/cards/:id': {action: 'cards/get-card'},
   'POST    /api/v1/cards':     {action: 'cards/create-card'},
   'PUT     /api/v1/cards/:id': {action: 'cards/update-card'},
+  'DELETE  /api/v1/cards/:id': {action: 'cards/delete-card'},
   'OPTIONS /api/v1/cards':     {action: 'cards/meta-data'}
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
