@@ -5,8 +5,8 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
-const LANGUAGES = require('./chooses').languages;
-const PARTS_OF_SPEECH = require('./chooses').partsOfSpeech;
+const LANGUAGES = require('../chooses/languages');
+const PARTS_OF_SPEECH = require('../chooses/parts-of-speech');
 
 module.exports = {
 

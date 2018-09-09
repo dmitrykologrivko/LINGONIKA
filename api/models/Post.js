@@ -5,7 +5,7 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
-const LANGUAGES = require('./chooses').languages;
+const LANGUAGES = require('../chooses/languages');
 
 const POST_TYPES = {
   'question': 'Question'
