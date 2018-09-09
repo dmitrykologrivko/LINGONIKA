@@ -8,6 +8,6 @@ module.exports = async (req, res) => {
   // TODO: Implement req.me
   let card = await Card.create({...req.body, user: req.me || 1}).fetch();
 
-  return res.ok(card);
+  return res.status(201).json(card);
 
 };
