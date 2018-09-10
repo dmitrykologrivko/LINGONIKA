@@ -7,13 +7,9 @@
 
 module.exports = {
 
-  attributes: {
+  schema: true,
 
-    username: {
-      type: 'string',
-      required: true,
-      unique: true
-    },
+  attributes: {
 
     email: {
       type: 'string',
