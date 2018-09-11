@@ -19,10 +19,7 @@ module.exports = {
 
     hashedPassword: {
       type: 'string',
-      required: true,
-      protect: true,
-      minLength: 8,
-      maxLength: 50
+      required: true
     },
 
     firstName: {
@@ -80,5 +77,8 @@ module.exports = {
 
   },
 
-};
+  customToJSON: function() {
+    return _.omit(this, ['hashedPassword'])
+  }
 
+};
