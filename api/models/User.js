@@ -17,6 +17,14 @@ module.exports = {
       unique: true
     },
 
+    hashedPassword: {
+      type: 'string',
+      required: true,
+      protect: true,
+      minLength: 8,
+      maxLength: 50
+    },
+
     firstName: {
       type: 'string',
       required: true,
