@@ -1,3 +1,7 @@
+const bcrypt = require('bcrypt');
+
+const SAILT_ROUNDS = 10;
+
 module.exports = {
 
   friendlyName: 'Hash password',
@@ -27,8 +31,8 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    return exits.success({hash: 'SOME_HASH_STRING'});
+    const hash = await bcrypt.hash(inputs.password, SAILT_ROUNDS);
+    return exits.success({hash: hash});
   }
 
 };
-

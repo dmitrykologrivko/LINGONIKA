@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 module.exports = {
 
   friendlyName: 'Check password',
@@ -26,14 +28,15 @@ module.exports = {
       outputFriendlyName: 'Results of hashing process',
       outputDescription: 'A dictionary of results',
       outputType: {
-        isEqual: 'boolean'
+        isMatch: 'boolean'
       }
     }
 
   },
 
   fn: async function (inputs, exits) {
-    return exits.success({isEqual: false});
+    const match = await bcrypt.compare(inputs.password, inputs.hash);
+    return exits.success({isMatch: match});
   }
 
 };
