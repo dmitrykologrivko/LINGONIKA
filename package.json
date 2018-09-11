@@ -10,6 +10,7 @@
     "@sailshq/socket.io-redis": "^5.2.0",
     "async": "2.0.1",
     "async-validator": "^1.8.5",
+    "bcrypt": "^3.0.0",
     "grunt": "1.0.1",
     "sails": "^1.0.2",
     "sails-hook-grunt": "^3.0.2",
