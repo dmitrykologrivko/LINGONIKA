@@ -78,7 +78,7 @@ module.exports = {
   },
 
   customToJSON: function() {
-    return _.omit(this, ['hashedPassword'])
+    return _.omit(this, ['hashedPassword']);
   }
 
 };
