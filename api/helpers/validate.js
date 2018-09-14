@@ -11,13 +11,18 @@ module.exports = {
     data: {
       type: 'ref',
       required: true,
-      description: 'Data which should be validated',
+      description: 'Data which should be validated'
     },
 
-    schema: {
+    descriptor: {
       type: 'ref',
       required: true,
       description: 'Descriptor of validation schema'
+    },
+
+    options: {
+      type: 'ref',
+      description: 'Validation options'
     }
 
   },
@@ -36,8 +41,9 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    const validator = new Schema(inputs.schema);
-    validator.validate(inputs.data, (errors, fields) => {
+    const validator = new Schema(inputs.descriptor);
+    const options = inputs.options || {firstFields: true};
+    validator.validate(inputs.data, options, (errors, fields) => {
       // When validation is failed a library returns next arguments:
       // "errors" is an array of all errors
       // "fields" is an object keyed by field name with an array of errors per field
