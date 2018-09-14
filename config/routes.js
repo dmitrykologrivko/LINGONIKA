@@ -52,7 +52,8 @@ module.exports.routes = {
   'OPTIONS /api/v1/cards':     {action: 'cards/meta-data'},
 
   'POST /api/v1/users/register': {action: 'users/register-user'},
-  'POST /api/v1/users/login':    {action: 'users/login-user'}
+  'POST /api/v1/users/login':    {action: 'users/login-user'},
+  'GET  /api/v1/users/me':       {action: 'users/get-me'}
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
