@@ -9,6 +9,9 @@ module.exports = async (req, res) => {
   // Get a user
   const user = await User.findOne({email: req.body.username});
 
-  return res.ok({access_token: 'SOME_FAKE_TOKEN'});
+  // Generated a token
+  const token = await sails.helpers.jwt.signToken(user);
+
+  return res.ok({access_token: token});
 
 };

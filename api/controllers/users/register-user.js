@@ -12,6 +12,9 @@ module.exports = async (req, res) => {
   // Create a user
   let user = await User.create({...req.body, hashedPassword: hash}).fetch();
 
-  return res.status(201).json(_.omit(user.toJSON(), ['isSuperUser']));
+  // Generated a token
+  const token = await sails.helpers.jwt.signToken(user);
+
+  return res.status(201).json({access_token: token});
 
 };
