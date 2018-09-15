@@ -7,18 +7,19 @@
 
 module.exports = {
 
-  attributes: {
+  schema: true,
 
-    username: {
-      type: 'string',
-      required: true,
-      unique: true
-    },
+  attributes: {
 
     email: {
       type: 'string',
       required: true,
       unique: true
+    },
+
+    hashedPassword: {
+      type: 'string',
+      required: true
     },
 
     firstName: {
@@ -76,5 +77,8 @@ module.exports = {
 
   },
 
-};
+  customToJSON: function() {
+    return _.omit(this, ['hashedPassword']);
+  }
 
+};

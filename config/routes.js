@@ -49,7 +49,13 @@ module.exports.routes = {
   'POST    /api/v1/cards':     {action: 'cards/create-card'},
   'PUT     /api/v1/cards/:id': {action: 'cards/update-card'},
   'DELETE  /api/v1/cards/:id': {action: 'cards/delete-card'},
-  'OPTIONS /api/v1/cards':     {action: 'cards/meta-data'}
+  'OPTIONS /api/v1/cards':     {action: 'cards/meta-data'},
+
+  'POST /api/v1/users/register':       {action: 'users/register-user'},
+  'POST /api/v1/users/login':          {action: 'users/login-user'},
+  'GET  /api/v1/users/me':             {action: 'users/get-me'},
+  'PUT  /api/v1/users/me':             {action: 'users/update-me'},
+  'POST /api/v1/users/password/reset': {action: 'users/reset-password'}
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗

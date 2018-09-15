@@ -20,4 +20,7 @@ module.exports.custom = {
   // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
   // …
 
+  jwtSecret: process.env.JWT_SECRET || 'some_test_secret',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '1h'
+
 };

@@ -19,4 +19,7 @@ module.exports.policies = {
 
   // '*': true,
 
+  'users/get-me': 'is-authenticated',
+  'users/update-me': 'is-authenticated'
+
 };
