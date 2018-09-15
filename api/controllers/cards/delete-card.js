@@ -1,11 +1,9 @@
 module.exports = async (req, res) => {
 
-  // TODO: Implement req.me
-  let card = await Card.findOne({id: req.params.id, user: req.me || 1});
+  let card = await Card.findOne({id: req.params.id, user: req.me.id});
   if (!card) return res.notFound();
 
-  // TODO: Implement req.me
-  await Card.destroy({id: req.params.id, user: req.me || 1});
+  await Card.destroy({id: req.params.id, user: req.me.id});
 
   return res.status(204).send();
 

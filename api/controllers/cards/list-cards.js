@@ -1,6 +1,6 @@
 module.exports = async (req, res) => {
 
-  // TODO: Implement filter by req.me
-  return res.ok(await Card.find());
+  const cards = await Card.find({user: req.me.id});
+  return res.ok(cards);
 
 };
