@@ -1,4 +1,4 @@
-module.exports = function unauthorized(message='Not authorized request') {
+module.exports = function unauthorized(message='Non authorized request') {
 
   const res = this.res;
   return res.status(401).json({'message': message});
