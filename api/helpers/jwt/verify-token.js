@@ -34,7 +34,7 @@ module.exports = {
 
     error: {
       outputFriendlyName: 'Exception of verify process',
-      outputDescription: 'Wrapped exception',
+      outputDescription: 'Exception instance',
       outputType: 'ref'
     }
 
@@ -48,7 +48,7 @@ module.exports = {
       } else if (error && error.name === 'JsonWebTokenError') {
         return exits.tokenMalformed();
       } else if (error) {
-        return exits.error(new Error(error));
+        return exits.error(error);
       }
       return exits.success(decoded);
     });

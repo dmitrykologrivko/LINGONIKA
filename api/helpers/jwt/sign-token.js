@@ -26,7 +26,7 @@ module.exports = {
 
     error: {
       outputFriendlyName: 'Exception of sign process',
-      outputDescription: 'Wrapped exception',
+      outputDescription: 'Exception instance',
       outputType: 'ref'
     }
 
@@ -38,7 +38,7 @@ module.exports = {
     const options = {expiresIn: sails.config.custom.jwtExpiresIn};
     jwt.sign(data, secret, options, (error, token) => {
       if (error) {
-        return exits.error(new Error(error));
+        return exits.error(error);
       }
       return exits.success(token);
     });
