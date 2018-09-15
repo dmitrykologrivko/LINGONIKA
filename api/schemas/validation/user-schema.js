@@ -110,6 +110,56 @@ module.exports = {
       type: 'url'
     }
 
+  },
+
+  update: {
+
+    email: [
+      {type: 'email', required: true},
+      {
+        validator(rule, value, callback, source, options) {
+          User.findOne({id: {'!=': options.arguments.userId}, email: value || ''})
+            .then(user => {
+              if (user) throw new ValidationError('Provided email already exists');
+              return callback();
+            })
+            .catch(error => {
+              if (error instanceof ValidationError) {
+                return callback(error.message);
+              } else {
+                sails.log.error(error);
+                return callback('Internal validation error');
+              }
+            });
+        }
+      }
+    ],
+
+    firstName: {
+      type: 'string',
+      required: true,
+      max: 100
+    },
+
+    lastName: {
+      type: 'string',
+      required: true
+    },
+
+    dateOfBirth: {
+      type: 'date',
+      required: true
+    },
+
+    isMale: {
+      type: 'boolean',
+      required: true
+    },
+
+    avatar: {
+      type: 'url'
+    }
+
   }
 
 };

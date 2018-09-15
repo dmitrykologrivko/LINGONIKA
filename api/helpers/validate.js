@@ -1,5 +1,11 @@
 const Schema = require('async-validator');
 
+function extendOptions(options) {
+  const extOptions = options || {};
+  if (!extOptions.hasOwnProperty('firstFields')) extOptions.firstFields = true;
+  return extOptions;
+}
+
 module.exports = {
 
   friendlyName: 'Validate',
@@ -42,7 +48,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     const validator = new Schema(inputs.descriptor);
-    const options = inputs.options || {firstFields: true};
+    const options = extendOptions(inputs.options);
     validator.validate(inputs.data, options, (errors, fields) => {
       // When validation is failed a library returns next arguments:
       // "errors" is an array of all errors
@@ -52,4 +58,3 @@ module.exports = {
   }
 
 };
-

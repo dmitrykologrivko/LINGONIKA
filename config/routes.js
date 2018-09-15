@@ -53,7 +53,8 @@ module.exports.routes = {
 
   'POST /api/v1/users/register': {action: 'users/register-user'},
   'POST /api/v1/users/login':    {action: 'users/login-user'},
-  'GET  /api/v1/users/me':       {action: 'users/get-me'}
+  'GET  /api/v1/users/me':       {action: 'users/get-me'},
+  'PUT  /api/v1/users/me':       {action: 'users/update-me'}
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
