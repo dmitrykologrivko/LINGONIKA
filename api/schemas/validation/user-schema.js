@@ -2,6 +2,9 @@ const ValidationError = require('../../exceptions/ValidationError');
 
 module.exports = {
 
+  /**
+   * Login user schema
+   */
   login: {
 
     username: [
@@ -55,6 +58,9 @@ module.exports = {
 
   },
 
+  /**
+   * Register user schema
+   */
   register: {
 
     email: [
@@ -112,6 +118,9 @@ module.exports = {
 
   },
 
+  /**
+   * Update user schema
+   */
   update: {
 
     email: [
@@ -158,6 +167,18 @@ module.exports = {
 
     avatar: {
       type: 'url'
+    }
+
+  },
+
+  /**
+   * Reset user`s password schema
+   */
+  resetPassword: {
+
+    email: {
+      type: 'email',
+      required: true
     }
 
   }
