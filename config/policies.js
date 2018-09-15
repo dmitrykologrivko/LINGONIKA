@@ -19,6 +19,15 @@ module.exports.policies = {
 
   // '*': true,
 
+  // Cards API
+  'cards/list-cards': 'is-authenticated',
+  'cards/get-card': 'is-authenticated',
+  'cards/create-card': 'is-authenticated',
+  'cards/update-card': 'is-authenticated',
+  'cards/delete-card': 'is-authenticated',
+  'cards/meta-data': 'is-authenticated',
+
+  // Users API
   'users/get-me': 'is-authenticated',
   'users/update-me': 'is-authenticated'
 
