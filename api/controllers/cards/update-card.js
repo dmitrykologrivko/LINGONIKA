@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
   if (!card) return res.notFound();
 
   const {isValid, fields} = await sails.helpers.validate(req.body, schema);
-  if (isValid) return res.badRequest(fields);
+  if (!isValid) return res.badRequest(fields);
 
   const cards = await Card.update({id: req.params.id, user: req.me.id}, req.body).fetch();
 

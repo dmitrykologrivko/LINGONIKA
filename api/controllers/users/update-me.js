@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
 
   // Validate a user
   const {isValid, fields} = await sails.helpers.validate(req.body, schema.update, validationOptions);
-  if (isValid) return res.badRequest(fields);
+  if (!isValid) return res.badRequest(fields);
 
   // Update user
   await User.update({id: req.me.id}, req.body);
