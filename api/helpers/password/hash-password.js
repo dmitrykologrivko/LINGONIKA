@@ -22,17 +22,15 @@ module.exports = {
 
     success: {
       outputFriendlyName: 'Results of hashing process',
-      outputDescription: 'A dictionary of results',
-      outputType: {
-        hash: 'string'
-      }
+      outputDescription: 'Password hash',
+      outputType: 'string'
     }
 
   },
 
   fn: async function (inputs, exits) {
     const hash = await bcrypt.hash(inputs.password, SAILT_ROUNDS);
-    return exits.success({hash: hash});
+    return exits.success(hash);
   }
 
 };

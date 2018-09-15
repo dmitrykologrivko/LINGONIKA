@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   if (isValid) return res.badRequest(fields);
 
   // Hash a password
-  const {hash} = await sails.helpers.password.hashPassword(req.body.password);
+  const hash = await sails.helpers.password.hashPassword(req.body.password);
 
   // Create a user
   let user = await User.create({...req.body, hashedPassword: hash}).fetch();

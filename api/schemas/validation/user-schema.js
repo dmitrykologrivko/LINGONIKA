@@ -37,8 +37,8 @@ module.exports = {
               if (!user) throw new ValidationError('Сould not verify the password because the user was not found');
               return sails.helpers.password.checkPassword(value, user.hashedPassword);
             })
-            .then(result => {
-              if (!result.isMatch) throw new ValidationError('Provided password does not match with current password');
+            .then(match => {
+              if (!match) throw new ValidationError('Provided password does not match with current password');
               return callback();
             })
             .catch(error => {

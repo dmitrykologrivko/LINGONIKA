@@ -26,17 +26,15 @@ module.exports = {
 
     success: {
       outputFriendlyName: 'Results of hashing process',
-      outputDescription: 'A dictionary of results',
-      outputType: {
-        isMatch: 'boolean'
-      }
+      outputDescription: 'Matching flag',
+      outputType: 'boolean'
     }
 
   },
 
   fn: async function (inputs, exits) {
     const match = await bcrypt.compare(inputs.password, inputs.hash);
-    return exits.success({isMatch: match});
+    return exits.success(match);
   }
 
 };
