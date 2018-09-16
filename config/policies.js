@@ -29,6 +29,7 @@ module.exports.policies = {
 
   // Groups API
   'groups/list-groups': 'is-authenticated',
+  'groups/get-group': 'is-authenticated',
 
   // Users API
   'users/get-me': 'is-authenticated',
