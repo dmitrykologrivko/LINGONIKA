@@ -56,6 +56,7 @@ module.exports.routes = {
   'POST   /api/v1/groups/':    {action: 'groups/create-group'},
   'PUT    /api/v1/groups/:id': {action: 'groups/update-group'},
   'DELETE /api/v1/groups/:id': {action: 'groups/delete-group'},
+  'OPTIONS /api/v1/groups':    {action: 'groups/meta-data'},
 
   'POST /api/v1/users/register':       {action: 'users/register-user'},
   'POST /api/v1/users/login':          {action: 'users/login-user'},
