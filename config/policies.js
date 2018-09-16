@@ -27,6 +27,9 @@ module.exports.policies = {
   'cards/delete-card': 'is-authenticated',
   'cards/meta-data': 'is-authenticated',
 
+  // Groups API
+  'groups/list-groups': 'is-authenticated',
+
   // Users API
   'users/get-me': 'is-authenticated',
   'users/update-me': 'is-authenticated'

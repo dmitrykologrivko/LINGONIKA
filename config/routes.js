@@ -51,6 +51,8 @@ module.exports.routes = {
   'DELETE  /api/v1/cards/:id': {action: 'cards/delete-card'},
   'OPTIONS /api/v1/cards':     {action: 'cards/meta-data'},
 
+  'GET /api/v1/groups': {action: 'groups/list-groups'},
+
   'POST /api/v1/users/register':       {action: 'users/register-user'},
   'POST /api/v1/users/login':          {action: 'users/login-user'},
   'GET  /api/v1/users/me':             {action: 'users/get-me'},
