@@ -9,6 +9,8 @@ const LANGUAGES = require('../chooses/languages');
 
 module.exports = {
 
+  schema: true,
+
   attributes: {
 
     name: {
