@@ -1,8 +1,9 @@
 const schema = require('../../schemas/validation/group-schema');
+const GroupTransformer = require('../../transformers/GroupTransformer');
 
 module.exports = async (req, res) => {
 
-  const group = await Group.findOne({id: req.params.id, user: req.me.id});
+  let group = await Group.findOne({id: req.params.id, user: req.me.id});
   if (!group) return res.notFound();
 
   const {isValid, fields} = await sails.helpers.validate(req.body, schema);
@@ -16,6 +17,8 @@ module.exports = async (req, res) => {
     })
     .fetch();
 
-  return res.ok(groups[0]);
+  group = await GroupTransformer.transformOne(groups[0]);
+
+  return res.ok(group);
 
 };

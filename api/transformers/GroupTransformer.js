@@ -4,6 +4,7 @@ async function transformGroup(group) {
     name: group.name,
     fromLanguage: group.fromLanguage,
     toLanguage: group.toLanguage,
+    user: group.user,
     countLearnedWords: await Card.count({group: group.id, isLearned: true}),
     countWords: await Card.count({group: group.id})
   }
