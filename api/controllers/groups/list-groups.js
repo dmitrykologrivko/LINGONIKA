@@ -1,6 +1,11 @@
+const GroupTransformer = require('../../transformers/GroupTransformer');
+
 module.exports = async (req, res) => {
 
-  const groups = await Group.find({user: req.me.id});
+  let groups = await Group.find({user: req.me.id});
+
+  groups = await GroupTransformer.transformList(groups);
+
   return res.ok(groups);
 
 };
