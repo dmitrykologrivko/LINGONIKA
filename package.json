@@ -1,40 +1,33 @@
 {
-  "name": "lingonika",
-  "private": true,
-  "version": "0.0.0",
-  "description": "a Sails application",
-  "keywords": [],
-  "dependencies": {
-    "@sailshq/connect-redis": "^3.2.1",
-    "@sailshq/lodash": "^3.10.3",
-    "@sailshq/socket.io-redis": "^5.2.0",
-    "async": "2.0.1",
-    "async-validator": "^1.8.5",
-    "bcrypt": "^3.0.0",
-    "grunt": "1.0.1",
-    "jsonwebtoken": "^8.3.0",
-    "sails": "^1.0.2",
-    "sails-hook-grunt": "^3.0.2",
-    "sails-hook-orm": "^2.0.0-16",
-    "sails-hook-sockets": "^1.4.0"
-  },
-  "devDependencies": {
-    "@sailshq/eslint": "^4.19.3"
+  "name": "LINGONIKA",
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "engines": {
+    "node": ">=4"
   },
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
-    "test": "npm run lint && npm run custom-tests && echo 'Done.'",
-    "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
-    "custom-tests": "echo \"(No other custom tests yet.)\" && echo"
+    "lint": "eslint .",
+    "start": "node .",
+    "posttest": "npm run lint"
   },
-  "main": "app.js",
+  "dependencies": {
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "helmet": "^3.10.0",
+    "loopback-boot": "^2.6.5",
+    "serve-favicon": "^2.0.1",
+    "strong-error-handler": "^3.0.0",
+    "loopback-component-explorer": "^6.2.0",
+    "loopback": "^3.22.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-loopback": "^8.0.0"
+  },
   "repository": {
-    "type": "git",
-    "url": "git://github.com/dmitrykologrivko/lingonika.git"
+    "type": "",
+    "url": ""
   },
-  "author": "Dmitry Kologrivko",
-  "license": "",
-  "engines": {
-    "node": ">=10.9"
-  }
+  "license": "UNLICENSED",
+  "description": "LINGONIKA"
 }
