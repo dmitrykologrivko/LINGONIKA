@@ -12,5 +12,21 @@
       "../common/mixins",
       "./mixins"
     ]
+  },
+  "Card": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Group": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Post": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Translation": {
+    "dataSource": "db",
+    "public": false
   }
 }

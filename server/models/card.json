@@ -1,0 +1,44 @@
+{
+  "name": "Card",
+  "plural": "cards",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "phrase": {
+      "type": "string",
+      "required": true
+    },
+    "translation": {
+      "type": "string",
+      "required": true
+    },
+    "comment": {
+      "type": "string"
+    },
+    "example": {
+      "type": "string"
+    },
+    "fromLanguage": {
+      "type": "string",
+      "required": true
+    },
+    "toLanguage": {
+      "type": "string",
+      "required": true
+    },
+    "partOfSpeach": {
+      "type": "string"
+    },
+    "isLearned": {
+      "type": "boolean",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
