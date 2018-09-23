@@ -4,6 +4,7 @@ const LANGUAGES = require('../constants/languages');
 
 module.exports = function(Group) {
   applyValidationRules(Group);
+  applyObservers(Group);
   applyRemoteMethods(Group);
   disableRemoteMethods(Group);
 };
@@ -12,6 +13,19 @@ function applyValidationRules(Group) {
   Group.validatesLengthOf('name', {max: 100});
   Group.validatesInclusionOf('fromLanguage', {in: Object.keys(LANGUAGES)});
   Group.validatesInclusionOf('toLanguage', {in: Object.keys(LANGUAGES)});
+}
+
+function applyObservers(Group) {
+  Group.observe('loaded', async function(ctx) {
+    const Card = Group.app.models.Card;
+    if (ctx.data) {
+      ctx.data.countLearnedWords = await Card.count({groupId: ctx.data.id, isLearned: true});
+      ctx.data.countWords = await Card.count({groupId: ctx.data.id});
+      return Promise.resolve();
+    } else {
+      return Promise.resolve();
+    }
+  });
 }
 
 function applyRemoteMethods(Group) {
