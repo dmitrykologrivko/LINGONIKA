@@ -1,0 +1,40 @@
+{
+  "name": "Translation",
+  "plural": "translations",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "phrase": {
+      "type": "string",
+      "required": true
+    },
+    "translation": {
+      "type": "string",
+      "required": true
+    },
+    "comment": {
+      "type": "string"
+    },
+    "exampleOfPhrase": {
+      "type": "string"
+    },
+    "exampleOfTranslation": {
+      "type": "string"
+    },
+    "fromLanguage": {
+      "type": "string",
+      "required": true
+    },
+    "toLanguage": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
