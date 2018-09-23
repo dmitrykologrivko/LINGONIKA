@@ -33,9 +33,7 @@
       "required": true
     }
   },
-  "validations": [
-    
-  ],
+  "validations": [],
   "relations": {},
   "acls": [],
   "methods": {}

@@ -9,8 +9,7 @@
   "properties": {
     "type": {
       "type": "string",
-      "required": true,
-      "default": "question"
+      "required": true
     },
     "question": {
       "type": "string"
