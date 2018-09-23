@@ -8,6 +8,7 @@ const POST_TYPES = {
 
 module.exports = function(Post) {
   applyValidationRules(Post);
+  applyRemoteMethods(Post);
   disableRemoteMethods(Post);
 };
 
@@ -17,6 +18,22 @@ function applyValidationRules(Post) {
   Post.validatesLengthOf('comment', {max: 1000});
   Post.validatesInclusionOf('fromLanguage', {in: Object.keys(LANGUAGES)});
   Post.validatesInclusionOf('toLanguage', {in: Object.keys(LANGUAGES)});
+}
+
+function applyRemoteMethods(Post) {
+  Post.meta = meta;
+
+  Post.remoteMethod('meta', {
+    description: 'Get meta data.',
+    http: {
+      path: '/meta',
+      verb: 'get'
+    },
+    returns: [
+      {arg: 'postTypes', type: 'object'},
+      {arg: 'languages', type: 'object'}
+    ]
+  });
 }
 
 function disableRemoteMethods(Post) {
@@ -31,4 +48,8 @@ function disableRemoteMethods(Post) {
   Post.disableRemoteMethodByName('updateAll');
   Post.disableRemoteMethodByName('upsertWithWhere');
   Post.disableRemoteMethodByName('prototype.__count__translations');
+}
+
+function meta(cb) {
+  return cb(null, POST_TYPES, LANGUAGES);
 }
