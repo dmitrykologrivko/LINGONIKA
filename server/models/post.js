@@ -50,6 +50,6 @@ function disableRemoteMethods(Post) {
   Post.disableRemoteMethodByName('prototype.__count__translations');
 }
 
-function meta(cb) {
-  return cb(null, POST_TYPES, LANGUAGES);
+async function meta() {
+  return [POST_TYPES, LANGUAGES];
 }

@@ -48,6 +48,6 @@ function disableRemoteMethods(Card) {
   Card.disableRemoteMethodByName('upsertWithWhere');
 }
 
-function meta(cb) {
-  return cb(null, LANGUAGES, PARTS_OF_SPEECH);
+async function meta() {
+  return [LANGUAGES, PARTS_OF_SPEECH];
 }
