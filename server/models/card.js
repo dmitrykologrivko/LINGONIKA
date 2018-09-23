@@ -5,6 +5,7 @@ const PARTS_OF_SPEECH = require('../constants/parts-of-speech');
 
 module.exports = function(Card) {
   applyValidationRules(Card);
+  applyRemoteMethods(Card);
   disableRemoteMethods(Card);
 };
 
@@ -18,6 +19,22 @@ function applyValidationRules(Card) {
   Card.validatesInclusionOf('partOfSpeech', {in: Object.keys(PARTS_OF_SPEECH)});
 }
 
+function applyRemoteMethods(Card) {
+  Card.meta = meta;
+
+  Card.remoteMethod('meta', {
+    description: 'Get meta data.',
+    http: {
+      path: '/meta',
+      verb: 'get'
+    },
+    returns: [
+      {arg: 'languages', type: 'object'},
+      {arg: 'partsOfSpeech', type: 'object'}
+    ]
+  });
+}
+
 function disableRemoteMethods(Card) {
   Card.disableRemoteMethodByName('exists');
   Card.disableRemoteMethodByName('count');
@@ -29,4 +46,8 @@ function disableRemoteMethods(Card) {
   Card.disableRemoteMethodByName('findOne');
   Card.disableRemoteMethodByName('updateAll');
   Card.disableRemoteMethodByName('upsertWithWhere');
+}
+
+function meta(cb) {
+  return cb(null, LANGUAGES, PARTS_OF_SPEECH);
 }
