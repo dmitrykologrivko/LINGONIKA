@@ -40,7 +40,7 @@
       "user": {
         "type": "belongsTo",
         "model": "Account",
-        "foreignKey": "accountId"
+        "foreignKey": "userId"
       }
     }
   },
