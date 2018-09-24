@@ -8,6 +8,25 @@
   },
   "emailVerificationRequired": false,
   "realmRequired": false,
+  "hidden": [
+    "emailVerified",
+    "realm"
+  ],
+  "mixins": {
+    "SetupRemoteMethods": {
+      "ignoreACL": true,
+      "disableAllExcept": [
+        "getMe",
+        "updateMe",
+        "login",
+        "logout",
+        "register",
+        "changePassword",
+        "resetPassword",
+        "setPassword"
+      ]
+    }
+  },
   "properties": {
     "firstName": {
       "type": "string",
@@ -30,7 +49,6 @@
       "type": "string"
     }
   },
-  "hidden": ["emailVerified"],
   "validations": [],
   "relations": {},
   "acls": [
@@ -40,7 +58,111 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "register"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getMe"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "updateMe"
     }
   ],
-  "methods": {}
+  "methods": {
+    "register": {
+      "accepts": [
+        {
+          "arg": "registerData",
+          "type": "object",
+          "required": true,
+          "description": "Registration data: email, password, firstName, lastName, dateOfBirth, isMale, avatar.",
+          "http": {
+            "source": "body"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "accessToken",
+          "type": "object",
+          "root": true,
+          "description": "accessToken"
+        }
+      ],
+      "description": "Register a new user.",
+      "http": [
+        {
+          "path": "/register",
+          "verb": "post"
+        }
+      ]
+    },
+    "getMe": {
+      "accepts": [
+        {
+          "arg": "options",
+          "type": "object",
+          "required": false,
+          "description": "Loopback options.",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "account",
+          "type": "object",
+          "root": true,
+          "description": "Current user instance."
+        }
+      ],
+      "description": "Get user instance for current logged user.",
+      "http": [
+        {
+          "path": "/me",
+          "verb": "get"
+        }
+      ]
+    },
+    "updateMe": {
+      "accepts": [
+        {
+          "arg": "dataToUpdate",
+          "type": "object",
+          "required": true,
+          "description": "Data to update: email, firstName, lastName, dateOfBirth, isMale, avatar.",
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "required": false,
+          "description": "Loopback options.",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "user",
+          "type": "object",
+          "root": true,
+          "description": "Updated user instance."
+        }
+      ],
+      "description": "Update user instance for current logged user.",
+      "http": [
+        {
+          "path": "/me",
+          "verb": "put"
+        }
+      ]
+    }
+  }
 }
