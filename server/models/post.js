@@ -6,13 +6,22 @@ const POST_TYPES = {
   'question': 'Question'
 };
 
+/**
+ * Post model
+ */
 module.exports = function(Post) {
-  applyValidationRules(Post);
-  applyRemoteMethods(Post);
-  disableRemoteMethods(Post);
+  _applyValidationRules(Post);
+  _applyRemoteMethods(Post);
 };
 
-function applyValidationRules(Post) {
+// |\/| _  _| _ |     _ |. _| _ _|_. _  _
+// |  |(_)(_|(/_|  \/(_|||(_|(_| | |(_)| |
+
+/**
+ * Apply validation rules to account model
+ * @private
+ */
+function _applyValidationRules(Post) {
   Post.validatesInclusionOf('type', {in: Object.keys(LANGUAGES)});
   Post.validatesLengthOf('question', {max: 300});
   Post.validatesLengthOf('comment', {max: 1000});
@@ -20,36 +29,22 @@ function applyValidationRules(Post) {
   Post.validatesInclusionOf('toLanguage', {in: Object.keys(LANGUAGES)});
 }
 
-function applyRemoteMethods(Post) {
-  Post.meta = meta;
+// |~) _  _ _  _ _|_ _    _ _  _ _|_|_  _  _| _
+// |~\(/_| | |(_) | (/_  | | |(/_ | | |(_)(_|_\
 
-  Post.remoteMethod('meta', {
-    description: 'Get meta data.',
-    http: {
-      path: '/meta',
-      verb: 'get'
-    },
-    returns: [
-      {arg: 'postTypes', type: 'object'},
-      {arg: 'languages', type: 'object'}
-    ]
-  });
+/**
+ * Apply remote methods to account model
+ * @private
+ */
+function _applyRemoteMethods(Post) {
+  Post.meta = _meta;
 }
 
-function disableRemoteMethods(Post) {
-  Post.disableRemoteMethodByName('exists');
-  Post.disableRemoteMethodByName('count');
-  Post.disableRemoteMethodByName('replace');
-  Post.disableRemoteMethodByName('createChangeStream');
-  Post.disableRemoteMethodByName('replaceById');
-  Post.disableRemoteMethodByName('replaceOrCreate');
-  Post.disableRemoteMethodByName('patchOrCreate');
-  Post.disableRemoteMethodByName('findOne');
-  Post.disableRemoteMethodByName('updateAll');
-  Post.disableRemoteMethodByName('upsertWithWhere');
-  Post.disableRemoteMethodByName('prototype.__count__translations');
-}
-
-async function meta() {
+/**
+ * Get posts meta data.
+ * @returns {Promise<*[object]>} Dictionary with post types and languages.
+ * @private
+ */
+async function _meta() {
   return [POST_TYPES, LANGUAGES];
 }

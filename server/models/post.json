@@ -6,6 +6,24 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "SetupRemoteMethods": {
+      "ignoreACL": true,
+      "disableAllExcept": [
+        "create",
+        "find",
+        "findById",
+        "replaceById",
+        "prototype.patchAttributes",
+        "deleteById",
+        "meta",
+        "prototype.__get__translations",
+        "prototype.__create__translations",
+        "prototype.__updateById__translations",
+        "prototype.__destroyById__translations"
+      ]
+    }
+  },
   "properties": {
     "type": {
       "type": "string",
@@ -35,5 +53,30 @@
     }
   },
   "acls": [],
-  "methods": {}
+  "methods": {
+    "meta": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "postTypes",
+          "type": "object",
+          "root": false,
+          "description": "Dictionary of supported post types in the system."
+        },
+        {
+          "arg": "languages",
+          "type": "object",
+          "root": false,
+          "description": "Dictionary of supported languages in the system."
+        }
+      ],
+      "description": "Get posts meta data.",
+      "http": [
+        {
+          "path": "/meta",
+          "verb": "get"
+        }
+      ]
+    }
+  }
 }

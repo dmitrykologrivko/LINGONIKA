@@ -14,7 +14,6 @@ module.exports = function(Translation) {
 
 /**
  * Apply validation rules to account model
- * @param Translation
  * @private
  */
 function _applyValidationRules(Translation) {
