@@ -8,6 +8,7 @@
   },
   "emailVerificationRequired": false,
   "realmRequired": false,
+  "hidden": ["emailVerified", "realm"],
   "properties": {
     "firstName": {
       "type": "string",
@@ -30,7 +31,6 @@
       "type": "string"
     }
   },
-  "hidden": ["emailVerified"],
   "validations": [],
   "relations": {},
   "acls": [
@@ -40,6 +40,13 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "register"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "me"
     }
   ],
   "methods": {}

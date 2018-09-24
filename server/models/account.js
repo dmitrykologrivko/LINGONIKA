@@ -50,7 +50,7 @@ function _applyRemoteMethods(Account) {
       verb: 'get'
     },
     accepts: [
-      {arg: 'options', type: 'object', http: {source: 'optionsFromRequest'}}
+      {arg: 'options', type: 'object', http: 'optionsFromRequest'}
     ],
     returns: [
       {arg: 'user', type: 'object', root: true}
@@ -65,7 +65,7 @@ function _applyRemoteMethods(Account) {
     },
     accepts: [
       {arg: 'dataToUpdate', type: 'object', required: true, http: {source: 'body'}},
-      {arg: 'options', type: 'object', http: {source: 'optionsFromRequest'}}
+      {arg: 'options', type: 'object', http: 'optionsFromRequest'}
     ]
   });
 }
@@ -86,7 +86,7 @@ async function _register(data) {
 }
 
 async function _me(options) {
-  return await this.findById(options.accessToken.accountId);
+  return await this.findById(options.accessToken.userId);
 }
 
 async function _updateMe(data, options) {
