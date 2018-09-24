@@ -25,7 +25,9 @@ function _validateAvatar(err) {
 /* Model Remote methods */
 
 function _applyRemoteMethods(Account) {
-  Account.prototype.register = _register;
+  Account.register = _register;
+  Account.me = _me;
+  Account.updateMe = _updateMe;
 
   Account.remoteMethod('register', {
     description: 'Register a new user.',
@@ -34,48 +36,38 @@ function _applyRemoteMethods(Account) {
       verb: 'post'
     },
     accepts: [
-      {arg: 'registerData', type: 'object', required: true, http: {source: 'body'}},
-      // {arg: 'password', type: 'string', required: true},
-      // {arg: 'firstName', type: 'string', required: true},
-      // {arg: 'lastName', type: 'string', required: true},
-      // {arg: 'dateOfBirth', type: 'date', required: true},
-      // {arg: 'isMale', type: 'boolean'},
-      // {arg: 'avatar', type: 'string'},
-      // {arg: 'res', type: 'object', http:{source: 'res'}},
+      {arg: 'registerData', type: 'object', required: true, http: {source: 'body'}}
     ],
     returns: [
-      {arg: 'access_token', type: 'object'},
+      {arg: 'access_token', type: 'object'}
     ]
   });
 
-  // Account.beforeRemote("register", async function (ctx) {
-  //   const data = ctx.args.registerData;
-  //
-  //   const error = new ValidationError();
-  //
-  //   if (!data.email) {
-  //     error.putField('email', 'required', 'email is required');
-  //   }
-  //
-  //   if (!data.password) {
-  //     error.putField('password', 'required', 'password is required');
-  //     error.putField('password', 'min', 'password is to short');
-  //   }
-  //
-  //   if (error.containsFields()) {
-  //     return Promise.reject(error);
-  //   }
-  //
-  //   return Promise.resolve();
-  //
-  //   // put your custom validation here
-  //   // if(!ctx.args.number){
-  //   //   const err = new Error('df');
-  //   //   err.statusCode = 422;
-  //   //   return Promise.reject(err);
-  //   // }
-  //   // next();
-  // });
+  Account.remoteMethod('me', {
+    description: 'Get user instance for current logged user.',
+    http: {
+      path: '/me',
+      verb: 'get'
+    },
+    accepts: [
+      {arg: 'options', type: 'object', http: {source: 'optionsFromRequest'}}
+    ],
+    returns: [
+      {arg: 'user', type: 'object', root: true}
+    ]
+  });
+
+  Account.remoteMethod('updateMe', {
+    description: 'Update user instance for current logged user.',
+    http: {
+      path: '/me',
+      verb: 'put'
+    },
+    accepts: [
+      {arg: 'dataToUpdate', type: 'object', required: true, http: {source: 'body'}},
+      {arg: 'options', type: 'object', http: {source: 'optionsFromRequest'}}
+    ]
+  });
 }
 
 async function _register(data) {
@@ -93,12 +85,28 @@ async function _register(data) {
   return await user.createAccessToken();
 }
 
+async function _me(options) {
+  return await this.findById(options.accessToken.accountId);
+}
+
+async function _updateMe(data, options) {
+  return await this.updateLastChange({
+    id: options.accessToken.accountId,
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    dateOfBirth: data.dateOfBirth,
+    isMale: data.isMale,
+    avatar: data.avatar
+  });
+}
+
 function _disableRemoteMethods(Account) {
   Account.disableRemoteMethodByName('create');
   Account.disableRemoteMethodByName('replaceById');
   Account.disableRemoteMethodByName('destroyById');
   Account.disableRemoteMethodByName('prototype.patchAttributes');
-  // Account.disableRemoteMethodByName('find');
+  Account.disableRemoteMethodByName('find');
   Account.disableRemoteMethodByName('findById');
   Account.disableRemoteMethodByName('exists');
   Account.disableRemoteMethodByName('count');
