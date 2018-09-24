@@ -25,7 +25,8 @@ function _validateAvatar(err) {
 /* Model Remote methods */
 
 function _applyRemoteMethods(Account) {
-  Account.prototype.register = _register;
+  Account.register = _register;
+  Account.me = _me;
 
   Account.remoteMethod('register', {
     description: 'Register a new user.',
@@ -37,7 +38,21 @@ function _applyRemoteMethods(Account) {
       {arg: 'registerData', type: 'object', required: true, http: {source: 'body'}}
     ],
     returns: [
-      {arg: 'access_token', type: 'object'},
+      {arg: 'access_token', type: 'object'}
+    ]
+  });
+
+  Account.remoteMethod('me', {
+    description: 'Get user instance for current logged user.',
+    http: {
+      path: '/me',
+      verb: 'get'
+    },
+    accepts: [
+      {arg: 'options', type: 'object', http: {source: 'optionsFromRequest'}}
+    ],
+    returns: [
+      {arg: 'user', type: 'object', root: true}
     ]
   });
 }
@@ -55,6 +70,10 @@ async function _register(data) {
     emailVerified: true
   });
   return await user.createAccessToken();
+}
+
+async function _me(options) {
+  return await this.findById(options.accessToken.accountId);
 }
 
 function _disableRemoteMethods(Account) {
