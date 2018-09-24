@@ -30,6 +30,7 @@
       "type": "string"
     }
   },
+  "hidden": ["emailVerified"],
   "validations": [],
   "relations": {},
   "acls": [

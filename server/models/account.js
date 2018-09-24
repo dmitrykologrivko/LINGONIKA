@@ -27,6 +27,7 @@ function _validateAvatar(err) {
 function _applyRemoteMethods(Account) {
   Account.register = _register;
   Account.me = _me;
+  Account.updateMe = _updateMe;
 
   Account.remoteMethod('register', {
     description: 'Register a new user.',
@@ -55,6 +56,18 @@ function _applyRemoteMethods(Account) {
       {arg: 'user', type: 'object', root: true}
     ]
   });
+
+  Account.remoteMethod('updateMe', {
+    description: 'Update user instance for current logged user.',
+    http: {
+      path: '/me',
+      verb: 'put'
+    },
+    accepts: [
+      {arg: 'dataToUpdate', type: 'object', required: true, http: {source: 'body'}},
+      {arg: 'options', type: 'object', http: {source: 'optionsFromRequest'}}
+    ]
+  });
 }
 
 async function _register(data) {
@@ -74,6 +87,18 @@ async function _register(data) {
 
 async function _me(options) {
   return await this.findById(options.accessToken.accountId);
+}
+
+async function _updateMe(data, options) {
+  return await this.updateLastChange({
+    id: options.accessToken.accountId,
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    dateOfBirth: data.dateOfBirth,
+    isMale: data.isMale,
+    avatar: data.avatar
+  });
 }
 
 function _disableRemoteMethods(Account) {
