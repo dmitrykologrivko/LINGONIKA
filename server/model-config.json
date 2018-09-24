@@ -28,5 +28,35 @@
   "Translation": {
     "dataSource": "db",
     "public": false
+  },
+  "Account": {
+    "dataSource": "db",
+    "public": true
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "Account",
+        "foreignKey": "accountId"
+      }
+    }
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
   }
 }
