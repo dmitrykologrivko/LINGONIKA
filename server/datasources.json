@@ -2,5 +2,15 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "postgres": {
+    "host": "localhost",
+    "port": "5432",
+    "database": "lingonika",
+    "username": "dmitrykologrivko",
+    "password": "",
+    "name": "postgres",
+    "debug": true,
+    "connector": "postgresql"
   }
 }

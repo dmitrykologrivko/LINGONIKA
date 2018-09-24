@@ -14,27 +14,27 @@
     ]
   },
   "Card": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": true
   },
   "Group": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": true
   },
   "Post": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": true
   },
   "Translation": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": false
   },
   "Account": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": true
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": false,
     "relations": {
       "user": {
@@ -45,18 +45,18 @@
     }
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "postgres",
     "public": false
   }
 }
