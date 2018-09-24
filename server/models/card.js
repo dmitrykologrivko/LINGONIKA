@@ -3,13 +3,22 @@
 const LANGUAGES = require('../constants/languages');
 const PARTS_OF_SPEECH = require('../constants/parts-of-speech');
 
+/**
+ * Card model
+ */
 module.exports = function(Card) {
-  applyValidationRules(Card);
-  applyRemoteMethods(Card);
-  disableRemoteMethods(Card);
+  _applyValidationRules(Card);
+  _applyRemoteMethods(Card);
 };
 
-function applyValidationRules(Card) {
+// |\/| _  _| _ |     _ |. _| _ _|_. _  _
+// |  |(_)(_|(/_|  \/(_|||(_|(_| | |(_)| |
+
+/**
+ * Apply validation rules to account model
+ * @private
+ */
+function _applyValidationRules(Card) {
   Card.validatesLengthOf('phrase', {max: 300});
   Card.validatesLengthOf('translation', {max: 300});
   Card.validatesLengthOf('comment', {max: 1000});
@@ -19,35 +28,22 @@ function applyValidationRules(Card) {
   Card.validatesInclusionOf('partOfSpeech', {in: Object.keys(PARTS_OF_SPEECH)});
 }
 
-function applyRemoteMethods(Card) {
-  Card.meta = meta;
+// |~) _  _ _  _ _|_ _    _ _  _ _|_|_  _  _| _
+// |~\(/_| | |(_) | (/_  | | |(/_ | | |(_)(_|_\
 
-  Card.remoteMethod('meta', {
-    description: 'Get meta data.',
-    http: {
-      path: '/meta',
-      verb: 'get'
-    },
-    returns: [
-      {arg: 'languages', type: 'object'},
-      {arg: 'partsOfSpeech', type: 'object'}
-    ]
-  });
+/**
+ * Apply remote methods to account model
+ * @private
+ */
+function _applyRemoteMethods(Card) {
+  Card.meta = _meta;
 }
 
-function disableRemoteMethods(Card) {
-  Card.disableRemoteMethodByName('exists');
-  Card.disableRemoteMethodByName('count');
-  Card.disableRemoteMethodByName('replace');
-  Card.disableRemoteMethodByName('createChangeStream');
-  Card.disableRemoteMethodByName('replaceById');
-  Card.disableRemoteMethodByName('replaceOrCreate');
-  Card.disableRemoteMethodByName('patchOrCreate');
-  Card.disableRemoteMethodByName('findOne');
-  Card.disableRemoteMethodByName('updateAll');
-  Card.disableRemoteMethodByName('upsertWithWhere');
-}
-
-async function meta() {
+/**
+ * Get cards meta data.
+ * @returns {Promise<*[object]>} Dictionary with languages and pars of speech.
+ * @private
+ */
+async function _meta() {
   return [LANGUAGES, PARTS_OF_SPEECH];
 }
