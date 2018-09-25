@@ -2,21 +2,38 @@
 
 const LANGUAGES = require('../constants/languages');
 
+/**
+ * Group model
+ * @param Group
+ */
 module.exports = function(Group) {
-  applyValidationRules(Group);
-  applyObservers(Group);
-  applyRemoteMethods(Group);
-  disableRemoteMethods(Group);
+  _applyValidationRules(Group);
+  _applyObservers(Group);
+  _applyRemoteMethods(Group);
 };
 
-function applyValidationRules(Group) {
+// |\/| _  _| _ |     _ |. _| _ _|_. _  _
+// |  |(_)(_|(/_|  \/(_|||(_|(_| | |(_)| |
+
+/**
+ * Apply validation rules to group model
+ * @private
+ */
+function _applyValidationRules(Group) {
   Group.validatesLengthOf('name', {max: 100});
   Group.validatesInclusionOf('fromLanguage', {in: Object.keys(LANGUAGES)});
   Group.validatesInclusionOf('toLanguage', {in: Object.keys(LANGUAGES)});
 }
 
-function applyObservers(Group) {
-  Group.observe('loaded', async function(ctx) {
+// |\/| _  _| _ |  /~\|_  _ _  _  _  _ _
+// |  |(_)(_|(/_|  \_/|_)_\(/_|\/(/_| _\
+
+/**
+ * Apply observers to group model
+ * @private
+ */
+function _applyObservers(Group) {
+  Group.observe('loaded', async (ctx) => {
     const Card = Group.app.models.Card;
     if (ctx.data) {
       ctx.data.countLearnedWords = await Card.count({groupId: ctx.data.id, isLearned: true});
@@ -28,47 +45,25 @@ function applyObservers(Group) {
   });
 }
 
-function applyRemoteMethods(Group) {
-  Group.meta = meta;
+// |~) _  _ _  _ _|_ _    _ _  _ _|_|_  _  _| _
+// |~\(/_| | |(_) | (/_  | | |(/_ | | |(_)(_|_\
 
-  Group.remoteMethod('meta', {
-    description: 'Get meta data.',
-    http: {
-      path: '/meta',
-      verb: 'get'
-    },
-    accepts: [
-      {arg: 'fromLanguage', type: 'string'},
-      {arg: 'toLanguage', type: 'string'},
-    ],
-    returns: [
-      {arg: 'languages', type: 'object'},
-      {arg: 'countLearnedWords', type: 'number'}
-    ]
-  });
+/**
+ * Apply remote methods to group model
+ * @private
+ */
+function _applyRemoteMethods(Group) {
+  Group.meta = _meta;
 }
 
-function disableRemoteMethods(Group) {
-  Group.disableRemoteMethodByName('exists');
-  Group.disableRemoteMethodByName('count');
-  Group.disableRemoteMethodByName('replace');
-  Group.disableRemoteMethodByName('createChangeStream');
-  Group.disableRemoteMethodByName('replaceById');
-  Group.disableRemoteMethodByName('replaceOrCreate');
-  Group.disableRemoteMethodByName('patchOrCreate');
-  Group.disableRemoteMethodByName('findOne');
-  Group.disableRemoteMethodByName('updateAll');
-  Group.disableRemoteMethodByName('upsertWithWhere');
-  Group.disableRemoteMethodByName('prototype.__findById__cards');
-  Group.disableRemoteMethodByName('prototype.__create__cards');
-  Group.disableRemoteMethodByName('prototype.__delete__cards');
-  Group.disableRemoteMethodByName('prototype.__destroyById__cards');
-  Group.disableRemoteMethodByName('prototype.__get__cards');
-  Group.disableRemoteMethodByName('prototype.__updateById__cards');
-  Group.disableRemoteMethodByName('prototype.__count__cards');
-}
-
-async function meta(fromLanguage, toLanguage) {
+/**
+ * Get groups meta data.
+ * @param fromLanguage From language argument allows filtering countOfLearnedWords by language.
+ * @param toLanguage To language argument allows filtering countOfLearnedWords by language.
+ * @returns {Promise<*[object, number]>} Dictionary with languages and count of learned words.
+ * @private
+ */
+async function _meta(fromLanguage, toLanguage) {
   const Card = this.app.models.Card;
 
   let countLearnedWords = 0;

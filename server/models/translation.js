@@ -2,11 +2,21 @@
 
 const LANGUAGES = require('../constants/languages');
 
+/**
+ * Translation model
+ */
 module.exports = function(Translation) {
-  applyValidationRules(Translation);
+  _applyValidationRules(Translation);
 };
 
-function applyValidationRules(Translation) {
+// |\/| _  _| _ |     _ |. _| _ _|_. _  _
+// |  |(_)(_|(/_|  \/(_|||(_|(_| | |(_)| |
+
+/**
+ * Apply validation rules to account model
+ * @private
+ */
+function _applyValidationRules(Translation) {
   Translation.validatesLengthOf('phrase', {max: 300});
   Translation.validatesLengthOf('translation', {max: 300});
   Translation.validatesLengthOf('comment', {max: 1000});

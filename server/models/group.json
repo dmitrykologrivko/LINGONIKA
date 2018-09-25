@@ -6,6 +6,20 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "SetupRemoteMethods": {
+      "ignoreACL": true,
+      "disableAllExcept": [
+        "create",
+        "find",
+        "findById",
+        "replaceById",
+        "prototype.patchAttributes",
+        "deleteById",
+        "meta"
+      ]
+    }
+  },
   "properties": {
     "name": {
       "type": "string",
@@ -29,5 +43,49 @@
     }
   },
   "acls": [],
-  "methods": {}
+  "methods": {
+    "meta": {
+      "accepts": [
+        {
+          "arg": "fromLanguage",
+          "type": "string",
+          "required": false,
+          "description": "From language argument allows filtering countOfLearnedWords by language.",
+          "http": {
+            "source": "query"
+          }
+        },
+        {
+          "arg": "toLanguage",
+          "type": "string",
+          "required": false,
+          "description": "To language argument allows filtering countOfLearnedWords by language.",
+          "http": {
+            "source": "query"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "languages",
+          "type": "object",
+          "root": false,
+          "description": "Dictionary of supported languages in the system."
+        },
+        {
+          "arg": "countLearnedWords",
+          "type": "number",
+          "root": false,
+          "description": "Count of learned words. Can be filtered by languages."
+        }
+      ],
+      "description": "Get groups meta data.",
+      "http": [
+        {
+          "path": "/meta",
+          "verb": "get"
+        }
+      ]
+    }
+  }
 }
