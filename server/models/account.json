@@ -50,7 +50,28 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "cards": {
+      "type": "hasMany",
+      "model": "Card",
+      "foreignKey": "userId"
+    },
+    "groups": {
+      "type": "hasMany",
+      "model": "Group",
+      "foreignKey": "userId"
+    },
+    "posts": {
+      "type": "hasMany",
+      "model": "Post",
+      "foreignKey": "userId"
+    },
+    "translations": {
+      "type": "hasMany",
+      "model": "Translation",
+      "foreignKey": "userId"
+    }
+  },
   "acls": [
     {
       "accessType": "EXECUTE",
