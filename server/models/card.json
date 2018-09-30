@@ -18,7 +18,8 @@
         "deleteById",
         "cardsMeta"
       ]
-    }
+    },
+    "UserOwned": true
   },
   "properties": {
     "phrase": {

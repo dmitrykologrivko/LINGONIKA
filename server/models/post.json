@@ -22,7 +22,8 @@
         "prototype.__updateById__translations",
         "prototype.__destroyById__translations"
       ]
-    }
+    },
+    "UserOwned": true
   },
   "properties": {
     "type": {

@@ -18,7 +18,8 @@
         "deleteById",
         "groupsMeta"
       ]
-    }
+    },
+    "UserOwned": true
   },
   "properties": {
     "name": {
