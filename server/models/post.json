@@ -42,6 +42,10 @@
     "toLanguage": {
       "type": "string",
       "required": true
+    },
+    "userId": {
+      "type": "number",
+      "required": true
     }
   },
   "validations": [],
@@ -50,6 +54,14 @@
       "type": "hasMany",
       "model": "Translation",
       "foreignKey": "postId"
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
     }
   },
   "acls": [],

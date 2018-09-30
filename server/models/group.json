@@ -32,6 +32,10 @@
     "toLanguage": {
       "type": "string",
       "required": true
+    },
+    "userId": {
+      "type": "number",
+      "required": true
     }
   },
   "validations": [],
@@ -40,6 +44,14 @@
       "type": "hasMany",
       "model": "Card",
       "foreignKey": "groupId"
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
     }
   },
   "acls": [],
