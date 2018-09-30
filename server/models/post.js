@@ -37,7 +37,7 @@ function _applyValidationRules(Post) {
  * @private
  */
 function _applyRemoteMethods(Post) {
-  Post.meta = _meta;
+  Post.postsMeta = _meta;
 }
 
 /**
