@@ -16,7 +16,7 @@
         "replaceById",
         "prototype.patchAttributes",
         "deleteById",
-        "meta",
+        "postsMeta",
         "prototype.__get__translations",
         "prototype.__create__translations",
         "prototype.__updateById__translations",

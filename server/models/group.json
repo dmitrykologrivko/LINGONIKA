@@ -16,7 +16,7 @@
         "replaceById",
         "prototype.patchAttributes",
         "deleteById",
-        "meta"
+        "groupsMeta"
       ]
     }
   },
