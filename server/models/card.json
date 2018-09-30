@@ -50,6 +50,9 @@
       "type": "boolean",
       "default": false
     },
+    "groupId": {
+      "type": "number"
+    },
     "userId": {
       "type": "number",
       "required": true
@@ -61,6 +64,14 @@
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
+    },
+    "group": {
+      "type": "belongsTo",
+      "model": "Group",
+      "foreignKey": "groupId",
       "options": {
         "disableInclude": true
       }

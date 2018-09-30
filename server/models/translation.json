@@ -32,6 +32,10 @@
       "type": "string",
       "required": true
     },
+    "postId": {
+      "type": "number",
+      "required": true
+    },
     "userId": {
       "type": "number",
       "required": true
@@ -43,6 +47,14 @@
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
+    },
+    "post": {
+      "type": "belongsTo",
+      "model": "Post",
+      "foreignKey": "postId",
       "options": {
         "disableInclude": true
       }
