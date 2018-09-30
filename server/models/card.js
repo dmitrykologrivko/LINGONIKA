@@ -36,7 +36,7 @@ function _applyValidationRules(Card) {
  * @private
  */
 function _applyRemoteMethods(Card) {
-  Card.meta = _meta;
+  Card.cardsMeta = _meta;
 }
 
 /**

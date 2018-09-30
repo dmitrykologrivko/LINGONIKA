@@ -55,7 +55,7 @@
   "relations": {},
   "acls": [],
   "methods": {
-    "meta": {
+    "cardsMeta": {
       "accepts": [],
       "returns": [
         {

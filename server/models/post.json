@@ -54,7 +54,7 @@
   },
   "acls": [],
   "methods": {
-    "meta": {
+    "postsMeta": {
       "accepts": [],
       "returns": [
         {

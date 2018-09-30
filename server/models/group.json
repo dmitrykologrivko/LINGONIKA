@@ -44,7 +44,7 @@
   },
   "acls": [],
   "methods": {
-    "meta": {
+    "groupsMeta": {
       "accepts": [
         {
           "arg": "fromLanguage",

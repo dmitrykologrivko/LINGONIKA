@@ -53,7 +53,7 @@ function _applyObservers(Group) {
  * @private
  */
 function _applyRemoteMethods(Group) {
-  Group.meta = _meta;
+  Group.groupsMeta = _meta;
 }
 
 /**
