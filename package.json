@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "start": "node .",
     "posttest": "npm run lint",
-    "console": "loopback-console"
+    "console": "loopback-console",
+    "migrate": "lb-migration migrate --method=update"
   },
   "dependencies": {
     "compression": "^1.0.3",
@@ -20,6 +21,7 @@
     "loopback-component-explorer": "^6.2.0",
     "loopback-connector-postgresql": "^3.4.0",
     "loopback-console": "^1.1.0",
+    "loopback-migration-tool": "^1.4.0",
     "loopback-setup-remote-methods-mixin": "^1.2.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^3.0.0"
