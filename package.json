@@ -19,6 +19,7 @@
     "loopback": "^3.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.2.0",
+    "loopback-component-winston": "0.0.2",
     "loopback-connector-postgresql": "^3.4.0",
     "loopback-console": "^1.1.0",
     "loopback-migration-tool": "^1.4.0",

@@ -2,5 +2,15 @@
   "loopback-component-explorer": {
     "mountPath": "/explorer",
     "generateOperationScopedModels": true
+  },
+  "loopback-component-winston": {
+    "level": "debug",
+    "transports": [
+      {
+        "type": "Console",
+        "json": false,
+        "colorize": true
+      }
+    ]
   }
 }

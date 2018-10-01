@@ -35,6 +35,15 @@
     "loopback#token": {}
   },
   "parse": {},
+  "routes:before": {
+    "loopback-component-winston#requestLogger": {
+      "params": {
+        "level": "debug",
+        "msg": "${res.statusCode} ${req.method} ${res.time}ms ${req.decodedUrl}",
+        "meta": false
+      }
+    }
+  },
   "routes": {
     "loopback#rest": {
       "paths": [
