@@ -2,8 +2,12 @@
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
+var minimist = require('minimist');
+
+var CommandRunner = require('./utils/managment/CommandRunner');
 
 var app = module.exports = loopback();
+var commandRunner = new CommandRunner(app, minimist(process.argv.slice(2)));
 
 app.start = function() {
   // start the web server
@@ -23,7 +27,14 @@ app.start = function() {
 boot(app, __dirname, function(err) {
   if (err) throw err;
 
-  // start the server if `$ node server.js`
-  if (require.main === module)
-    app.start();
+  // start the server if `$ node server.js` and command runner has no any
+  if (require.main === module) {
+    if (!commandRunner.shouldRunCommand()) {
+      return app.start();
+    }
+
+    commandRunner.runCommand()
+      .then(() => {})
+      .catch(e => {app.log.error(e)});
+  }
 });
