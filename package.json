@@ -10,7 +10,8 @@
     "start": "node .",
     "posttest": "npm run lint",
     "console": "loopback-console",
-    "migrate": "lb-migration migrate --method=update"
+    "migrate": "lb-migration migrate --method=update",
+    "command": "node . --command"
   },
   "dependencies": {
     "compression": "^1.0.3",
@@ -24,6 +25,7 @@
     "loopback-console": "^1.1.0",
     "loopback-migration-tool": "^1.4.0",
     "loopback-setup-remote-methods-mixin": "^1.2.0",
+    "minimist": "^1.2.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^3.0.0"
   },
