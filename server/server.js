@@ -27,7 +27,8 @@ app.start = function() {
 boot(app, __dirname, function(err) {
   if (err) throw err;
 
-  // start the server if `$ node server.js` and command runner has no any
+  // start the server if `$ node server.js`
+  // and commands runner has no any commands to handle
   if (require.main === module) {
     if (!commandRunner.shouldRunCommand()) {
       return app.start();
