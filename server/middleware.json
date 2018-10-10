@@ -51,7 +51,11 @@
       ]
     }
   },
-  "files": {},
+  "files": {
+    "loopback#static": {
+      "params": "$!../client/static/"
+    }
+  },
   "final": {
     "loopback#urlNotFound": {}
   },

@@ -1,6 +1,7 @@
 {
   "name": "LINGONIKA",
   "version": "1.0.0",
+  "private": true,
   "main": "server/server.js",
   "engines": {
     "node": ">=4"
@@ -8,6 +9,9 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
+    "start-dev": "concurrently \"npm run start\" \"npm run --prefix client/app start\"",
+    "build": "npm run --prefix client/app build",
+    "postinstall": "npm --prefix client/app install",
     "posttest": "npm run lint",
     "console": "loopback-console",
     "migrate": "lb-migration migrate --method=update",
@@ -30,6 +34,7 @@
     "strong-error-handler": "^3.0.0"
   },
   "devDependencies": {
+    "concurrently": "^4.0.1",
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0"
   },
