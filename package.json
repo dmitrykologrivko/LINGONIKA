@@ -7,7 +7,7 @@
   },
   "description": "description",
   "scripts": {
-    "postinstall": "npm --prefix client install & npm --prefix server install",
+    "postinstall": "npm --prefix client install && npm --prefix server install",
     "start-dev": "concurrently \"npm run --prefix server start\" \"npm run --prefix client start\"",
     "build": "npm run --prefix client/app build",
     "test": "echo \"Error: no test specified\" && exit 1",
