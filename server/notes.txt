@@ -1,4 +1,0 @@
-https://www.npmjs.com/package/loopback-migration-tool
-lb-migration migrate --method=update
-
-https://www.npmjs.com/package/loopback-console
