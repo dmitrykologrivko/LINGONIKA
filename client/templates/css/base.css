@@ -168,6 +168,27 @@ body {
     border-left: 5px solid red;
 }
 
+/* Middle */
+
+.middle {
+  margin: 0 auto;
+  max-width: 1280px;
+  min-width: 820px;
+  display: flex;
+}
+
+/* Main */
+
+.main {
+  width: 60%;
+}
+
+/* Aside */
+
+.aside {
+  width: 40%;
+}
+
 /* Footer */
 
 .footer {
