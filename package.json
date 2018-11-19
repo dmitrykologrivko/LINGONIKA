@@ -30,5 +30,6 @@
   "homepage": "https://github.com/dmitrykologrivko/LINGONIKA#readme",
   "devDependencies": {
     "concurrently": "^4.0.1"
-  }
+  },
+  "dependencies": {}
 }

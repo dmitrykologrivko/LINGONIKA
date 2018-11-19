@@ -1,0 +1,32 @@
+.footer {
+  background: #000;
+  color: #fff;
+  z-index: 50;
+}
+
+.footer__container {
+  margin: 0 auto;
+  padding: 20px 42px;
+  max-width: 1280px;
+  min-width: 820px;
+  display: flex;
+}
+
+.footer__footer_nav {
+  font-size: 12px;
+  line-height: 2em;
+  letter-spacing: 0;
+  white-space: nowrap;
+  font-family: Roboto,Helvetica,Tahoma,sans-serif;
+  font-weight: 400;
+}
+
+.footer_nav__item {
+  text-decoration: none;
+  display: block;
+  color: #9b9b9b;
+}
+
+.footer_nav__item:hover {
+  color: white;
+}

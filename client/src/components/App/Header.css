@@ -1,0 +1,154 @@
+.header {
+  background-color: red;
+  height: 72px;
+}
+
+.header__container {
+  margin: 0 auto;
+  padding-left: 42px;
+  padding-right: 42px;
+  max-width: 1280px;
+  min-width: 820px;
+  display: flex;
+}
+
+.header__logo {
+  flex: 1 0 10px;
+}
+
+.header__logo-link {
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  top: 23px;
+  position: relative;
+}
+
+.header__nav-wrapper {
+  flex: 1 0 auto;
+  text-align: center;
+}
+
+.header__nav {
+  height: 72px;
+  display: flex;
+  flex-flow: row;
+}
+
+.header__nav-item {
+  display: flex;
+  position: relative;
+}
+
+.header__nav-item:hover {
+  background-color: rgb(217, 16, 38);
+}
+
+.header__nav-item_active {
+  background-color: #c01838;
+}
+
+.header__nav-item_active:hover {
+  background-color: #c01838;
+}
+
+.header__nav-link {
+  font-size: 12px;
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 75px;
+  padding: 0 24px;
+  white-space: nowrap;
+}
+
+.header__profile {
+  flex: 2 1 auto;
+  text-align: right;
+  padding-top: 15px;
+  position: relative;
+}
+
+.header__profile-link {
+  text-decoration: none;
+  /*position: relative;*/
+  /*top: 21px;*/
+}
+
+.header__profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  vertical-align: middle;
+}
+
+.header__profile-name {
+  color: white;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.header__profile-name:hover {
+  border-bottom: 1px solid white;
+}
+
+.header__profile-more-button {
+  color: white;
+  padding-left: 10px;
+  padding-right: 21px;
+  cursor: pointer;
+}
+
+.header__profile-nav-wrapper {
+  min-height: 20px;
+  min-width: 100px;
+  background: white;
+  display: inline-block;
+  box-shadow: 1px 2px 6px 0 hsla(0, 0%, 56%, .24);
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+}
+
+.header__profile-nav-wrapper:before {
+  content: "";
+  top: -15px;
+  right: 15px;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 15px solid white;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+}
+
+.header__profile-nav {
+  padding: 24px 0;
+}
+
+.header__profile-nav-item {
+  font-size: 16px;
+  color: #1a1c1e;
+  text-align: left;
+  display: block;
+  white-space: nowrap;
+  padding: 8px 35px 8px 30px;
+  border-left: 5px solid transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  width: auto;
+  font-family: Roboto, Helvetica, Tahoma, sans-serif;
+  font-weight: 400;
+  line-height: 1.4em;
+  text-decoration: none;
+}
+
+.header__profile-nav-item:hover {
+  background: rgba(240, 240, 242, 1.00);
+  border-left: 5px solid red;
+}
