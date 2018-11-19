@@ -4,7 +4,9 @@ import './Content.css';
 class Content extends React.Component {
   render() {
     return (
-      <section></section>
+      <section>
+
+      </section>
     )
   }
 }
