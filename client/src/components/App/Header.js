@@ -34,7 +34,7 @@ class Header extends React.Component {
                   onClick={this.onProfileMoreClick.bind(this)}/>
             <div className="header__profile-nav-wrapper" style={profileMenuStyle}>
               <nav className="header__profile-nav">
-                <a className="header__profile-nav-item header__profile-nav-item_active" href="#">Profile</a>
+                <a className="header__profile-nav-item" href="#">Profile</a>
                 <a className="header__profile-nav-item" href="#">Sign Out</a>
               </nav>
             </div>

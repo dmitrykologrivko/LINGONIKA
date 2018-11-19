@@ -148,7 +148,7 @@
   text-decoration: none;
 }
 
-.header__profile-nav-item_active {
+.header__profile-nav-item:hover {
   background: rgba(240, 240, 242, 1.00);
   border-left: 5px solid red;
 }
