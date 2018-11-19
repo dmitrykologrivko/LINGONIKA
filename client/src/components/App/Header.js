@@ -3,7 +3,12 @@ import './Header.css';
 import avatar from './avatar.png'
 
 class Header extends React.Component {
+  state = {
+    isProfileMenuDisplayed: false
+  };
+
   render() {
+    const profileMenuStyle = this.state.isProfileMenuDisplayed ? {} : {display: 'none'};
     return (
       <header className="header">
         <div className="header__container">
@@ -22,11 +27,12 @@ class Header extends React.Component {
           </div>
           <div className="header__profile">
             <a className="header__profile-link" href="#">
-              <img className="header__profile-avatar" src={avatar} />
+              <img className="header__profile-avatar" src={avatar}/>
               <span className="header__profile-name">Dmitry Kologrivko</span>
             </a>
-            <span className="header__profile-more-button fas fa-caret-down"/>
-            <div className="header__profile-nav-wrapper">
+            <span className="header__profile-more-button fas fa-caret-down"
+                  onClick={this.onProfileMoreClick.bind(this)}/>
+            <div className="header__profile-nav-wrapper" style={profileMenuStyle}>
               <nav className="header__profile-nav">
                 <a className="header__profile-nav-item header__profile-nav-item_active" href="#">Profile</a>
                 <a className="header__profile-nav-item" href="#">Sign Out</a>
@@ -36,6 +42,13 @@ class Header extends React.Component {
         </div>
       </header>
     )
+  }
+
+  onProfileMoreClick() {
+    this.setState({
+      ...this.state,
+      isProfileMenuDisplayed: !this.state.isProfileMenuDisplayed
+    });
   }
 }
 
