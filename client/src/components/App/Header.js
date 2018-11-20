@@ -2,7 +2,7 @@ import React from 'react';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
-import {changeProfileMenuVisibility} from '../../actions/header';
+import {changeProfileMenuVisibility} from '../../actions/headerActions';
 
 import './Header.css';
 import avatar from './avatar.png';
