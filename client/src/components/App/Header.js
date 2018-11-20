@@ -1,11 +1,10 @@
 import React from 'react';
-
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+
 import {changeProfileMenuVisibility} from '../../actions/header';
 
 import './Header.css';
-
 import avatar from './avatar.png';
 
 class Header extends React.Component {
@@ -49,6 +48,6 @@ class Header extends React.Component {
 
 const mapStateToProps = state => ({...state.header});
 
-const mapDispatchToProps = dispatch => (bindActionCreators({changeProfileMenuVisibility}, dispatch));
+const mapDispatchToProps = dispatch => bindActionCreators({changeProfileMenuVisibility}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

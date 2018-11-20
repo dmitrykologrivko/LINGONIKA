@@ -1,5 +1,17 @@
-import { createStore } from 'redux';
+import {
+  createStore,
+  applyMiddleware,
+  compose
+} from 'redux';
+import {routerMiddleware} from 'connected-react-router';
 
-import reducer from './reducer';
+import createRootReducer from './reducer';
 
-export default createStore(reducer);
+export default history => createStore(
+  createRootReducer(history),
+  compose(
+    applyMiddleware(
+      routerMiddleware(history)
+    )
+  )
+);

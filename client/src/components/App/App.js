@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {connect} from "react-redux";
 
 import Header from './Header';
@@ -14,7 +13,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <Header/>
-        <Content/>
+        <Content history={this.props.history}/>
         <Footer/>
       </div>
     );
