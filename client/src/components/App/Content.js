@@ -1,33 +1,11 @@
 import React from 'react';
 import {connect} from "react-redux";
-import { Route, Switch } from 'react-router';
-import {ConnectedRouter} from 'connected-react-router';
-import { Link } from 'react-router-dom';
+import {Route, Switch} from 'react-router';
+
+import Home from '../Home/Home';
+import GroupsList from '../Cards/GroupsList';
 
 import './Content.css';
-
-// TODO: Remove this hardcoded component
-class Home extends React.Component {
-  render() {
-    return (
-      <div>
-        Content page
-        <Link to="/about">About page</Link>
-      </div>
-    );
-  }
-}
-
-// TODO: Remove this hardcoded component
-class About extends React.Component {
-  render() {
-    return (
-      <div>
-        About page
-      </div>
-    );
-  }
-}
 
 // TODO: Remove this hardcoded component
 class NoMatch extends React.Component {
@@ -43,16 +21,17 @@ class NoMatch extends React.Component {
 class Content extends React.Component {
   render() {
     return (
-      <ConnectedRouter history={this.props.history}>
+      <section className="content">
         <Switch>
-          {/* TODO: Change hardcoded routes */}
           <Route exact path="/" component={Home}/>
-          <Route path="/about" component={About}/>
+          <Route path="/cards/groups" component={GroupsList}/>
           <Route component={NoMatch}/>
         </Switch>
-      </ConnectedRouter>
+      </section>
     )
   }
 }
 
-export default connect()(Content);
+const mapStateToProps = state => ({...state.router});
+
+export default connect(mapStateToProps)(Content);

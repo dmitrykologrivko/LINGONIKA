@@ -13,11 +13,13 @@ class App extends React.Component {
     return (
       <div className="app">
         <Header/>
-        <Content history={this.props.history}/>
+        <Content/>
         <Footer/>
       </div>
     );
   }
 }
 
-export default connect()(App);
+const mapStateToProps = state => ({...state.router});
+
+export default connect(mapStateToProps)(App);

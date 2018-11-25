@@ -1,6 +1,7 @@
 import React from 'react';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import {Link} from 'react-router-dom';
 
 import {changeProfileMenuVisibility} from '../../actions/headerActions';
 
@@ -14,15 +15,15 @@ class Header extends React.Component {
       <header className="header">
         <div className="header__container">
           <div className="header__logo">
-            <a href="#" className="header__logo-link font_bold">LINGONIKA</a>
+            <Link to="/" className="header__logo-link font_bold">LINGONIKA</Link>
           </div>
           <div className="header__nav-wrapper">
             <nav className="header__nav">
               <div className="header__nav-item header__nav-item_active">
-                <a href="#" className="header__nav-link font_bold">Cards</a>
+                <Link to="/cards/groups" className="header__nav-link font_bold">Cards</Link>
               </div>
               <div className="header__nav-item">
-                <a href="#" className="header__nav-link font_bold">Community</a>
+                <Link to="/community" className="header__nav-link font_bold">Community</Link>
               </div>
             </nav>
           </div>
