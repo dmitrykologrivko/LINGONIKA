@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 
-import GroupsListHeader from './GroupsListHeader';
+import GroupsListHeader from './GroupsHeader';
 import GroupsList from './GroupsList';
 
 import './GroupsListContainer.css';

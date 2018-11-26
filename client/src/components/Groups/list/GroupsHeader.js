@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
 
-import './GroupsListHeader.css';
+import './GroupsHeader.css';
 
-class GroupsListHeader extends React.Component {
+class GroupsHeader extends React.Component {
   render() {
     return (
       <header className="groups-header">
@@ -40,4 +40,4 @@ class GroupsListHeader extends React.Component {
   }
 }
 
-export default connect()(GroupsListHeader);
+export default connect()(GroupsHeader);
