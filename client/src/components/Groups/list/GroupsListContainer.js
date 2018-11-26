@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 
-import GroupsListHeader from './GroupsHeader';
+import GroupsHeader from './GroupsHeader';
 import GroupsList from './GroupsList';
 
 import './GroupsListContainer.css';
@@ -10,7 +10,7 @@ class GroupsListContainer extends React.Component {
   render() {
     return (
       <main>
-        <GroupsListHeader/>
+        <GroupsHeader/>
         <GroupsList/>
       </main>
     );
