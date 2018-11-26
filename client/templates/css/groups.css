@@ -204,6 +204,8 @@
   display: inline-block;
 }
 
+/* ///////////////// */
+
 .common-group {
   width: 240px;
   background: white;
@@ -242,6 +244,8 @@
   display: inline-block;
   padding: 20px 10px 20px 10px;
 }
+
+/* ///////////////////// */
 
 .create-group-box {
   width: 240px;

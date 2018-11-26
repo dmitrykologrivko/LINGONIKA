@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Route, Switch} from 'react-router';
 
 import Home from '../Home/Home';
-import GroupsList from '../Cards/GroupsList';
+import GroupsListContainer from '../Groups/list/GroupsListContainer';
 
 import './Content.css';
 
@@ -24,7 +24,7 @@ class Content extends React.Component {
       <section className="content">
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route path="/cards/groups" component={GroupsList}/>
+          <Route path="/cards/groups" component={GroupsListContainer}/>
           <Route component={NoMatch}/>
         </Switch>
       </section>

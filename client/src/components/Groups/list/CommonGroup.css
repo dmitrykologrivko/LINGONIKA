@@ -1,0 +1,38 @@
+.common-group {
+  width: 240px;
+  background: white;
+  font-family: Roboto, Helvetica, Tahoma, sans-serif;
+  font-weight: 400;
+  line-height: 1.4em;
+}
+
+.common-group__dash {
+  color: #9b9b9b;
+}
+
+.common-group__link {
+  height: 192px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #9b9b9b;
+  font-size: xx-large;
+}
+
+.common-group__learned-words {
+  opacity: 1;
+}
+
+.common-group__slash {
+  opacity: .8;
+}
+
+.common-group__words-in-group {
+  opacity: .8;
+}
+
+.common-group__title {
+  display: inline-block;
+  padding: 20px 10px 20px 10px;
+}
