@@ -2,7 +2,12 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import {changeFromLanguageMenuVisibility, changeToLanguageMenuVisibility} from '../../../actions/groupsHeaderActions';
+import {
+  changeFromLanguageMenuVisibility,
+  changeToLanguageMenuVisibility,
+  changeSelectedFromLanguage,
+  changeSelectedToLanguage
+} from '../../../actions/groupsHeaderActions';
 
 import './GroupsHeader.css';
 
@@ -17,8 +22,16 @@ class GroupsHeader extends React.Component {
         cssClasses = `${cssClasses} groups-header__languages-menu-item_active`;
       }
 
+      let onLanguageItemClick;
+
+      if (isFromLanguageMenu) {
+        onLanguageItemClick = this.props.changeSelectedFromLanguage.bind(this, key);
+      } else {
+        onLanguageItemClick = this.props.changeSelectedToLanguage.bind(this, key);
+      }
+
       return (
-        <div key={key} className={cssClasses}>
+        <div key={key} className={cssClasses} onClick={onLanguageItemClick}>
           <span className="groups-header__languages-menu-item-name">
             {this.props.meta.languages[key]}
           </span>
@@ -61,11 +74,12 @@ class GroupsHeader extends React.Component {
 const mapStateToProps = state => ({...state.groups});
 
 const mapDispatchToProps = dispatch => {
-  const functions = {
+  return bindActionCreators({
     changeFromLanguageMenuVisibility,
-    changeToLanguageMenuVisibility
-  };
-  return bindActionCreators(functions, dispatch);
+    changeToLanguageMenuVisibility,
+    changeSelectedFromLanguage,
+    changeSelectedToLanguage
+  }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupsHeader);

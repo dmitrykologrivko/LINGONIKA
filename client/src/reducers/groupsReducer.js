@@ -1,6 +1,8 @@
 import {
   FROM_LANGUAGE_MENU_VISIBILITY_CHANGED,
-  TO_LANGUAGE_MENU_VISIBILITY_CHANGED
+  TO_LANGUAGE_MENU_VISIBILITY_CHANGED,
+  SELECTED_FROM_LANGUAGE_CHANGED,
+  SELECTED_TO_LANGUAGE_CHANGED
 } from '../constants/actionTypes';
 
 // TODO: Temp solution
@@ -31,6 +33,18 @@ export default (state = initialState, action) => {
         ...state,
         isToLanguageMenuVisible: !state.isToLanguageMenuVisible,
         isFromLanguageMenuVisible: false
+      };
+    case SELECTED_FROM_LANGUAGE_CHANGED:
+      return {
+        ...state,
+        selectedFromLanguage: action.languageCode,
+        isFromLanguageMenuVisible: false
+      };
+    case SELECTED_TO_LANGUAGE_CHANGED:
+      return {
+        ...state,
+        selectedToLanguage: action.languageCode,
+        isToLanguageMenuVisible: false
       };
     default:
       return state;
