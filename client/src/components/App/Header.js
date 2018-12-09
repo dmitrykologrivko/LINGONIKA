@@ -47,7 +47,7 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({...state.header});
+const mapStateToProps = state => ({...state.app.header});
 
 const mapDispatchToProps = dispatch => bindActionCreators({changeProfileMenuVisibility}, dispatch);
 

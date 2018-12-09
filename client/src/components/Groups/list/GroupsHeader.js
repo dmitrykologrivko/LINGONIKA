@@ -13,7 +13,7 @@ import './GroupsHeader.css';
 
 class GroupsHeader extends React.Component {
   renderLanguageItems(isFromLanguageMenu) {
-    return Object.keys(this.props.meta.languages).map((key => {
+    return Object.keys(this.props.languages).map((key => {
       let cssClasses = 'groups-header__languages-menu-item';
 
       if (isFromLanguageMenu && this.props.selectedFromLanguage === key) {
@@ -33,7 +33,7 @@ class GroupsHeader extends React.Component {
       return (
         <div key={key} className={cssClasses} onClick={onLanguageItemClick}>
           <span className="groups-header__languages-menu-item-name">
-            {this.props.meta.languages[key]}
+            {this.props.languages[key]}
           </span>
           <span className="groups-header__languages-menu-item-code">{key}</span>
         </div>
@@ -71,7 +71,7 @@ class GroupsHeader extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({...state.groups});
+const mapStateToProps = state => ({...state.groups.meta, ...state.groups.groupsHeader});
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({

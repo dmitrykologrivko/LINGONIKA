@@ -1,3 +1,5 @@
+import {combineReducers} from 'redux';
+
 import {
   FROM_LANGUAGE_MENU_VISIBILITY_CHANGED,
   TO_LANGUAGE_MENU_VISIBILITY_CHANGED,
@@ -7,24 +9,32 @@ import {
   GROUP_NAME_CHANGED
 } from '../constants/actionTypes';
 
-// TODO: Temp solution
-const initialState = {
-  meta: {
-    languages: {
-      'ru': 'Russian',
-      'en': 'English'
-    },
-    countLearnedWords: 0
-  },
-  selectedFromLanguage: 'ru',
-  selectedToLanguage: 'en',
-  isFromLanguageMenuVisible: false,
-  isToLanguageMenuVisible: false,
-  isCreateGroupFormVisible: false,
-  groupName: ''
-};
+function meta(state, action) {
+  if (!state) {
+    // TODO: Temp solution
+    state = {
+      languages: {
+        'ru': 'Russian',
+        'en': 'English'
+      },
+      countLearnedWords: 0
+    }
+  }
 
-export default (state = initialState, action) => {
+  return state;
+}
+
+function groupsHeader(state, action) {
+  if (!state) {
+    // TODO: Temp solution
+    state = {
+      selectedFromLanguage: 'ru',
+      selectedToLanguage: 'en',
+      isFromLanguageMenuVisible: false,
+      isToLanguageMenuVisible: false,
+    }
+  }
+
   switch (action.type) {
     case FROM_LANGUAGE_MENU_VISIBILITY_CHANGED:
       return {
@@ -50,10 +60,25 @@ export default (state = initialState, action) => {
         selectedToLanguage: action.languageCode,
         isToLanguageMenuVisible: false
       };
+    default:
+      return state;
+  }
+}
+
+function createGroupBox(state, action) {
+  if (!state) {
+    state = {
+      isCreateGroupFormVisible: false,
+      groupName: ''
+    }
+  }
+
+  switch (action.type) {
     case CREATE_GROUP_FORM_VISIBILITY_CHANGED:
       return {
         ...state,
-        isCreateGroupFormVisible: !state.isCreateGroupFormVisible
+        isCreateGroupFormVisible: !state.isCreateGroupFormVisible,
+        groupName: ''
       };
     case GROUP_NAME_CHANGED:
       return {
@@ -64,3 +89,9 @@ export default (state = initialState, action) => {
       return state;
   }
 }
+
+export default combineReducers({
+  meta,
+  groupsHeader,
+  createGroupBox
+});

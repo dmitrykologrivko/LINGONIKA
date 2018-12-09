@@ -58,7 +58,7 @@ class CreateGroupBox extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({...state.groups});
+const mapStateToProps = state => ({...state.groups.common, ...state.groups.createGroupBox});
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({

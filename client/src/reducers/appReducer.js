@@ -1,12 +1,16 @@
+import {combineReducers} from 'redux';
+
 import {
   PROFILE_MENU_VISIBILITY_CHANGED
 } from "../constants/actionTypes";
 
-const initialState = {
-  isProfileMenuVisible: false
-};
+function headerComponentReducer(state, action) {
+  if (!state) {
+    state = {
+      isProfileMenuVisible: false
+    }
+  }
 
-export default (state = initialState, action) => {
   switch (action.type) {
     case PROFILE_MENU_VISIBILITY_CHANGED:
       return {
@@ -17,3 +21,5 @@ export default (state = initialState, action) => {
       return state;
   }
 }
+
+export default combineReducers({header: headerComponentReducer});
