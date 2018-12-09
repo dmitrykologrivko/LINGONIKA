@@ -3,7 +3,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
 
-import {changeProfileMenuVisibility} from '../../actions/headerActions';
+import {changeProfileMenuVisibility} from '../../actions/appActions';
 
 import './Header.css';
 import avatar from './avatar.png';

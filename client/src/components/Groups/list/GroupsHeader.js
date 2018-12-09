@@ -7,7 +7,7 @@ import {
   changeToLanguageMenuVisibility,
   changeSelectedFromLanguage,
   changeSelectedToLanguage
-} from '../../../actions/groupsHeaderActions';
+} from '../../../actions/groupsActions';
 
 import './GroupsHeader.css';
 
