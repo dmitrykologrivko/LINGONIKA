@@ -6,7 +6,7 @@ import {
   SELECT_FROM_LANGUAGE,
   SELECT_TO_LANGUAGE,
   CHANGE_CREATE_GROUP_FORM_VISIBILITY,
-  CHANGE_GROUP_NAME
+  CHANGE_CREATABLE_GROUP_NAME
 } from '../actions/groupsActions';
 
 function groupsMetaReducer(state, action) {
@@ -69,7 +69,7 @@ function createGroupBoxReducer(state, action) {
   if (!state) {
     state = {
       isCreateGroupFormVisible: false,
-      groupName: ''
+      creatableGroupName: ''
     }
   }
 
@@ -78,12 +78,12 @@ function createGroupBoxReducer(state, action) {
       return {
         ...state,
         isCreateGroupFormVisible: !state.isCreateGroupFormVisible,
-        groupName: ''
+        creatableGroupName: ''
       };
-    case CHANGE_GROUP_NAME:
+    case CHANGE_CREATABLE_GROUP_NAME:
       return {
         ...state,
-        groupName: action.groupName
+        creatableGroupName: action.creatableGroupName
       };
     default:
       return state;

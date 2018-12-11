@@ -2,11 +2,11 @@ import React from 'react';
 import {bindActionCreators} from "redux";
 import {connect} from 'react-redux';
 
-import {changeCreateGroupFormVisibility, changeGroupName} from "../../../actions/groupsActions";
+import {changeCreateGroupFormVisibility, changeCreatableGroupName} from "../../../actions/groupsActions";
 
 import './CreateGroupBox.css';
 
-const MAX_GROUP_NAME_LENGTH = 50;
+const GROUP_NAME_MAX_LENGTH = 50;
 
 class CreateGroupBox extends React.Component {
   render() {
@@ -27,11 +27,11 @@ class CreateGroupBox extends React.Component {
               <textarea name="groupName"
                         placeholder="Group name"
                         className="create-group-box__group-name"
-                        value={this.props.groupName}
-                        onChange={e => this.props.changeGroupName(e.target.value, MAX_GROUP_NAME_LENGTH)}/>
+                        value={this.props.creatableGroupName}
+                        onChange={this.props.onGroupNameChanged}/>
               <div>
                 <span className="create-group-box__group-name-hint">
-                  {`${this.props.groupName.length}/${MAX_GROUP_NAME_LENGTH} symbols`}
+                  {`${this.props.creatableGroupName.length}/${GROUP_NAME_MAX_LENGTH} symbols`}
                 </span>
               </div>
             </div>
@@ -63,7 +63,7 @@ const mapStateToProps = state => ({...state.groups.groupsMeta, ...state.groups.c
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     changeCreateGroupFormVisibility,
-    changeGroupName
+    onGroupNameChanged: e => changeCreatableGroupName(e.target.value.slice(0, GROUP_NAME_MAX_LENGTH))
   }, dispatch);
 };
 

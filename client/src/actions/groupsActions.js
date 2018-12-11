@@ -3,7 +3,7 @@ export const CHANGE_TO_LANGUAGE_MENU_VISIBILITY = 'groups/change-to-language-men
 export const SELECT_FROM_LANGUAGE = 'groups/select-from-language';
 export const SELECT_TO_LANGUAGE = 'groups/select-to-language';
 export const CHANGE_CREATE_GROUP_FORM_VISIBILITY = "groups/change-create-group-form-visibility";
-export const CHANGE_GROUP_NAME = "groups/change-group-name";
+export const CHANGE_CREATABLE_GROUP_NAME = "groups/change-creatable-group-name";
 
 export function changeFromLanguageMenuVisibility() {
   return {
@@ -37,9 +37,9 @@ export function changeCreateGroupFormVisibility() {
   }
 }
 
-export function changeGroupName(name, maxNameLength) {
+export function changeCreatableGroupName(name) {
   return {
-    type: CHANGE_GROUP_NAME,
-    groupName: name.slice(0, maxNameLength)
+    type: CHANGE_CREATABLE_GROUP_NAME,
+    creatableGroupName: name
   }
 }
