@@ -1,5 +1,13 @@
 .groups-list {
-  /* Temporary */
-  margin-top: 10px;
-  margin-left: 10px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding-bottom: 15px;
+  margin-top: -15px;
+  margin-left: -15px;
+}
+
+.groups-list_item {
+  margin-left: 15px;
+  margin-top: 15px;
 }

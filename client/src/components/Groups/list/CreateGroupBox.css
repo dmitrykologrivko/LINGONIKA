@@ -6,7 +6,7 @@
 }
 
 .create-group-box__link {
-  height: 254px;
+  height: 252px;
   border: 1px dashed #bfc5cc;
   display: flex;
   justify-content: center;
@@ -31,7 +31,7 @@
 }
 
 .create-group-box__form {
-  height: 254px;
+  height: 222px;
   background: white;
   color: #9b9b9b;
   padding: 16px;
@@ -39,7 +39,7 @@
 
 .create-group-box__form-body {
   border: 1px solid #e2e2e9;
-  margin-top: 80px;
+  margin-top: 60px;
   padding: 12px 12px 0;
 }
 
@@ -58,7 +58,7 @@
 
 .create-group-box__form-footer {
   width: 100%;
-  padding-top: 64px;
+  padding-top: 45px;
   display: flex;
   justify-content: center;
 }

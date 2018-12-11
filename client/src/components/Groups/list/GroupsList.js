@@ -11,9 +11,13 @@ class GroupsList extends React.Component {
   render() {
     return (
       <section className="groups-list">
-        <CommonGroup/>
-        <Group/>
-        <CreateGroupBox/>
+        <div className="groups-list_item">
+          <CommonGroup/>
+        </div>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => <div className="groups-list_item"><Group/></div>)}
+        <div className="groups-list_item">
+          <CreateGroupBox/>
+        </div>
       </section>
     );
   }

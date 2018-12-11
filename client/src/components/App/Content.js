@@ -22,11 +22,13 @@ class Content extends React.Component {
   render() {
     return (
       <section className="content">
-        <Switch>
-          <Route exact path="/" component={Home}/>
-          <Route path="/cards/groups" component={GroupsListContainer}/>
-          <Route component={NoMatch}/>
-        </Switch>
+        <div className="content__container">
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route path="/cards/groups" component={GroupsListContainer}/>
+            <Route component={NoMatch}/>
+          </Switch>
+        </div>
       </section>
     )
   }
