@@ -71,7 +71,7 @@ class GroupsHeader extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({...state.groups.meta, ...state.groups.groupsHeader});
+const mapStateToProps = state => ({...state.groups.groupsMeta, ...state.groups.groupsHeader});
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({

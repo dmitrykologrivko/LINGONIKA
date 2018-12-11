@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 
 import {CHANGE_PROFILE_MENU_VISIBILITY} from '../actions/appActions';
 
-function headerComponentReducer(state, action) {
+function headerReducer(state, action) {
   if (!state) {
     state = {
       isProfileMenuVisible: false
@@ -20,4 +20,4 @@ function headerComponentReducer(state, action) {
   }
 }
 
-export default combineReducers({header: headerComponentReducer});
+export default combineReducers({header: headerReducer});

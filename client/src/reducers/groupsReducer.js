@@ -9,7 +9,7 @@ import {
   CHANGE_GROUP_NAME
 } from '../actions/groupsActions';
 
-function meta(state, action) {
+function groupsMetaReducer(state, action) {
   if (!state) {
     // TODO: Temp solution
     state = {
@@ -24,7 +24,7 @@ function meta(state, action) {
   return state;
 }
 
-function groupsHeader(state, action) {
+function groupsHeaderReducer(state, action) {
   if (!state) {
     // TODO: Temp solution
     state = {
@@ -65,7 +65,7 @@ function groupsHeader(state, action) {
   }
 }
 
-function createGroupBox(state, action) {
+function createGroupBoxReducer(state, action) {
   if (!state) {
     state = {
       isCreateGroupFormVisible: false,
@@ -91,7 +91,7 @@ function createGroupBox(state, action) {
 }
 
 export default combineReducers({
-  meta,
-  groupsHeader,
-  createGroupBox
+  groupsMeta: groupsMetaReducer,
+  groupsHeader: groupsHeaderReducer,
+  createGroupBox: createGroupBoxReducer
 });
