@@ -1,47 +1,45 @@
-import {
-  FROM_LANGUAGE_MENU_VISIBILITY_CHANGED,
-  TO_LANGUAGE_MENU_VISIBILITY_CHANGED,
-  SELECTED_FROM_LANGUAGE_CHANGED,
-  SELECTED_TO_LANGUAGE_CHANGED,
-  CREATE_GROUP_FORM_VISIBILITY_CHANGED,
-  GROUP_NAME_CHANGED
-} from '../constants/actionTypes';
+export const CHANGE_FROM_LANGUAGE_MENU_VISIBILITY = 'groups/change-from-language-menu-visibility';
+export const CHANGE_TO_LANGUAGE_MENU_VISIBILITY = 'groups/change-to-language-menu-visibility';
+export const SELECT_FROM_LANGUAGE = 'groups/select-from-language';
+export const SELECT_TO_LANGUAGE = 'groups/select-to-language';
+export const CHANGE_CREATE_GROUP_FORM_VISIBILITY = "groups/change-create-group-form-visibility";
+export const CHANGE_GROUP_NAME = "groups/change-group-name";
 
 export function changeFromLanguageMenuVisibility() {
   return {
-    type: FROM_LANGUAGE_MENU_VISIBILITY_CHANGED
+    type: CHANGE_FROM_LANGUAGE_MENU_VISIBILITY
   }
 }
 
 export function changeToLanguageMenuVisibility() {
   return {
-    type: TO_LANGUAGE_MENU_VISIBILITY_CHANGED
+    type: CHANGE_TO_LANGUAGE_MENU_VISIBILITY
   }
 }
 
 export function changeSelectedFromLanguage(languageCode) {
   return {
-    type: SELECTED_FROM_LANGUAGE_CHANGED,
+    type: SELECT_FROM_LANGUAGE,
     languageCode
   }
 }
 
 export function changeSelectedToLanguage(languageCode) {
   return {
-    type: SELECTED_TO_LANGUAGE_CHANGED,
+    type: SELECT_TO_LANGUAGE,
     languageCode
   }
 }
 
 export function changeCreateGroupFormVisibility() {
   return {
-    type: CREATE_GROUP_FORM_VISIBILITY_CHANGED
+    type: CHANGE_CREATE_GROUP_FORM_VISIBILITY
   }
 }
 
 export function changeGroupName(name, maxNameLength) {
   return {
-    type: GROUP_NAME_CHANGED,
+    type: CHANGE_GROUP_NAME,
     groupName: name.slice(0, maxNameLength)
   }
 }

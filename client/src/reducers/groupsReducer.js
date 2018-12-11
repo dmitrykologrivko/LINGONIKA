@@ -1,13 +1,13 @@
 import {combineReducers} from 'redux';
 
 import {
-  FROM_LANGUAGE_MENU_VISIBILITY_CHANGED,
-  TO_LANGUAGE_MENU_VISIBILITY_CHANGED,
-  SELECTED_FROM_LANGUAGE_CHANGED,
-  SELECTED_TO_LANGUAGE_CHANGED,
-  CREATE_GROUP_FORM_VISIBILITY_CHANGED,
-  GROUP_NAME_CHANGED
-} from '../constants/actionTypes';
+  CHANGE_FROM_LANGUAGE_MENU_VISIBILITY,
+  CHANGE_TO_LANGUAGE_MENU_VISIBILITY,
+  SELECT_FROM_LANGUAGE,
+  SELECT_TO_LANGUAGE,
+  CHANGE_CREATE_GROUP_FORM_VISIBILITY,
+  CHANGE_GROUP_NAME
+} from '../actions/groupsActions';
 
 function meta(state, action) {
   if (!state) {
@@ -36,25 +36,25 @@ function groupsHeader(state, action) {
   }
 
   switch (action.type) {
-    case FROM_LANGUAGE_MENU_VISIBILITY_CHANGED:
+    case CHANGE_FROM_LANGUAGE_MENU_VISIBILITY:
       return {
         ...state,
         isFromLanguageMenuVisible: !state.isFromLanguageMenuVisible,
         isToLanguageMenuVisible: false
       };
-    case TO_LANGUAGE_MENU_VISIBILITY_CHANGED:
+    case CHANGE_TO_LANGUAGE_MENU_VISIBILITY:
       return {
         ...state,
         isToLanguageMenuVisible: !state.isToLanguageMenuVisible,
         isFromLanguageMenuVisible: false
       };
-    case SELECTED_FROM_LANGUAGE_CHANGED:
+    case SELECT_FROM_LANGUAGE:
       return {
         ...state,
         selectedFromLanguage: action.languageCode,
         isFromLanguageMenuVisible: false
       };
-    case SELECTED_TO_LANGUAGE_CHANGED:
+    case SELECT_TO_LANGUAGE:
       return {
         ...state,
         selectedToLanguage: action.languageCode,
@@ -74,13 +74,13 @@ function createGroupBox(state, action) {
   }
 
   switch (action.type) {
-    case CREATE_GROUP_FORM_VISIBILITY_CHANGED:
+    case CHANGE_CREATE_GROUP_FORM_VISIBILITY:
       return {
         ...state,
         isCreateGroupFormVisible: !state.isCreateGroupFormVisible,
         groupName: ''
       };
-    case GROUP_NAME_CHANGED:
+    case CHANGE_GROUP_NAME:
       return {
         ...state,
         groupName: action.groupName

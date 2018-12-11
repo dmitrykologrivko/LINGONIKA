@@ -1,8 +1,6 @@
 import {combineReducers} from 'redux';
 
-import {
-  PROFILE_MENU_VISIBILITY_CHANGED
-} from "../constants/actionTypes";
+import {CHANGE_PROFILE_MENU_VISIBILITY} from '../actions/appActions';
 
 function headerComponentReducer(state, action) {
   if (!state) {
@@ -12,7 +10,7 @@ function headerComponentReducer(state, action) {
   }
 
   switch (action.type) {
-    case PROFILE_MENU_VISIBILITY_CHANGED:
+    case CHANGE_PROFILE_MENU_VISIBILITY:
       return {
         ...state,
         isProfileMenuVisible: !state.isProfileMenuVisible

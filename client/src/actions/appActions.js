@@ -1,9 +1,7 @@
-import {
-  PROFILE_MENU_VISIBILITY_CHANGED
-} from "../constants/actionTypes";
+export const CHANGE_PROFILE_MENU_VISIBILITY = 'app/change-profile-menu-visibility';
 
 export function changeProfileMenuVisibility() {
   return {
-    type: PROFILE_MENU_VISIBILITY_CHANGED
+    type: CHANGE_PROFILE_MENU_VISIBILITY
   }
 }
