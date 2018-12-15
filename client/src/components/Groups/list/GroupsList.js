@@ -31,6 +31,6 @@ class GroupsList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({...state.groups.groupsData});
+const mapStateToProps = state => ({...state.groups});
 
 export default connect(mapStateToProps)(GroupsList);
