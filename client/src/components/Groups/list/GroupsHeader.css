@@ -1,9 +1,9 @@
-/* Groups header */
-
 .groups-header {
   font-family: Roboto, Helvetica, Tahoma, sans-serif;
   font-weight: 400;
   line-height: 1.4em;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .groups-header__language-selector {
@@ -37,13 +37,13 @@
 }
 
 .groups-header__languages-menu {
-  display: none;
   position: absolute;
   margin-top: 17px;
   margin-left: 11px;
   background: white;
   padding: 10px 0;
   box-shadow: 1px 2px 6px 0 hsla(0, 0%, 56%, .24);
+  z-index: 1;
 }
 
 .groups-header__languages-menu:before {

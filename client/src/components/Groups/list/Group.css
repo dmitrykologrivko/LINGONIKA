@@ -49,7 +49,6 @@
 }
 
 .group__actions-menu {
-  display: none;
   position: absolute;
   top: 30px;
   right: -16px;
@@ -90,7 +89,7 @@
   text-decoration: none;
 }
 
-.group__actions-menu-item_active {
+.group__actions-menu-item:hover {
   background: rgba(240, 240, 242, 1.00);
   border-left: 5px solid red;
 }

@@ -1,16 +1,16 @@
 import React from 'react';
-import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
-
-import {changeProfileMenuVisibility} from '../../actions/headerActions';
 
 import './Header.css';
 import avatar from './avatar.png';
 
 class Header extends React.Component {
+  state = {
+    isProfileMenuVisible: false
+  };
+
   render() {
-    const profileMenuStyle = this.props.isProfileMenuVisible ? {} : {display: 'none'};
     return (
       <header className="header">
         <div className="header__container">
@@ -33,8 +33,9 @@ class Header extends React.Component {
               <span className="header__profile-name">Dmitry Kologrivko</span>
             </a>
             <span className="header__profile-more-button fas fa-caret-down"
-                  onClick={this.props.changeProfileMenuVisibility}/>
-            <div className="header__profile-nav-wrapper" style={profileMenuStyle}>
+                  onClick={this.onProfileMoreButtonClick.bind(this)}/>
+            <div className="header__profile-nav-wrapper"
+                 style={this.state.isProfileMenuVisible ? {} : {display: 'none'}}>
               <nav className="header__profile-nav">
                 <a className="header__profile-nav-item" href="#">Profile</a>
                 <a className="header__profile-nav-item" href="#">Sign Out</a>
@@ -45,10 +46,13 @@ class Header extends React.Component {
       </header>
     )
   }
+
+  onProfileMoreButtonClick() {
+    this.setState({
+      ...this.state,
+      isProfileMenuVisible: !this.state.isProfileMenuVisible
+    });
+  }
 }
 
-const mapStateToProps = state => ({...state.header});
-
-const mapDispatchToProps = dispatch => bindActionCreators({changeProfileMenuVisibility}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect()(Header);

@@ -8,6 +8,7 @@
 
 .common-group__dash {
   color: #9b9b9b;
+  margin: 0;
 }
 
 .common-group__link {
@@ -34,5 +35,5 @@
 
 .common-group__title {
   display: inline-block;
-  padding: 20px 10px 20px 10px;
+  padding: 19px 10px 19px 10px;
 }
