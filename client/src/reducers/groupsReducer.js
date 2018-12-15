@@ -11,7 +11,6 @@ import {
 
 function groupsMetaReducer(state, action) {
   if (!state) {
-    // TODO: Temp solution
     state = {
       languages: {
         'ru': 'Russian',
@@ -29,82 +28,12 @@ function groupsDataReducer(state, action) {
     // TODO: Temp solution
     state = {
       list: [
-        {
-          id: 1,
-          name: 'Test #1',
-          countLearnedWords: 1,
-          countWords: 5
-        },
-        {
-          id: 2,
-          name: 'Test #2',
-          countLearnedWords: 1,
-          countWords: 5
-        },
-        {
-          id: 3,
-          name: 'Test #3',
-          countLearnedWords: 1,
-          countWords: 5
-        },
-        {
-          id: 4,
-          name: 'Test #4',
-          countLearnedWords: 1,
-          countWords: 5
-        },
-        {
-          id: 5,
-          name: 'Test #5',
-          countLearnedWords: 1,
-          countWords: 5
-        },
+
       ]
     }
   }
 
   return state;
-}
-
-function groupsHeaderReducer(state, action) {
-  if (!state) {
-    // TODO: Temp solution
-    state = {
-      selectedFromLanguage: 'ru',
-      selectedToLanguage: 'en',
-      isFromLanguageMenuVisible: false,
-      isToLanguageMenuVisible: false,
-    }
-  }
-
-  switch (action.type) {
-    case CHANGE_FROM_LANGUAGE_MENU_VISIBILITY:
-      return {
-        ...state,
-        isFromLanguageMenuVisible: !state.isFromLanguageMenuVisible,
-        isToLanguageMenuVisible: false
-      };
-    case CHANGE_TO_LANGUAGE_MENU_VISIBILITY:
-      return {
-        ...state,
-        isToLanguageMenuVisible: !state.isToLanguageMenuVisible,
-        isFromLanguageMenuVisible: false
-      };
-    case SELECT_FROM_LANGUAGE:
-      return {
-        ...state,
-        selectedFromLanguage: action.languageCode,
-        isFromLanguageMenuVisible: false
-      };
-    case SELECT_TO_LANGUAGE:
-      return {
-        ...state,
-        selectedToLanguage: action.languageCode,
-        isToLanguageMenuVisible: false
-      };
-    default:
-      return state;
-  }
 }
 
 function createGroupBoxReducer(state, action) {
@@ -132,9 +61,73 @@ function createGroupBoxReducer(state, action) {
   }
 }
 
+// TODO: Temp solution
+const initialState = {
+  meta: {
+    languages: {
+      'ru': 'Russian',
+      'en': 'English'
+    },
+    countLearnedWords: 0
+  },
+  list: [
+    {
+      id: 1,
+      name: 'Test #1',
+      countLearnedWords: 1,
+      countWords: 5
+    },
+    {
+      id: 2,
+      name: 'Test #2',
+      countLearnedWords: 1,
+      countWords: 5
+    },
+    {
+      id: 3,
+      name: 'Test #3',
+      countLearnedWords: 1,
+      countWords: 5
+    },
+    {
+      id: 4,
+      name: 'Test #4',
+      countLearnedWords: 1,
+      countWords: 5
+    },
+    {
+      id: 5,
+      name: 'Test #5',
+      countLearnedWords: 1,
+      countWords: 5
+    }
+  ],
+  selectedFromLanguage: 'ru',
+  selectedToLanguage: 'en'
+};
+
+export function groups(state = initialState, action) {
+  switch (action.type) {
+    case SELECT_FROM_LANGUAGE:
+      return {
+        ...state,
+        selectedFromLanguage: action.languageCode,
+        isFromLanguageMenuVisible: false
+      };
+    case SELECT_TO_LANGUAGE:
+      return {
+        ...state,
+        selectedToLanguage: action.languageCode,
+        isToLanguageMenuVisible: false
+      };
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
+  groups,
   groupsMeta: groupsMetaReducer,
   groupsData: groupsDataReducer,
-  groupsHeader: groupsHeaderReducer,
   createGroupBox: createGroupBoxReducer
 });
