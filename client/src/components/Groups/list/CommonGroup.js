@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 import './CommonGroup.css';
 
@@ -23,4 +22,4 @@ class CommonGroup extends React.Component {
   }
 }
 
-export default connect()(CommonGroup);
+export default CommonGroup;
