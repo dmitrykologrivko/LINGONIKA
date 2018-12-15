@@ -24,6 +24,48 @@ function groupsMetaReducer(state, action) {
   return state;
 }
 
+function groupsDataReducer(state, action) {
+  if (!state) {
+    // TODO: Temp solution
+    state = {
+      list: [
+        {
+          id: 1,
+          name: 'Test #1',
+          countLearnedWords: 1,
+          countWords: 5
+        },
+        {
+          id: 2,
+          name: 'Test #2',
+          countLearnedWords: 1,
+          countWords: 5
+        },
+        {
+          id: 3,
+          name: 'Test #3',
+          countLearnedWords: 1,
+          countWords: 5
+        },
+        {
+          id: 4,
+          name: 'Test #4',
+          countLearnedWords: 1,
+          countWords: 5
+        },
+        {
+          id: 5,
+          name: 'Test #5',
+          countLearnedWords: 1,
+          countWords: 5
+        },
+      ]
+    }
+  }
+
+  return state;
+}
+
 function groupsHeaderReducer(state, action) {
   if (!state) {
     // TODO: Temp solution
@@ -92,6 +134,7 @@ function createGroupBoxReducer(state, action) {
 
 export default combineReducers({
   groupsMeta: groupsMetaReducer,
+  groupsData: groupsDataReducer,
   groupsHeader: groupsHeaderReducer,
   createGroupBox: createGroupBoxReducer
 });

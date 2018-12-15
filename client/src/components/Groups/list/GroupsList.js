@@ -9,12 +9,20 @@ import './GroupsList.css';
 
 class GroupsList extends React.Component {
   render() {
+    const groups = this.props.list.map(group => {
+      return (
+        <div key={group.id} className="groups-list_item">
+          <Group group={group}/>
+        </div>
+      );
+    });
+
     return (
       <section className="groups-list">
         <div className="groups-list_item">
           <CommonGroup/>
         </div>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => <div className="groups-list_item"><Group/></div>)}
+        {groups}
         <div className="groups-list_item">
           <CreateGroupBox/>
         </div>
@@ -23,4 +31,6 @@ class GroupsList extends React.Component {
   }
 }
 
-export default connect()(GroupsList);
+const mapStateToProps = state => ({...state.groups.groupsData});
+
+export default connect(mapStateToProps)(GroupsList);
