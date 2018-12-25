@@ -67,11 +67,14 @@ async function _meta(fromLanguage, toLanguage) {
   const Card = this.app.models.Card;
 
   let countLearnedWords = 0;
+  let countWords = 0;
   if (fromLanguage && toLanguage) {
     countLearnedWords = await Card.count({isLearned: true, fromLanguage: fromLanguage, toLanguage: toLanguage});
+    countWords = await Card.count({fromLanguage: fromLanguage, toLanguage: toLanguage});
   } else {
     countLearnedWords = await Card.count({isLearned: true});
+    countWords = await Card.count();
   }
 
-  return [LANGUAGES, countLearnedWords];
+  return [LANGUAGES, countLearnedWords, countWords];
 }

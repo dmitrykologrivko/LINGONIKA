@@ -124,6 +124,12 @@
           "type": "number",
           "root": false,
           "description": "Count of learned words. Can be filtered by languages."
+        },
+        {
+          "arg": "countWords",
+          "type": "number",
+          "root": false,
+          "description": "Count of all words. Can be filtered by languages."
         }
       ],
       "description": "Get groups meta data.",
