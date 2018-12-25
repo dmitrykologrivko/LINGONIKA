@@ -10,7 +10,8 @@ const initialState = {
       'ru': 'Russian',
       'en': 'English'
     },
-    countLearnedWords: 0
+    countLearnedWords: 0,
+    countWords: 0
   },
   list: [
     {
