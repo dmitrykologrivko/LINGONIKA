@@ -9,8 +9,8 @@ class Footer extends React.Component {
       <footer className="footer">
         <div className="footer__container">
           <nav className="footer__footer_nav">
-            <a className="footer_nav__item" href="#">Terms of Trade</a>
-            <a className="footer_nav__item" href="#">API documentation</a>
+            <a className="footer_nav__item" href="terms-of-trade">Terms of Trade</a>
+            <a className="footer_nav__item" href="api-docs">API documentation</a>
           </nav>
         </div>
       </footer>
