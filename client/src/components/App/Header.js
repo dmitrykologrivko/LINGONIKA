@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
 
@@ -9,6 +10,14 @@ class Header extends React.Component {
   state = {
     isProfileMenuVisible: false
   };
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.componentWillUnmount('mousedown', this.handleClickOutside.bind(this));
+  }
 
   render() {
     return (
@@ -52,6 +61,17 @@ class Header extends React.Component {
       ...this.state,
       isProfileMenuVisible: !this.state.isProfileMenuVisible
     });
+  }
+
+  handleClickOutside(event) {
+    const node = ReactDOM.findDOMNode(this);
+
+    if (!node || !node.contains(event.target)) {
+      this.setState({
+        ...this.state,
+        isProfileMenuVisible: false
+      });
+    }
   }
 }
 

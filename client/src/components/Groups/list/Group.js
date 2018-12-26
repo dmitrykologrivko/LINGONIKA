@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import './Group.css';
 
@@ -6,6 +7,14 @@ class Group extends React.Component {
   state = {
     isActionsMenuVisible: false
   };
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.componentWillUnmount('mousedown', this.handleClickOutside.bind(this));
+  }
 
   render() {
     return (
@@ -41,6 +50,17 @@ class Group extends React.Component {
       ...this.state,
       isActionsMenuVisible: !this.state.isActionsMenuVisible
     });
+  }
+
+  handleClickOutside(event) {
+    const node = ReactDOM.findDOMNode(this);
+
+    if (!node || !node.contains(event.target)) {
+      this.setState({
+        ...this.state,
+        isActionsMenuVisible: false
+      });
+    }
   }
 }
 
