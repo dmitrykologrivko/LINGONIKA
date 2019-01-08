@@ -17,7 +17,7 @@ class Group extends React.Component {
   }
 
   componentWillUnmount() {
-    document.componentWillUnmount('mousedown', this.handleClickOutside.bind(this));
+    document.removeEventListener('mousedown', this.handleClickOutside.bind(this));
   }
 
   render() {
