@@ -15,6 +15,50 @@ class GroupsHeader extends React.Component {
     isToLanguageMenuVisible: false
   };
 
+  componentDidUpdate() {
+    this.setDefaultLanguages();
+  }
+
+  render() {
+    return (
+      <header className="groups-header">
+        <span>My Vocabulary</span>
+        <div className="groups-header__language-selector">
+          <button className="groups-header__button-language"
+                  onClick={this.onFromLanguageButtonClick.bind(this)}>
+            {this.props.selectedFromLanguage}
+          </button>
+          <div className="groups-header__languages-menu"
+               style={this.state.isFromLanguageMenuVisible ? {} : {display: 'none'}}>
+            {this.renderLanguageItems(true)}
+          </div>
+        </div>
+        <span> – </span>
+        <div className="groups-header__language-selector">
+          <button className="groups-header__button-language"
+                  onClick={this.onToLanguageButtonClick.bind(this)}>
+            {this.props.selectedToLanguage}
+          </button>
+          <div className="groups-header__languages-menu"
+               style={this.state.isToLanguageMenuVisible ? {} : {display: 'none'}}>
+            {this.renderLanguageItems(false)}
+          </div>
+        </div>
+      </header>
+    )
+  }
+
+  setDefaultLanguages() {
+    const selectedFromLanguage = this.props.selectedFromLanguage;
+    const selectedToLanguage = this.props.selectedToLanguage;
+    const languages = this.props.meta.languages;
+
+    if (!(selectedFromLanguage || selectedToLanguage) && languages && Object.keys(languages).length > 0) {
+      this.props.changeSelectedFromLanguage(Object.keys(languages)[0]);
+      this.props.changeSelectedToLanguage(Object.keys(languages)[0]);
+    }
+  }
+
   renderLanguageItems(isFromLanguageMenu) {
     return Object.keys(this.props.meta.languages).map((key => {
       let cssClasses = 'groups-header__languages-menu-item';
@@ -54,35 +98,6 @@ class GroupsHeader extends React.Component {
         </div>
       )
     }));
-  }
-
-  render() {
-    return (
-      <header className="groups-header">
-        <span>My Vocabulary</span>
-        <div className="groups-header__language-selector">
-          <button className="groups-header__button-language"
-                  onClick={this.onFromLanguageButtonClick.bind(this)}>
-            {this.props.selectedFromLanguage}
-          </button>
-          <div className="groups-header__languages-menu"
-               style={this.state.isFromLanguageMenuVisible ? {} : {display: 'none'}}>
-            {this.renderLanguageItems(true)}
-          </div>
-        </div>
-        <span> – </span>
-        <div className="groups-header__language-selector">
-          <button className="groups-header__button-language"
-                  onClick={this.onToLanguageButtonClick.bind(this)}>
-            {this.props.selectedToLanguage}
-          </button>
-          <div className="groups-header__languages-menu"
-               style={this.state.isToLanguageMenuVisible ? {} : {display: 'none'}}>
-            {this.renderLanguageItems(false)}
-          </div>
-        </div>
-      </header>
-    )
   }
 
   onFromLanguageButtonClick() {

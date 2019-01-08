@@ -4,13 +4,14 @@ import {connect} from "react-redux";
 
 import GroupsHeader from './GroupsHeader';
 import GroupsList from './GroupsList';
-import {fetchGroups} from "../../../actions/groupsActions";
+import {fetchGroups, fetchGroupsMeta} from "../../../actions/groupsActions";
 
 import './GroupsListContainer.css';
 
 class GroupsListContainer extends React.Component {
   componentDidMount() {
     this.props.fetchGroups();
+    this.props.fetchGroupsMeta();
   }
 
   render() {
@@ -26,7 +27,10 @@ class GroupsListContainer extends React.Component {
 const mapStateToProps = state => ({...state.groups});
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({fetchGroups}, dispatch);
+  return bindActionCreators({
+    fetchGroups,
+    fetchGroupsMeta
+  }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupsListContainer);
