@@ -132,7 +132,13 @@ class Group extends React.Component {
   }
 
   handleClickOutside(event) {
-    const node = ReactDOM.findDOMNode(this);
+    let node;
+
+    try {
+      node = ReactDOM.findDOMNode(this);
+    } catch (error) {
+      return;
+    }
 
     if (!node || !node.contains(event.target)) {
       this.setState({
