@@ -14,6 +14,10 @@ export const FETCH_GROUPS_META_FAILED = 'groups/fetch-groups-meta-failed';
 export const CREATE_GROUP_REQUESTED = 'groups/create-group-requested';
 export const CREATE_GROUP_SUCCEEDED = 'groups/create-group-succeeded';
 export const CREATE_GROUP_FAILED = 'groups/create-group-failed';
+// Edit group
+export const EDIT_GROUP_REQUESTED = 'groups/edit-group-requested';
+export const EDIT_GROUP_SUCCEEDED = 'groups/edit-group-succeeded';
+export const EDIT_GROUP_FAILED = 'groups/edit-group-failed';
 
 export function changeSelectedFromLanguage(languageCode) {
   return {
@@ -56,5 +60,15 @@ export function createGroup(group) {
     api.createGroup(group)
       .then(response => dispatch({type: CREATE_GROUP_SUCCEEDED, group: response.data}))
       .catch(error => dispatch({type: CREATE_GROUP_FAILED, error}));
+  }
+}
+
+export function editGroup(group) {
+  return dispatch => {
+    dispatch({type: EDIT_GROUP_REQUESTED});
+
+    api.editGroup(group)
+      .then(response => dispatch({type: EDIT_GROUP_SUCCEEDED, group: response.data}))
+      .catch(error => dispatch({type: EDIT_GROUP_FAILED, error}));
   }
 }

@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
+
+import {editGroup} from '../../../actions/groupsActions';
 
 import './Group.css';
+import {bindActionCreators} from "redux";
 
 const GROUP_NAME_MAX_LENGTH = 50;
 
@@ -80,7 +84,7 @@ class Group extends React.Component {
                 </button>
               </div>
               <div>
-                <button type="submit"
+                <button type="button"
                         className="group__form-button group__positive-button"
                         onClick={this.onEditButtonClick.bind(this)}>
                   Edit
@@ -109,9 +113,14 @@ class Group extends React.Component {
   }
 
   onEditButtonClick() {
+    this.props.editGroup({
+      ...this.props.group,
+      name: this.state.editableGroupName || this.props.group.name
+    });
+
     this.setState({
       ...this.state,
-      isEditGroupFormVisible: true,
+      isEditGroupFormVisible: false,
       editableGroupName: null
     });
   }
@@ -149,4 +158,10 @@ class Group extends React.Component {
   }
 }
 
-export default Group;
+const mapStateToProps = state => ({...state.groups});
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({editGroup}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Group);

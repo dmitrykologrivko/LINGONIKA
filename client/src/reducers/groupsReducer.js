@@ -9,8 +9,13 @@ import {
   FETCH_GROUPS_META_FAILED,
   CREATE_GROUP_REQUESTED,
   CREATE_GROUP_SUCCEEDED,
-  CREATE_GROUP_FAILED
+  CREATE_GROUP_FAILED,
+  EDIT_GROUP_REQUESTED,
+  EDIT_GROUP_SUCCEEDED,
+  EDIT_GROUP_FAILED
 } from '../actions/groupsActions';
+
+import {push, updateById} from "../utils/arrays";
 
 const initialState = {
   meta: {
@@ -68,14 +73,30 @@ export default (state = initialState, action) => {
         ...state
       };
     case CREATE_GROUP_SUCCEEDED:
-      const listCopy = state.list.slice();
-      listCopy.push(action.group);
-
       return {
         ...state,
-        list: listCopy
+        list: push(state.list.slice(), action.group)
       };
     case CREATE_GROUP_FAILED:
+      return {
+        ...state
+      };
+    case EDIT_GROUP_REQUESTED:
+      console.log("EDIT_GROUP_REQUESTED");
+      return {
+        ...state
+      };
+    case EDIT_GROUP_SUCCEEDED:
+      console.log("EDIT_GROUP_SUCCEEDED");
+      const f = updateById(state.list.slice(), action.group);
+      console.log(f);
+      return {
+        ...state,
+        list: updateById(state.list.slice(), action.group)
+      };
+    case EDIT_GROUP_FAILED:
+      console.log("EDIT_GROUP_FAILED");
+      console.log(action.error);
       return {
         ...state
       };
