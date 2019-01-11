@@ -7,6 +7,9 @@ import {
   FETCH_GROUPS_META_REQUESTED,
   FETCH_GROUPS_META_SUCCEEDED,
   FETCH_GROUPS_META_FAILED,
+  CREATE_GROUP_REQUESTED,
+  CREATE_GROUP_SUCCEEDED,
+  CREATE_GROUP_FAILED
 } from '../actions/groupsActions';
 
 const initialState = {
@@ -57,6 +60,22 @@ export default (state = initialState, action) => {
         meta: action.meta
       };
     case FETCH_GROUPS_META_FAILED:
+      return {
+        ...state
+      };
+    case CREATE_GROUP_REQUESTED:
+      return {
+        ...state
+      };
+    case CREATE_GROUP_SUCCEEDED:
+      const listCopy = state.list.slice();
+      listCopy.push(action.group);
+
+      return {
+        ...state,
+        list: listCopy
+      };
+    case CREATE_GROUP_FAILED:
       return {
         ...state
       };

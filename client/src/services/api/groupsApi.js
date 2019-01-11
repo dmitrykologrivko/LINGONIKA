@@ -10,7 +10,12 @@ function fetchGroupsMeta() {
   return client.get(`${API_PREFIX}/meta`);
 }
 
+function createGroup(group = {}) {
+  return client.post(API_PREFIX, group);
+}
+
 export default {
   fetchGroups: fetchGroups,
-  fetchGroupsMeta: fetchGroupsMeta
+  fetchGroupsMeta: fetchGroupsMeta,
+  createGroup: createGroup
 };
