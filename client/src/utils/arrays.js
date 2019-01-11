@@ -26,3 +26,13 @@ export function updateById(arr = [], element) {
 
   return arr;
 }
+
+/**
+ * This is function removes element from array by provided id.
+ * @param arr original array
+ * @param id element id
+ * @returns {*[]} array with removed element
+ */
+export function removeById(arr = [], id) {
+  return arr.filter(arrElement => arrElement.id && arrElement.id !== id);
+}

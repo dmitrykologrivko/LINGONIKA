@@ -18,6 +18,10 @@ export const CREATE_GROUP_FAILED = 'groups/create-group-failed';
 export const EDIT_GROUP_REQUESTED = 'groups/edit-group-requested';
 export const EDIT_GROUP_SUCCEEDED = 'groups/edit-group-succeeded';
 export const EDIT_GROUP_FAILED = 'groups/edit-group-failed';
+// Delete group
+export const DELETE_GROUP_REQUESTED = 'groups/delete-group-requested';
+export const DELETE_GROUP_SUCCEEDED = 'groups/delete-group-succeeded';
+export const DELETE_GROUP_FAILED = 'groups/delete-group-failed';
 
 export function changeSelectedFromLanguage(languageCode) {
   return {
@@ -70,5 +74,15 @@ export function editGroup(group) {
     api.editGroup(group)
       .then(response => dispatch({type: EDIT_GROUP_SUCCEEDED, group: response.data}))
       .catch(error => dispatch({type: EDIT_GROUP_FAILED, error}));
+  }
+}
+
+export function deleteGroup(id) {
+  return dispatch => {
+    dispatch({type: DELETE_GROUP_REQUESTED});
+
+    api.deleteGroup(id)
+      .then(response => dispatch({type: DELETE_GROUP_SUCCEEDED, id}))
+      .catch(error => dispatch({type: DELETE_GROUP_FAILED, error}));
   }
 }

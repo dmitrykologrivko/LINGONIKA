@@ -18,9 +18,14 @@ function editGroup(group) {
   return client.put(`${API_PREFIX}/${group.id}`, group);
 }
 
+function deleteGroup(id) {
+  return client.delete(`${API_PREFIX}/${id}`);
+}
+
 export default {
   fetchGroups: fetchGroups,
   fetchGroupsMeta: fetchGroupsMeta,
   createGroup: createGroup,
-  editGroup: editGroup
+  editGroup: editGroup,
+  deleteGroup: deleteGroup
 };

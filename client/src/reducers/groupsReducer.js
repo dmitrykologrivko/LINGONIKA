@@ -12,10 +12,17 @@ import {
   CREATE_GROUP_FAILED,
   EDIT_GROUP_REQUESTED,
   EDIT_GROUP_SUCCEEDED,
-  EDIT_GROUP_FAILED
+  EDIT_GROUP_FAILED,
+  DELETE_GROUP_REQUESTED,
+  DELETE_GROUP_SUCCEEDED,
+  DELETE_GROUP_FAILED
 } from '../actions/groupsActions';
 
-import {push, updateById} from "../utils/arrays";
+import {
+  push,
+  updateById,
+  removeById
+} from "../utils/arrays";
 
 const initialState = {
   meta: {
@@ -82,21 +89,28 @@ export default (state = initialState, action) => {
         ...state
       };
     case EDIT_GROUP_REQUESTED:
-      console.log("EDIT_GROUP_REQUESTED");
       return {
         ...state
       };
     case EDIT_GROUP_SUCCEEDED:
-      console.log("EDIT_GROUP_SUCCEEDED");
-      const f = updateById(state.list.slice(), action.group);
-      console.log(f);
       return {
         ...state,
         list: updateById(state.list.slice(), action.group)
       };
     case EDIT_GROUP_FAILED:
-      console.log("EDIT_GROUP_FAILED");
-      console.log(action.error);
+      return {
+        ...state
+      };
+    case DELETE_GROUP_REQUESTED:
+      return {
+        ...state
+      };
+    case DELETE_GROUP_SUCCEEDED:
+      return {
+        ...state,
+        list: removeById(state.list.slice(), action.id)
+      };
+    case DELETE_GROUP_FAILED:
       return {
         ...state
       };

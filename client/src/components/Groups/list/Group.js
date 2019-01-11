@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 
-import {editGroup} from '../../../actions/groupsActions';
+import {editGroup, deleteGroup} from '../../../actions/groupsActions';
 
 import './Group.css';
 import {bindActionCreators} from "redux";
@@ -55,7 +55,8 @@ class Group extends React.Component {
                  onClick={this.onRenameMenuItemClick.bind(this)}>
               <span className="group__actions-menu-item-name">Rename</span>
             </div>
-            <div className="group__actions-menu-item">
+            <div className="group__actions-menu-item"
+                 onClick={this.onDeleteMenuItemClick.bind(this)}>
               <span className="group__actions-menu-item-name">Delete</span>
             </div>
           </div>
@@ -112,6 +113,15 @@ class Group extends React.Component {
     });
   }
 
+  onDeleteMenuItemClick() {
+    this.props.deleteGroup(this.props.group.id);
+
+    this.setState({
+      ...this.state,
+      isActionsMenuVisible: false
+    });
+  }
+
   onEditButtonClick() {
     this.props.editGroup({
       ...this.props.group,
@@ -161,7 +171,7 @@ class Group extends React.Component {
 const mapStateToProps = state => ({...state.groups});
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({editGroup}, dispatch);
+  return bindActionCreators({editGroup, deleteGroup}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Group);
