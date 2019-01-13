@@ -53,8 +53,6 @@ export function fetchGroupsData() {
     };
 
     try {
-      const successAction = {type: FETCH_GROUPS_DATA_SUCCEEDED};
-
       if (!query.selectedToLanguage && !query.selectedFromLanguage) {
         const response = await api.fetchGroupsMeta();
 
@@ -66,12 +64,13 @@ export function fetchGroupsData() {
 
       const responses = await Promise.all([api.fetchGroupsMeta(query), api.fetchGroups(query)]);
 
-      successAction.selectedFromLanguage = query.selectedFromLanguage;
-      successAction.selectedToLanguage = query.selectedToLanguage;
-      successAction.meta = responses[0].data;
-      successAction.list = responses[1].data;
-
-      dispatch(successAction);
+      dispatch({
+        type: FETCH_GROUPS_DATA_SUCCEEDED,
+        selectedFromLanguage: query.selectedFromLanguage,
+        selectedToLanguage: query.selectedToLanguage,
+        meta: responses[0].data,
+        list: responses[1].data
+      });
     } catch (error) {
       dispatch({type: FETCH_GROUPS_DATA_FAILED, error});
     }
