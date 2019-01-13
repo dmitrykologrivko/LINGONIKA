@@ -2,6 +2,10 @@ import api from "../services/api/groupsApi";
 
 export const SELECT_FROM_LANGUAGE = 'groups/select-from-language';
 export const SELECT_TO_LANGUAGE = 'groups/select-to-language';
+// Fetch groups data
+export const FETCH_GROUPS_DATA_REQUESTED = 'groups/fetch-groups-data-requested';
+export const FETCH_GROUPS_DATA_SUCCEEDED = 'groups/fetch-groups-data-succeeded';
+export const FETCH_GROUPS_DATA_FAILED = 'groups/fetch-groups-data-failed';
 // Fetch groups
 export const FETCH_GROUPS_REQUESTED = 'groups/fetch-groups-requested';
 export const FETCH_GROUPS_SUCCEEDED = 'groups/fetch-groups-succeeded';
@@ -34,6 +38,43 @@ export function changeSelectedToLanguage(languageCode) {
   return {
     type: SELECT_TO_LANGUAGE,
     languageCode
+  }
+}
+
+export function fetchGroupsData() {
+  return async (dispatch, getState) => {
+    const state = getState().groups;
+
+    dispatch({type: FETCH_GROUPS_DATA_REQUESTED});
+
+    const query = {
+      selectedFromLanguage: state.selectedFromLanguage,
+      selectedToLanguage: state.selectedToLanguage
+    };
+
+    try {
+      const successAction = {type: FETCH_GROUPS_DATA_SUCCEEDED};
+
+      if (!query.selectedToLanguage && !query.selectedFromLanguage) {
+        const response = await api.fetchGroupsMeta();
+
+        if (response.data.languages && Object.keys(response.data.languages).length > 0) {
+          query.selectedFromLanguage = Object.keys(response.data.languages)[0];
+          query.selectedToLanguage = Object.keys(response.data.languages)[0];
+        }
+      }
+
+      const responses = await Promise.all([api.fetchGroupsMeta(query), api.fetchGroups(query)]);
+
+      successAction.selectedFromLanguage = query.selectedFromLanguage;
+      successAction.selectedToLanguage = query.selectedToLanguage;
+      successAction.meta = responses[0].data;
+      successAction.list = responses[1].data;
+
+      dispatch(successAction);
+    } catch (error) {
+      dispatch({type: FETCH_GROUPS_DATA_FAILED, error});
+    }
   }
 }
 

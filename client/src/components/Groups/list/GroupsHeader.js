@@ -15,10 +15,6 @@ class GroupsHeader extends React.Component {
     isToLanguageMenuVisible: false
   };
 
-  componentDidUpdate() {
-    this.setDefaultLanguages();
-  }
-
   render() {
     return (
       <header className="groups-header">
@@ -46,17 +42,6 @@ class GroupsHeader extends React.Component {
         </div>
       </header>
     )
-  }
-
-  setDefaultLanguages() {
-    const selectedFromLanguage = this.props.selectedFromLanguage;
-    const selectedToLanguage = this.props.selectedToLanguage;
-    const languages = this.props.meta.languages;
-
-    if (!(selectedFromLanguage || selectedToLanguage) && languages && Object.keys(languages).length > 0) {
-      this.props.changeSelectedFromLanguage(Object.keys(languages)[0]);
-      this.props.changeSelectedToLanguage(Object.keys(languages)[0]);
-    }
   }
 
   renderLanguageItems(isFromLanguageMenu) {

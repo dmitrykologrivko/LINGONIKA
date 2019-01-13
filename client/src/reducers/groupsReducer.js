@@ -1,6 +1,9 @@
 import {
   SELECT_FROM_LANGUAGE,
   SELECT_TO_LANGUAGE,
+  FETCH_GROUPS_DATA_REQUESTED,
+  FETCH_GROUPS_DATA_SUCCEEDED,
+  FETCH_GROUPS_DATA_FAILED,
   FETCH_GROUPS_REQUESTED,
   FETCH_GROUPS_SUCCEEDED,
   FETCH_GROUPS_FAILED,
@@ -48,6 +51,22 @@ export default (state = initialState, action) => {
         ...state,
         selectedToLanguage: action.languageCode,
         isToLanguageMenuVisible: false
+      };
+    case FETCH_GROUPS_DATA_REQUESTED:
+      return {
+        ...state
+      };
+    case FETCH_GROUPS_DATA_SUCCEEDED:
+      return {
+        ...state,
+        meta: action.meta,
+        list: action.list,
+        selectedFromLanguage: action.selectedFromLanguage,
+        selectedToLanguage: action.selectedToLanguage
+      };
+    case FETCH_GROUPS_DATA_FAILED:
+      return {
+        ...state
       };
     case FETCH_GROUPS_REQUESTED:
       return {
