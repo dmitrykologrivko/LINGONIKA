@@ -1,6 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
+import {createGroup} from '../../../actions/groupsActions';
 
 import './CreateGroupBox.css';
+import {bindActionCreators} from "redux";
 
 const GROUP_NAME_MAX_LENGTH = 50;
 
@@ -45,7 +49,7 @@ class CreateGroupBox extends React.Component {
                 </button>
               </div>
               <div>
-                <button type="submit"
+                <button type="button"
                         className="create-group-box__form-button create-group-box__add-button"
                         onClick={this.onAddButtonClick.bind(this)}>
                   Add
@@ -66,6 +70,12 @@ class CreateGroupBox extends React.Component {
   }
 
   onAddButtonClick() {
+    this.props.createGroup({
+      name: this.state.groupName,
+      fromLanguage: this.props.selectedFromLanguage,
+      toLanguage: this.props.selectedToLanguage
+    });
+
     this.setState({
       ...this.state,
       isCreateGroupFormVisible: false,
@@ -89,4 +99,10 @@ class CreateGroupBox extends React.Component {
   }
 }
 
-export default CreateGroupBox;
+const mapStateToProps = state => ({...state.groups});
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({createGroup}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGroupBox);
