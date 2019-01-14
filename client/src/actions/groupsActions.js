@@ -27,14 +27,14 @@ export const DELETE_GROUP_REQUESTED = 'groups/delete-group-requested';
 export const DELETE_GROUP_SUCCEEDED = 'groups/delete-group-succeeded';
 export const DELETE_GROUP_FAILED = 'groups/delete-group-failed';
 
-export function changeSelectedFromLanguage(languageCode) {
+export function selectFromLanguage(languageCode) {
   return {
     type: SELECT_FROM_LANGUAGE,
     languageCode
   }
 }
 
-export function changeSelectedToLanguage(languageCode) {
+export function selectToLanguage(languageCode) {
   return {
     type: SELECT_TO_LANGUAGE,
     languageCode
@@ -48,17 +48,17 @@ export function fetchGroupsData() {
     dispatch({type: FETCH_GROUPS_DATA_REQUESTED});
 
     const query = {
-      selectedFromLanguage: state.selectedFromLanguage,
-      selectedToLanguage: state.selectedToLanguage
+      fromLanguage: state.filters.fromLanguage,
+      toLanguage: state.filters.toLanguage
     };
 
     try {
-      if (!query.selectedToLanguage && !query.selectedFromLanguage) {
+      if (!query.fromLanguage && !query.toLanguage) {
         const response = await api.fetchGroupsMeta();
 
         if (response.data.languages && Object.keys(response.data.languages).length > 0) {
-          query.selectedFromLanguage = Object.keys(response.data.languages)[0];
-          query.selectedToLanguage = Object.keys(response.data.languages)[0];
+          query.fromLanguage = Object.keys(response.data.languages)[0];
+          query.toLanguage = Object.keys(response.data.languages)[0];
         }
       }
 
@@ -66,8 +66,8 @@ export function fetchGroupsData() {
 
       dispatch({
         type: FETCH_GROUPS_DATA_SUCCEEDED,
-        selectedFromLanguage: query.selectedFromLanguage,
-        selectedToLanguage: query.selectedToLanguage,
+        fromLanguage: query.fromLanguage,
+        toLanguage: query.toLanguage,
         meta: responses[0].data,
         list: responses[1].data
       });

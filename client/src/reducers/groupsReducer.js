@@ -34,8 +34,10 @@ const initialState = {
     countWords: 0
   },
   list: [],
-  selectedFromLanguage: '',
-  selectedToLanguage: ''
+  filters: {
+    fromLanguage: '',
+    toLanguage: ''
+  }
 };
 
 export default (state = initialState, action) => {
@@ -43,14 +45,18 @@ export default (state = initialState, action) => {
     case SELECT_FROM_LANGUAGE:
       return {
         ...state,
-        selectedFromLanguage: action.languageCode,
-        isFromLanguageMenuVisible: false
+        filters: {
+          ...state.filters,
+          fromLanguage: action.languageCode
+        }
       };
     case SELECT_TO_LANGUAGE:
       return {
         ...state,
-        selectedToLanguage: action.languageCode,
-        isToLanguageMenuVisible: false
+        filters: {
+          ...state.filters,
+          toLanguage: action.languageCode
+        }
       };
     case FETCH_GROUPS_DATA_REQUESTED:
       return {
@@ -61,8 +67,11 @@ export default (state = initialState, action) => {
         ...state,
         meta: action.meta,
         list: action.list,
-        selectedFromLanguage: action.selectedFromLanguage,
-        selectedToLanguage: action.selectedToLanguage
+        filters: {
+          ...state.filters,
+          fromLanguage: action.fromLanguage,
+          toLanguage: action.toLanguage
+        }
       };
     case FETCH_GROUPS_DATA_FAILED:
       return {
