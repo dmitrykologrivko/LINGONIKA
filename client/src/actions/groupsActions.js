@@ -10,6 +10,10 @@ export const FETCH_GROUPS_DATA_FAILED = 'groups/fetch-groups-data-failed';
 export const FETCH_GROUPS_REQUESTED = 'groups/fetch-groups-requested';
 export const FETCH_GROUPS_SUCCEEDED = 'groups/fetch-groups-succeeded';
 export const FETCH_GROUPS_FAILED = 'groups/fetch-groups-failed';
+// Fetch group
+export const FETCH_GROUP_REQUESTED = 'groups/fetch-group-requested';
+export const FETCH_GROUP_SUCCEEDED = 'groups/fetch-group-succeeded';
+export const FETCH_GROUP_FAILED = 'groups/fetch-group-failed';
 // Fetch groups meta
 export const FETCH_GROUPS_META_REQUESTED = 'groups/fetch-groups-meta-requested';
 export const FETCH_GROUPS_META_SUCCEEDED = 'groups/fetch-groups-meta-succeeded';
@@ -94,6 +98,16 @@ export function fetchGroupsMeta() {
     api.fetchGroupsMeta()
       .then(response => dispatch({type: FETCH_GROUPS_META_SUCCEEDED, meta: response.data}))
       .catch(error => dispatch({type: FETCH_GROUPS_META_FAILED, error}));
+  }
+}
+
+export function fetchGroup(id) {
+  return dispatch => {
+     dispatch({type: FETCH_GROUP_REQUESTED});
+
+     api.fetchGroup(id)
+       .then(response => dispatch({type: FETCH_GROUP_SUCCEEDED, detail: response.data}))
+       .catch(error => dispatch({type: FETCH_GROUP_FAILED, error}));
   }
 }
 
