@@ -5,3 +5,75 @@
   padding-top: 15px;
   padding-bottom: 15px;
 }
+
+.cards-header__group_name {
+  font-size: 20px;
+  color: #4c545b;
+  font-weight: 400;
+  line-height: 1.4em;
+}
+
+.cards-header__nav {
+  border-bottom: 1px solid #d2d2d2;
+  padding-bottom: 8px;
+}
+
+.cards-header__nav-selected-item {
+  color: #f21f47;
+  font-size: 14px;
+  text-transform: none;
+  font-weight: 400;
+  border-bottom: 2px solid #f21f47;
+  padding-bottom: 9px;
+}
+
+.cards-header__button-all-cards {
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 14px;
+  text-transform: none;
+  font-weight: 400;
+  color: #1a1c1e;
+  margin-right: 16px;
+}
+
+.cards-header__button-learned-cards {
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 14px;
+  text-transform: none;
+  font-weight: 400;
+  color: #1a1c1e;
+  margin-left: 16px;
+}
+
+.cards-header__button-add-card {
+  float: right;
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 14px;
+  text-transform: none;
+  font-weight: 400;
+  color: #1d9bf5;
+}
+
+.cards-header__button-add-card:hover {
+  border-bottom: 1px solid #1d9bf5;
+}
+
+.cards-header__button-add-card-icon {
+  color: #1d9bf5;
+}
+
+.cards-header__button-add-card-label {
+  margin-left: 8px;
+}
