@@ -1,6 +1,37 @@
 .cards-list-actions {
   height: 48px;
+  padding: 0 24px;
   background: white;
+  display: flex;
+  align-items: center;
+}
+
+.cards-list-actions__title {
+  flex: 1 1 auto;
+  color: #4c545b;
+  margin-left: 16px;
+  line-height: 1.4em;
+  font-weight: 400;
+  font-family: Roboto,Helvetica,Tahoma,sans-serif;
+}
+
+.cards-list-actions__remove-action {
+  cursor: pointer;
+  margin-left: 16px;
+}
+
+.cards-list-actions__remove-action-icon {
+  color: #4c545b;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.cards-list-actions__remove-action-label {
+  font-size: 16px;
+  line-height: 1.4em;
+  font-weight: 400;
+  font-family: Roboto,Helvetica,Tahoma,sans-serif;
+  color: #4c545b;
 }
 
 .cards-list {
