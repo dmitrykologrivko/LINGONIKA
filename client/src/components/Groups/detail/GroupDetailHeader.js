@@ -1,11 +1,11 @@
 import React from 'react';
 
-import './CardsHeader.css';
+import './GroupDetailHeader.css';
 
 const ALL_WORDS_FILTER = 'ALL_WORDS_FILTER';
 const LEARNED_WORDS_FILTER = 'LEARNED_WORDS_FILTER';
 
-class CardsHeader extends React.Component {
+class GroupDetailHeader extends React.Component {
   state = {
     selectedFilter: ALL_WORDS_FILTER
   };
@@ -51,4 +51,4 @@ class CardsHeader extends React.Component {
   }
 }
 
-export default CardsHeader;
+export default GroupDetailHeader;

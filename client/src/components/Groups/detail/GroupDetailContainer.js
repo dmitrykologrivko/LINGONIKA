@@ -2,7 +2,7 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import CardsHeader from './CardsHeader';
+import GroupDetailHeader from './GroupDetailHeader';
 import CardsList from './CardsList';
 import {fetchGroup} from '../../../actions/groupsActions';
 
@@ -15,7 +15,7 @@ class GroupDetailContainer extends React.Component {
   render() {
     return (
       <main>
-        <CardsHeader/>
+        <GroupDetailHeader/>
         <CardsList/>
       </main>
     )
