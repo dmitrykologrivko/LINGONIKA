@@ -6,6 +6,10 @@
   align-items: center;
 }
 
+.cards-list-actions__checkbox {
+
+}
+
 .cards-list-actions__title {
   flex: 1 1 auto;
   color: #4c545b;
