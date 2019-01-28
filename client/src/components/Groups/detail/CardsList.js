@@ -35,8 +35,6 @@ class CardsList extends React.Component {
 
     this.onSelectAllCardsCheckboxChanged = this.onSelectAllCardsCheckboxChanged.bind(this);
     this.onCardSelected = this.onCardSelected.bind(this);
-
-    this.input = React.createRef();
   }
 
   render() {
