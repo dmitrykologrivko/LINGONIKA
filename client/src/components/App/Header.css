@@ -1,6 +1,7 @@
 .header {
   background-color: red;
   height: 72px;
+  flex: 0 0 auto;
 }
 
 .header__container {

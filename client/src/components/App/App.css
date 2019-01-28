@@ -8,3 +8,12 @@ body {
   font-family: Roboto, Helvetica, Tahoma, sans-serif;
   font-weight: bold;
 }
+
+.app {
+  display: flex;
+  height: auto;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
