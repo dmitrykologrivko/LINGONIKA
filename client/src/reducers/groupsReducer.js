@@ -10,6 +10,9 @@ import {
   FETCH_GROUPS_META_REQUESTED,
   FETCH_GROUPS_META_SUCCEEDED,
   FETCH_GROUPS_META_FAILED,
+  FETCH_GROUP_REQUESTED,
+  FETCH_GROUP_SUCCEEDED,
+  FETCH_GROUP_FAILED,
   CREATE_GROUP_REQUESTED,
   CREATE_GROUP_SUCCEEDED,
   CREATE_GROUP_FAILED,
@@ -34,6 +37,9 @@ const initialState = {
     countWords: 0
   },
   list: [],
+  detail: {
+    cards: []
+  },
   filters: {
     fromLanguage: '',
     toLanguage: ''
@@ -100,6 +106,19 @@ export default (state = initialState, action) => {
         meta: action.meta
       };
     case FETCH_GROUPS_META_FAILED:
+      return {
+        ...state
+      };
+    case FETCH_GROUP_REQUESTED:
+      return {
+        ...state
+      };
+    case FETCH_GROUP_SUCCEEDED:
+      return {
+        ...state,
+        detail: action.detail
+      };
+    case FETCH_GROUP_FAILED:
       return {
         ...state
       };

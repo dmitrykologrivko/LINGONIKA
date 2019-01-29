@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import Card from './Card';
 
@@ -7,27 +8,7 @@ import './CardsList.css';
 class CardsList extends React.Component {
   state = {
     isAllCardsSelected: false,
-    selectedCards: [],
-    cards: [
-      {
-        id: 1,
-        phrase: 'some phrase',
-        translation: 'some translation',
-        isLearned: true
-      },
-      {
-        id: 2,
-        phrase: 'some phrase',
-        translation: 'some translation',
-        isLearned: false
-      },
-      {
-        id: 3,
-        phrase: 'some phrase',
-        translation: 'some translation',
-        isLearned: false
-      }
-    ]
+    selectedCards: []
   };
 
   constructor(props) {
@@ -38,7 +19,7 @@ class CardsList extends React.Component {
   }
 
   render() {
-    const cards = this.state.cards.map(card => {
+    const cards = this.props.group.cards.map(card => {
       return <Card key={card.id}
                    card={card}
                    isCardSelected={this.state.selectedCards.includes(card.id)}
@@ -79,7 +60,7 @@ class CardsList extends React.Component {
     this.setState({
       ...this.state,
       isAllCardsSelected,
-      selectedCards: isAllCardsSelected ? this.state.cards.map(card => card.id) : []
+      selectedCards: isAllCardsSelected ? this.props.group.cards.map(card => card.id) : []
     });
   }
 
@@ -93,7 +74,7 @@ class CardsList extends React.Component {
       selectedCards = selectedCards.filter(currentId => currentId !== cardId);
     }
 
-    if (selectedCards.length === this.state.cards.length) {
+    if (selectedCards.length === this.props.group.cards.length) {
       isAllCardsSelected = true;
     }
 
@@ -105,4 +86,6 @@ class CardsList extends React.Component {
   }
 }
 
-export default CardsList;
+const mapStateToProps = state => ({group: state.groups.detail});
+
+export default connect(mapStateToProps, null)(CardsList);

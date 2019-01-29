@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import './GroupDetailHeader.css';
 
@@ -13,7 +14,7 @@ class GroupDetailHeader extends React.Component {
   render() {
     return (
       <header className="cards-header">
-        <h3 className="cards-header__group_name">Nouns (Существительные)</h3>
+        <h3 className="cards-header__group_name">{this.props.group.name}</h3>
         <nav className="cards-header__nav">
           {this.state.selectedFilter === ALL_WORDS_FILTER ? (
             <span className="cards-header__nav-selected-item">All</span>
@@ -52,4 +53,6 @@ class GroupDetailHeader extends React.Component {
   }
 }
 
-export default GroupDetailHeader;
+const mapStateToProps = state => ({group: state.groups.detail});
+
+export default connect(mapStateToProps, null)(GroupDetailHeader);

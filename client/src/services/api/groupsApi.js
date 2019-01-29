@@ -10,8 +10,8 @@ function fetchGroupsMeta(query = {}) {
   return client.get(`${API_PREFIX}/meta`, {params: query});
 }
 
-function fetchGroup(id) {
-  return client.get(`${API_PREFIX}/${id}`);
+function fetchGroup(id, query = {}) {
+  return client.get(`${API_PREFIX}/${id}`, {params: query});
 }
 
 function createGroup(group) {

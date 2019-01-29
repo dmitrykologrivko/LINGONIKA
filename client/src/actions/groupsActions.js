@@ -114,7 +114,7 @@ export function fetchGroup(id) {
   return dispatch => {
      dispatch({type: FETCH_GROUP_REQUESTED});
 
-     api.fetchGroup(id)
+     api.fetchGroup(id, {filter: {include: 'cards'}})
        .then(response => dispatch({type: FETCH_GROUP_SUCCEEDED, detail: response.data}))
        .catch(error => dispatch({type: FETCH_GROUP_FAILED, error}));
   }
