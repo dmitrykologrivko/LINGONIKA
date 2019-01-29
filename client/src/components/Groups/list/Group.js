@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
 
 import {editGroup, deleteGroup} from '../../../actions/groupsActions';
 
 import './Group.css';
-import {bindActionCreators} from "redux";
 
 const GROUP_NAME_MAX_LENGTH = 50;
 

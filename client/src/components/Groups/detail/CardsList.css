@@ -42,3 +42,12 @@
   padding: 8px 0 16px;
   background: white;
 }
+
+.cards-list__no-cards-label {
+  font-size: 16px;
+  line-height: 1.4em;
+  font-weight: 400;
+  font-family: Roboto,Helvetica,Tahoma,sans-serif;
+  color: #4c545b;
+  text-align: center;
+}

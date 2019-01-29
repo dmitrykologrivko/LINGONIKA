@@ -1,5 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
+
+import {fetchGroup} from '../../../actions/groupsActions';
 
 import './GroupDetailHeader.css';
 
@@ -39,6 +42,8 @@ class GroupDetailHeader extends React.Component {
   }
 
   onAllCardsButtonClick() {
+    this.props.fetchGroup(this.props.group.id);
+
     this.setState({
       ...this.state,
       selectedFilter: ALL_WORDS_FILTER
@@ -46,6 +51,8 @@ class GroupDetailHeader extends React.Component {
   }
 
   onLearnedWordsButtonClick() {
+    this.props.fetchGroup(this.props.group.id, {isLearned: true});
+
     this.setState({
       ...this.state,
       selectedFilter: LEARNED_WORDS_FILTER
@@ -55,4 +62,8 @@ class GroupDetailHeader extends React.Component {
 
 const mapStateToProps = state => ({group: state.groups.detail});
 
-export default connect(mapStateToProps, null)(GroupDetailHeader);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({fetchGroup}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupDetailHeader);

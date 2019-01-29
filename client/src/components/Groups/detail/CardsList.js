@@ -48,7 +48,7 @@ class CardsList extends React.Component {
           ) : null}
         </div>
         <ul className="cards-list">
-          {cards}
+          {cards.length > 0 ? cards : <p className="cards-list__no-cards-label">No cards</p>}
         </ul>
       </div>
     )

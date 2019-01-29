@@ -110,11 +110,22 @@ export function fetchGroupsMeta() {
   }
 }
 
-export function fetchGroup(id) {
+export function fetchGroup(id, cardsQuery) {
   return dispatch => {
      dispatch({type: FETCH_GROUP_REQUESTED});
 
-     api.fetchGroup(id, {filter: {include: 'cards'}})
+     const query = {
+       filter: {
+         include: {
+           relation: 'cards',
+           scope: {
+             where: cardsQuery
+           }
+         }
+       }
+     };
+
+     api.fetchGroup(id, query)
        .then(response => dispatch({type: FETCH_GROUP_SUCCEEDED, detail: response.data}))
        .catch(error => dispatch({type: FETCH_GROUP_FAILED, error}));
   }
