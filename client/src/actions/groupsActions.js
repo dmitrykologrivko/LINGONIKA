@@ -110,7 +110,7 @@ export function fetchGroupsMeta() {
   }
 }
 
-export function fetchGroup(id, cardsQuery) {
+export function fetchGroup(id, isLearnedCards) {
   return dispatch => {
      dispatch({type: FETCH_GROUP_REQUESTED});
 
@@ -119,7 +119,9 @@ export function fetchGroup(id, cardsQuery) {
          include: {
            relation: 'cards',
            scope: {
-             where: cardsQuery
+             where: {
+               isLearned: isLearnedCards
+             }
            }
          }
        }

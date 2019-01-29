@@ -51,7 +51,7 @@ class GroupDetailHeader extends React.Component {
   }
 
   onLearnedWordsButtonClick() {
-    this.props.fetchGroup(this.props.group.id, {isLearned: true});
+    this.props.fetchGroup(this.props.group.id, true);
 
     this.setState({
       ...this.state,
