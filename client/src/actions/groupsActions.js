@@ -51,27 +51,36 @@ export function fetchGroupsData() {
 
     dispatch({type: FETCH_GROUPS_DATA_REQUESTED});
 
-    const query = {
-      fromLanguage: state.filters.fromLanguage,
-      toLanguage: state.filters.toLanguage
-    };
-
     try {
-      if (!query.fromLanguage && !query.toLanguage) {
+      const metaQuery = {
+        fromLanguage: state.filters.fromLanguage,
+        toLanguage: state.filters.toLanguage
+      };
+
+      if (!metaQuery.fromLanguage && !metaQuery.toLanguage) {
         const response = await api.fetchGroupsMeta();
 
         if (response.data.languages && Object.keys(response.data.languages).length > 0) {
-          query.fromLanguage = Object.keys(response.data.languages)[0];
-          query.toLanguage = Object.keys(response.data.languages)[0];
+          metaQuery.fromLanguage = Object.keys(response.data.languages)[0];
+          metaQuery.toLanguage = Object.keys(response.data.languages)[0];
         }
       }
 
-      const responses = await Promise.all([api.fetchGroupsMeta(query), api.fetchGroups(query)]);
+      const groupsQuery = {
+        filter: {
+          where: {
+            fromLanguage: metaQuery.fromLanguage,
+            toLanguage: metaQuery.toLanguage
+          }
+        }
+      };
+
+      const responses = await Promise.all([api.fetchGroupsMeta(metaQuery), api.fetchGroups(groupsQuery)]);
 
       dispatch({
         type: FETCH_GROUPS_DATA_SUCCEEDED,
-        fromLanguage: query.fromLanguage,
-        toLanguage: query.toLanguage,
+        fromLanguage: metaQuery.fromLanguage,
+        toLanguage: metaQuery.toLanguage,
         meta: responses[0].data,
         list: responses[1].data
       });
