@@ -6,8 +6,6 @@ import GroupsHeader from './GroupsHeader';
 import GroupsList from './GroupsList';
 import {fetchGroupsData} from "../../../actions/groupsActions";
 
-import './GroupsListContainer.css';
-
 class GroupsListContainer extends React.Component {
   componentDidMount() {
     this.props.fetchGroupsData();

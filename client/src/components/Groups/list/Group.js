@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
 
 import {editGroup, deleteGroup} from '../../../actions/groupsActions';
 
 import './Group.css';
-import {bindActionCreators} from "redux";
 
 const GROUP_NAME_MAX_LENGTH = 50;
 
@@ -37,13 +38,13 @@ class Group extends React.Component {
         <section className="group__info"
                  style={this.state.isEditGroupFormVisible ? {display: 'none'} : {}}>
           <span className="group__button-more fas fa-ellipsis-v" onClick={this.onButtonMoreClick.bind(this)}/>
-          <a href={`groups/${this.props.group.id}`} className="group__link">
+          <Link to={`groups/${this.props.group.id}`} className="group__link">
             <div>
               <span className="group__learned-words">{this.props.group.countLearnedWords}</span>
               <span className="group__slash">/</span>
               <span className="group__words-in-group">{this.props.group.countWords}</span>
             </div>
-          </a>
+          </Link>
           <div>
             <span className="group__name">{this.props.group.name}</span>
           </div>

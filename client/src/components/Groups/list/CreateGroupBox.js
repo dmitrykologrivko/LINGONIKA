@@ -72,8 +72,8 @@ class CreateGroupBox extends React.Component {
   onAddButtonClick() {
     this.props.createGroup({
       name: this.state.groupName,
-      fromLanguage: this.props.selectedFromLanguage,
-      toLanguage: this.props.selectedToLanguage
+      fromLanguage: this.props.filters.fromLanguage,
+      toLanguage: this.props.filters.toLanguage
     });
 
     this.setState({

@@ -1,4 +1,5 @@
 .content {
+  flex: 1 0 auto;
 }
 
 .content__container {
@@ -7,5 +8,4 @@
   min-width: 820px;
   padding-right: 42px;
   padding-left: 42px;
-  display: flex;
 }

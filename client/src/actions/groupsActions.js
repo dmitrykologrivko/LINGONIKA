@@ -10,6 +10,10 @@ export const FETCH_GROUPS_DATA_FAILED = 'groups/fetch-groups-data-failed';
 export const FETCH_GROUPS_REQUESTED = 'groups/fetch-groups-requested';
 export const FETCH_GROUPS_SUCCEEDED = 'groups/fetch-groups-succeeded';
 export const FETCH_GROUPS_FAILED = 'groups/fetch-groups-failed';
+// Fetch group
+export const FETCH_GROUP_REQUESTED = 'groups/fetch-group-requested';
+export const FETCH_GROUP_SUCCEEDED = 'groups/fetch-group-succeeded';
+export const FETCH_GROUP_FAILED = 'groups/fetch-group-failed';
 // Fetch groups meta
 export const FETCH_GROUPS_META_REQUESTED = 'groups/fetch-groups-meta-requested';
 export const FETCH_GROUPS_META_SUCCEEDED = 'groups/fetch-groups-meta-succeeded';
@@ -47,27 +51,36 @@ export function fetchGroupsData() {
 
     dispatch({type: FETCH_GROUPS_DATA_REQUESTED});
 
-    const query = {
-      fromLanguage: state.filters.fromLanguage,
-      toLanguage: state.filters.toLanguage
-    };
-
     try {
-      if (!query.fromLanguage && !query.toLanguage) {
+      const metaQuery = {
+        fromLanguage: state.filters.fromLanguage,
+        toLanguage: state.filters.toLanguage
+      };
+
+      if (!metaQuery.fromLanguage && !metaQuery.toLanguage) {
         const response = await api.fetchGroupsMeta();
 
         if (response.data.languages && Object.keys(response.data.languages).length > 0) {
-          query.fromLanguage = Object.keys(response.data.languages)[0];
-          query.toLanguage = Object.keys(response.data.languages)[0];
+          metaQuery.fromLanguage = Object.keys(response.data.languages)[0];
+          metaQuery.toLanguage = Object.keys(response.data.languages)[0];
         }
       }
 
-      const responses = await Promise.all([api.fetchGroupsMeta(query), api.fetchGroups(query)]);
+      const groupsQuery = {
+        filter: {
+          where: {
+            fromLanguage: metaQuery.fromLanguage,
+            toLanguage: metaQuery.toLanguage
+          }
+        }
+      };
+
+      const responses = await Promise.all([api.fetchGroupsMeta(metaQuery), api.fetchGroups(groupsQuery)]);
 
       dispatch({
         type: FETCH_GROUPS_DATA_SUCCEEDED,
-        fromLanguage: query.fromLanguage,
-        toLanguage: query.toLanguage,
+        fromLanguage: metaQuery.fromLanguage,
+        toLanguage: metaQuery.toLanguage,
         meta: responses[0].data,
         list: responses[1].data
       });
@@ -94,6 +107,29 @@ export function fetchGroupsMeta() {
     api.fetchGroupsMeta()
       .then(response => dispatch({type: FETCH_GROUPS_META_SUCCEEDED, meta: response.data}))
       .catch(error => dispatch({type: FETCH_GROUPS_META_FAILED, error}));
+  }
+}
+
+export function fetchGroup(id, isLearnedCards) {
+  return dispatch => {
+     dispatch({type: FETCH_GROUP_REQUESTED});
+
+     const query = {
+       filter: {
+         include: {
+           relation: 'cards',
+           scope: {
+             where: {
+               isLearned: isLearnedCards
+             }
+           }
+         }
+       }
+     };
+
+     api.fetchGroup(id, query)
+       .then(response => dispatch({type: FETCH_GROUP_SUCCEEDED, detail: response.data}))
+       .catch(error => dispatch({type: FETCH_GROUP_FAILED, error}));
   }
 }
 
