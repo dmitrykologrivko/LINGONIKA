@@ -37,16 +37,16 @@ class Header extends React.Component {
             </nav>
           </div>
           <div className="header__profile">
-            <a className="header__profile-link" href="profile">
+            <Link to="/profile" className="header__profile-link">
               <img className="header__profile-avatar" src={avatar} alt="avatar"/>
               <span className="header__profile-name">Dmitry Kologrivko</span>
-            </a>
+            </Link>
             <span className="header__profile-more-button fas fa-caret-down"
                   onClick={this.onProfileMoreButtonClick.bind(this)}/>
             <div className="header__profile-nav-wrapper"
                  style={this.state.isProfileMenuVisible ? {} : {display: 'none'}}>
               <nav className="header__profile-nav">
-                <a className="header__profile-nav-item" href="profile">Profile</a>
+                <Link to="/profile" className="header__profile-nav-item">Profile</Link>
                 <a className="header__profile-nav-item" href="sign-out">Sign Out</a>
               </nav>
             </div>

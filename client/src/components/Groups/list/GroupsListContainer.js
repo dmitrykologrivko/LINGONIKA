@@ -13,7 +13,7 @@ class GroupsListContainer extends React.Component {
 
   render() {
     return (
-      <main>
+      <main className="wide-main">
         <GroupsHeader/>
         <GroupsList/>
       </main>

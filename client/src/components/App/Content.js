@@ -5,6 +5,7 @@ import {Route, Switch} from 'react-router';
 import Home from '../Home/Home';
 import GroupDetailContainer from '../Groups/detail/GroupDetailContainer';
 import GroupsListContainer from '../Groups/list/GroupsListContainer';
+import ProfileViewContainer from '../Profile/view/ProfileViewContainer';
 
 import './Content.css';
 
@@ -28,6 +29,7 @@ class Content extends React.Component {
             <Route exact path="/" component={Home}/>
             <Route exact path="/cards/groups" component={GroupsListContainer}/>
             <Route exact path="/cards/groups/:id" component={GroupDetailContainer}/>
+            <Route exact path="/profile" component={ProfileViewContainer}/>
             <Route component={NoMatch}/>
           </Switch>
         </div>
