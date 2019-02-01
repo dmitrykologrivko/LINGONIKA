@@ -37,7 +37,7 @@ class Header extends React.Component {
             </nav>
           </div>
           <div className="header__profile">
-            <Link to="/profile" className="header__profile-link">
+            <Link to="/account" className="header__profile-link">
               <img className="header__profile-avatar" src={avatar} alt="avatar"/>
               <span className="header__profile-name">Dmitry Kologrivko</span>
             </Link>
