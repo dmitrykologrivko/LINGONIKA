@@ -14,7 +14,7 @@ class GroupDetailContainer extends React.Component {
 
   render() {
     return (
-      <main>
+      <main className="wide-main">
         <GroupDetailHeader/>
         <CardsList/>
       </main>
