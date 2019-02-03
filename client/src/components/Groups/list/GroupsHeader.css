@@ -78,7 +78,7 @@
 
 .groups-header__languages-menu-item_active {
   background: rgba(240, 240, 242, 1.00);
-  border-left: 5px solid red;
+  border-left: 5px solid #323bff;
 }
 
 .groups-header__languages-menu-item-name {

@@ -1,5 +1,5 @@
 .header {
-  background-color: red;
+  background-color: #323bff;
   height: 72px;
   flex: 0 0 auto;
 }
@@ -42,15 +42,15 @@
 }
 
 .header__nav-item:hover {
-  background-color: rgb(217, 16, 38);
+  background-color: #2026b4;
 }
 
 .header__nav-item_active {
-  background-color: #c01838;
+  background-color: #2026b4;
 }
 
 .header__nav-item_active:hover {
-  background-color: #c01838;
+  background-color: #2026b4;
 }
 
 .header__nav-link {
@@ -152,5 +152,5 @@
 
 .header__profile-nav-item:hover {
   background: rgba(240, 240, 242, 1.00);
-  border-left: 5px solid red;
+  border-left: 5px solid #323bff;
 }

@@ -91,7 +91,7 @@
 
 .group__actions-menu-item:hover {
   background: rgba(240, 240, 242, 1.00);
-  border-left: 5px solid red;
+  border-left: 5px solid #323bff;
 }
 
 .group__actions-menu-item-name {

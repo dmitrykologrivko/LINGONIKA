@@ -18,11 +18,11 @@
 }
 
 .cards-header__nav-selected-item {
-  color: #f21f47;
+  color: #323bff;
   font-size: 14px;
   text-transform: none;
   font-weight: 400;
-  border-bottom: 2px solid #f21f47;
+  border-bottom: 2px solid #323bff;
   padding-bottom: 9px;
 }
 
