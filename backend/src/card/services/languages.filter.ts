@@ -1,17 +1,17 @@
 import { Brackets, SelectQueryBuilder } from 'typeorm';
 import { BaseFilter } from '@nestjs-boilerplate/core';
-import { Card } from './entities/card.entity';
+import { Linguistic } from '../entities/linguistic.interface';
 
-export class CardLanguagesFilter extends BaseFilter<Card> {
+export class LanguagesFilter<E extends Linguistic> extends BaseFilter<E> {
   constructor(
-    qb: SelectQueryBuilder<Card>,
+    qb: SelectQueryBuilder<E>,
     private readonly languageFrom: string,
     private readonly languageTo: string,
   ) {
     super(qb);
   }
 
-  filter(): SelectQueryBuilder<Card> {
+  filter(): SelectQueryBuilder<E> {
     if (!this.languageFrom || !this.languageTo) {
       return this.queryBuilder;
     }

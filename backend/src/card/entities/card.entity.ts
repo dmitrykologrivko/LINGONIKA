@@ -6,14 +6,15 @@ import {
 } from '@nestjs-boilerplate/core';
 import { User } from '@nestjs-boilerplate/user';
 import { LanguageCodes } from '@languages/language.constants';
-import { Group } from './group.entity';
+import { CardGroup } from './card-group.entity';
+import { Linguistic } from './linguistic.interface';
 
 export const TEXT_FROM_MAX_LENGTH = 250;
 export const TEXT_TO_MAX_LENGTH = 250;
 export const EXAMPLE_MAX_LENGTH = 3000;
 
 @Entity()
-export class Card extends BaseTypeormEntity {
+export class Card extends BaseTypeormEntity implements Linguistic {
   @Column({
     length: TEXT_FROM_MAX_LENGTH,
   })
@@ -43,7 +44,7 @@ export class Card extends BaseTypeormEntity {
   @Column({ default: false })
   isLearned: boolean;
 
-  @ManyToOne((type) => Group, {
+  @ManyToOne((type) => CardGroup, {
     nullable: true,
     persistence: false,
     eager: true,
@@ -52,12 +53,16 @@ export class Card extends BaseTypeormEntity {
   @JoinColumn({
     name: 'groupId',
   })
-  group: Group = null;
+  group: CardGroup;
 
   @Column({ nullable: true })
   groupId: number;
 
-  @ManyToOne(getTargetName(User), { nullable: false, eager: true })
+  @ManyToOne(getTargetName(User), {
+    nullable: false,
+    persistence: false,
+    eager: true,
+  })
   @JoinColumn({
     name: 'userId',
   })

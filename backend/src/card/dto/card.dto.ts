@@ -12,7 +12,7 @@ import {
   EXAMPLE_MAX_LENGTH,
   TEXT_FROM_MAX_LENGTH,
 } from '../entities/card.entity';
-import { CardGroupDto } from './card-group.dto';
+import { CardGroupShortDto } from './card-group-short.dto';
 
 @Exclude()
 export class CardDto extends BaseTimeStampedEntityDto {
@@ -50,9 +50,9 @@ export class CardDto extends BaseTimeStampedEntityDto {
   @Expose()
   isLearned: boolean;
 
-  @Type(() => CardGroupDto)
+  @Type(() => CardGroupShortDto)
   @ReadOnly()
-  group: CardGroupDto;
+  group: CardGroupShortDto;
 
   @IsOptional({ always: true })
   @WriteOnly()
