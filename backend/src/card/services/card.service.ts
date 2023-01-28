@@ -109,13 +109,11 @@ export class CardService extends BaseCrudService<Card, CardDto> {
                 isLearned_0: true,
               });
 
-            new LanguagesFilter(
+            return new LanguagesFilter(
               qb,
               input.languageFrom,
               input.languageTo,
             ).filter();
-
-            return qb;
           }, 'countLearned')
           .addSelect((qb) => {
             qb.select(`COUNT(${this.alias}.id)`, 'countNotLearned')
@@ -124,22 +122,20 @@ export class CardService extends BaseCrudService<Card, CardDto> {
                 isLearned_1: false,
               });
 
-            new LanguagesFilter(
+            return new LanguagesFilter(
               qb,
               input.languageFrom,
               input.languageTo,
             ).filter();
-
-            return qb;
           }, 'countNotLearned');
 
-        new LanguagesFilter(
+        const rawResult = await new LanguagesFilter(
           query,
           input.languageFrom,
           input.languageTo,
-        ).filter();
-
-        const rawResult = await query.getRawOne();
+        )
+          .filter()
+          .getRawOne();
 
         return ok(
           ClassTransformer.toClassObject(CardsStatisticOutput, {
