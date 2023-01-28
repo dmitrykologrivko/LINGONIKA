@@ -25,9 +25,7 @@ export class CardController extends CrudController<CardDto> {
     return unwrapResult(
       await this.cardService.bulkDestroy({
         ...input,
-        extra: {
-          user,
-        },
+        user,
       }),
     );
   }
@@ -42,9 +40,7 @@ export class CardController extends CrudController<CardDto> {
       await this.cardService.cardsStatistic({
         languageFrom,
         languageTo,
-        extra: {
-          user,
-        },
+        user,
       }),
     );
   }
@@ -61,9 +57,7 @@ export class CardController extends CrudController<CardDto> {
           languageFrom,
           languageTo,
         },
-        extra: {
-          user,
-        },
+        user,
       }),
     );
   }
@@ -76,9 +70,7 @@ export class CardController extends CrudController<CardDto> {
     return unwrapResult(
       await this.cardService.learnCards({
         groupId,
-        extra: {
-          user,
-        },
+        user,
       }),
     );
   }

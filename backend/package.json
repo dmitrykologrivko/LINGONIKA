@@ -27,9 +27,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs-boilerplate/auth": "^0.5.0",
-    "@nestjs-boilerplate/core": "^0.5.0",
-    "@nestjs-boilerplate/user": "^0.5.0",
+    "@nestjs-boilerplate/auth": "^0.7.0",
+    "@nestjs-boilerplate/core": "^0.7.0",
+    "@nestjs-boilerplate/user": "^0.7.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",

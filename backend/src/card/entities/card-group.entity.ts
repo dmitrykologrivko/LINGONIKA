@@ -1,4 +1,4 @@
-import { Column, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import {
   Entity,
   BaseTypeormEntity,
@@ -7,6 +7,7 @@ import {
 import { User } from '@nestjs-boilerplate/user';
 import { LanguageCodes } from '@languages/language.constants';
 import { Linguistic } from './linguistic.interface';
+import { Card } from './card.entity';
 
 export const NAME_MAX_LENGTH = 50;
 
@@ -35,4 +36,16 @@ export class CardGroup extends BaseTypeormEntity implements Linguistic {
 
   @Column({ nullable: false })
   userId: number;
+
+  @OneToMany(() => Card, (card) => card.group, {
+    eager: false,
+    persistence: false,
+  })
+  cards: Card[];
+
+  // Virtual field
+  learnedCards: number;
+
+  // Virtual field
+  totalCards: number;
 }

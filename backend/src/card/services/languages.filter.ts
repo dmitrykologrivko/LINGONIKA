@@ -16,27 +16,38 @@ export class LanguagesFilter<E extends Linguistic> extends BaseFilter<E> {
       return this.queryBuilder;
     }
 
+    const languageFromIndex0 = this.getParamIndex('languageFrom');
+    const languageToIndex0 = this.getParamIndex('languageTo');
+    const languageToIndex1 = this.getParamIndex('languageTo');
+    const languageFromIndex1 = this.getParamIndex('languageFrom');
+
     return this.queryBuilder.andWhere(
       new Brackets((qb) => {
         qb.where(
           new Brackets((qb) => {
             qb.where(
-              `${this.queryBuilder.alias}.languageFrom = :languageFrom`,
+              `${this.queryBuilder.alias}.languageFrom = :${languageFromIndex0}`,
               {
-                languageFrom: this.languageFrom,
+                [languageFromIndex0]: this.languageFrom,
               },
-            ).andWhere(`${this.queryBuilder.alias}.languageTo = :languageTo`, {
-              languageTo: this.languageTo,
-            });
+            ).andWhere(
+              `${this.queryBuilder.alias}.languageTo = :${languageToIndex0}`,
+              {
+                [languageToIndex0]: this.languageTo,
+              },
+            );
           }),
         ).orWhere(
           new Brackets((qb) => {
-            qb.where(`${this.queryBuilder.alias}.languageFrom = :languageTo`, {
-              languageFrom: this.languageFrom,
-            }).andWhere(
-              `${this.queryBuilder.alias}.languageTo = :languageFrom`,
+            qb.where(
+              `${this.queryBuilder.alias}.languageFrom = :${languageToIndex1}`,
               {
-                languageTo: this.languageTo,
+                [languageToIndex1]: this.languageFrom,
+              },
+            ).andWhere(
+              `${this.queryBuilder.alias}.languageTo = :${languageFromIndex1}`,
+              {
+                [languageFromIndex1]: this.languageTo,
               },
             );
           }),

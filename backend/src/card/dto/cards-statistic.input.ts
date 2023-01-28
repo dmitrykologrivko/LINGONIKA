@@ -1,8 +1,12 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { BaseInput } from '@nestjs-boilerplate/core';
+import { BaseInput, Authorizable } from '@nestjs-boilerplate/core';
+import { UserDto } from '@nestjs-boilerplate/user';
 import { LanguageCodes } from '@app/language/';
 
-export class CardsStatisticInput extends BaseInput {
+export class CardsStatisticInput
+  extends BaseInput
+  implements Authorizable<UserDto>
+{
   @IsOptional()
   @IsEnum(LanguageCodes)
   languageFrom?: string;
@@ -10,4 +14,6 @@ export class CardsStatisticInput extends BaseInput {
   @IsOptional()
   @IsEnum(LanguageCodes)
   languageTo?: string;
+
+  user: UserDto;
 }

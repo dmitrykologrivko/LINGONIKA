@@ -18,6 +18,7 @@ import {
   OrderingFilter,
   WhereFilter,
   PagePagination,
+  Authorizable,
   transaction,
   Result,
   ok,
@@ -28,6 +29,7 @@ import {
   TransactionRollbackException,
   CrudOperations,
 } from '@nestjs-boilerplate/core';
+import { UserDto } from '@nestjs-boilerplate/user';
 import { ActionDeclinedException } from '@shared/exceptions';
 import { Card } from '../entities/card.entity';
 import { CardGroup } from '../entities/card-group.entity';
@@ -41,6 +43,10 @@ import {
   USER_GROUP_BELONG_CONSTRAINT,
   CARD_LANGUAGES_GROUP_BELONG_CONSTRAINT,
 } from '../constants/card.constraints';
+
+const BULK_DESTROY_INPUT = 'bulk_destroy_input';
+const CARDS_STATISTIC_INPUT = 'cards_statistic_input';
+const LEARN_CARDS_INPUT = 'learn_cards_input';
 
 @ApplicationService()
 export class CardService extends BaseCrudService<Card, CardDto> {
@@ -66,7 +72,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       | TransactionRollbackException
     >
   > {
-    const wrapper = { type: InputType.GENERIC_INPUT, input };
+    const wrapper = { type: BULK_DESTROY_INPUT, input };
 
     const handler = (queryRunner: QueryRunner) =>
       ClassValidator.validate(BulkDestroyInput, input).then(
@@ -90,49 +96,56 @@ export class CardService extends BaseCrudService<Card, CardDto> {
   async cardsStatistic(
     input: CardsStatisticInput,
   ): Promise<Result<CardsStatisticOutput, ValidationContainerException>> {
-    const wrapper = { type: InputType.GENERIC_INPUT, input };
+    const wrapper = { type: CARDS_STATISTIC_INPUT, input };
 
     return ClassValidator.validate(CardsStatisticInput, input).then(
       proceed(async () => {
-        const learnedQuery = this.getQuery(null, wrapper);
-        const notLearnedQuery = this.getQuery(null, wrapper);
-        const totalCountQuery = this.getQuery(null, wrapper);
+        const query = this.getQuery(null, wrapper)
+          .addSelect(`COUNT(${this.alias}.id)`, 'totalCount')
+          .addSelect((qb) => {
+            qb.select(`COUNT(${this.alias}.id)`, 'countLearned')
+              .from(Card, this.alias)
+              .where(`${this.alias}.isLearned = :isLearned_0`, {
+                isLearned_0: true,
+              });
+
+            new LanguagesFilter(
+              qb,
+              input.languageFrom,
+              input.languageTo,
+            ).filter();
+
+            return qb;
+          }, 'countLearned')
+          .addSelect((qb) => {
+            qb.select(`COUNT(${this.alias}.id)`, 'countNotLearned')
+              .from(Card, this.alias)
+              .where(`${this.alias}.isLearned = :isLearned_1`, {
+                isLearned_1: false,
+              });
+
+            new LanguagesFilter(
+              qb,
+              input.languageFrom,
+              input.languageTo,
+            ).filter();
+
+            return qb;
+          }, 'countNotLearned');
 
         new LanguagesFilter(
-          learnedQuery,
+          query,
           input.languageFrom,
           input.languageTo,
         ).filter();
 
-        new LanguagesFilter(
-          notLearnedQuery,
-          input.languageFrom,
-          input.languageTo,
-        ).filter();
-
-        new LanguagesFilter(
-          totalCountQuery,
-          input.languageFrom,
-          input.languageTo,
-        ).filter();
-
-        const countLearned = await learnedQuery
-          .andWhere(`${this.alias}.isLearned = :isLearned`, { isLearned: true })
-          .getCount();
-
-        const countNotLearned = await notLearnedQuery
-          .andWhere(`${this.alias}.isLearned = :isLearned`, {
-            isLearned: false,
-          })
-          .getCount();
-
-        const totalCount = await totalCountQuery.getCount();
+        const rawResult = await query.getRawOne();
 
         return ok(
           ClassTransformer.toClassObject(CardsStatisticOutput, {
-            countLearned,
-            countNotLearned,
-            totalCount,
+            countLearned: rawResult.countLearned,
+            countNotLearned: rawResult.countNotLearned,
+            totalCount: rawResult.totalCount,
           }),
         );
       }),
@@ -146,7 +159,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       return ok([]);
     }
 
-    const wrapper = { type: InputType.GENERIC_INPUT, input };
+    const wrapper = { type: LEARN_CARDS_INPUT, input };
 
     const query = this.getQuery(null, wrapper).andWhere(
       `${this.alias}.isLearned = :isLearned`,
@@ -176,7 +189,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
     input: CreateInput<CardDto>,
     queryRunner: QueryRunner,
   ): Promise<Result<Card, ValidationException>> {
-    const validateResult = await this.validateCard(input, queryRunner);
+    const validateResult = await this.validateCard(input, null, queryRunner);
     if (validateResult.isErr()) {
       return validateResult;
     }
@@ -189,7 +202,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
     entity: Card,
     queryRunner: QueryRunner,
   ): Promise<Result<Card, any>> {
-    const validateResult = await this.validateCard(input, queryRunner);
+    const validateResult = await this.validateCard(input, entity, queryRunner);
     if (validateResult.isErr()) {
       return validateResult;
     }
@@ -225,7 +238,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
 
     if (wrapper) {
       query.andWhere('user.id = :user', {
-        user: wrapper.input.extra?.user?.id,
+        user: (wrapper.input as Authorizable<UserDto>).user.id,
       });
     }
 
@@ -238,12 +251,13 @@ export class CardService extends BaseCrudService<Card, CardDto> {
   ): Promise<Card> {
     return {
       ...(await super.mapCreateInput(input, queryRunner)),
-      userId: input.extra?.user?.id,
+      userId: input.user.id,
     };
   }
 
   private async validateCard(
     input: CreateInput<CardDto> | UpdateInput<CardDto>,
+    entity: Card,
     queryRunner: QueryRunner,
   ): Promise<Result<any, ValidationException>> {
     if (input.payload.groupId) {
@@ -251,7 +265,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
         where: {
           id: Equal(input.payload.groupId),
           user: {
-            id: Equal(input.extra?.user?.id),
+            id: Equal(input.user.id),
           },
         },
       });
@@ -266,14 +280,21 @@ export class CardService extends BaseCrudService<Card, CardDto> {
         );
       }
 
-      if (
-        !(
-          (input.payload.languageFrom === group.languageFrom &&
-            input.payload.languageTo === group.languageTo) ||
-          (input.payload.languageFrom === group.languageTo &&
-            input.payload.languageTo === group.languageFrom)
-        )
-      ) {
+      const notBelongToGroup = entity
+        ? !(
+            (entity.languageFrom === group.languageFrom &&
+              entity.languageTo === group.languageTo) ||
+            (entity.languageFrom === group.languageTo &&
+              entity.languageTo === group.languageFrom)
+          )
+        : !(
+            (input.payload.languageFrom === group.languageFrom &&
+              input.payload.languageTo === group.languageTo) ||
+            (input.payload.languageFrom === group.languageTo &&
+              input.payload.languageTo === group.languageFrom)
+          );
+
+      if (notBelongToGroup) {
         return err(
           new ValidationException(
             'groupId',
