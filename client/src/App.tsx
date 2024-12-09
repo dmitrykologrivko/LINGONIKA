@@ -1,6 +1,11 @@
+import { Button } from 'react-daisyui';
+
 function App() {
   return (
-    <div>Test</div>
+    <div>
+      <span className='font-bold'>Test</span>
+      <Button>Click me!</Button>
+    </div>
   );
 }
 
