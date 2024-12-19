@@ -1,11 +1,14 @@
-import { Button } from 'react-daisyui';
+import { Outlet } from 'react-router';
+import { Header } from '@/components';
 
 function App() {
   return (
-    <div>
-      <span className='font-bold'>Test</span>
-      <Button>Click me!</Button>
-    </div>
+    <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }
 
