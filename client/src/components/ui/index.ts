@@ -8,3 +8,6 @@ export { default as Heading3 } from './headings/Heading3';
 export { default as Heading4 } from './headings/Heading4';
 export { default as Heading5 } from './headings/Heading5';
 export { default as Heading6 } from './headings/Heading6';
+export { default as ReactHookForm } from './form/ReactHookForm';
+export { default as ReactHookFormZod } from './form/ReactHookFormZod';
+export { default as FormItem } from './form/FormItem';

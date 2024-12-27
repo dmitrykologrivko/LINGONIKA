@@ -1,0 +1,69 @@
+import { AxiosInstance } from 'axios';
+import { translate, capitalizeFirstLetter } from '@/utils';
+import { BadRequestApiError } from './types';
+import { ValidationError } from './validation.error';
+import { ACCESS_TOKEN_KEY } from './constants';
+
+export function addAuthorizationInterceptor(apiClient: AxiosInstance) {
+  apiClient.interceptors.request.use(
+    (config) => {
+      const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+      if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`;
+      }
+
+      return config;
+    },
+    (error) => error
+  );
+}
+
+export function addUnauthorizedInterceptor(apiClient: AxiosInstance) {
+  apiClient.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      const statusCode = error.response?.status;
+      if (statusCode !== 401) {
+        return Promise.reject(error);
+      }
+
+      console.warn('Unauthorized: Redirecting to login.');
+      window.location.href = '/login';
+      return Promise.reject(error);
+    }
+  );
+}
+
+export function addBadRequestInterceptor(apiClient: AxiosInstance) {
+  apiClient.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      const statusCode = error.response?.status;
+      if (statusCode !== 400) {
+        return Promise.reject(error);
+      }
+
+      const data = error.response?.data as BadRequestApiError;
+      const validationError = new ValidationError();
+
+      for (const message of data.message) {
+        const messages: string[] = [];
+        for (const constraint of Object.keys(message.constraints)) {
+          messages.push(
+            translate(constraint, { ns: 'apiErrors' }) || capitalizeFirstLetter(message.constraints[constraint])
+          );
+        }
+
+        const fieldName = message.property === 'nonFieldErrors'
+          ? 'root'
+          : message.property;
+        validationError.fieldErrors[fieldName] = {
+          type: 'api-error',
+          message: messages.join(', '),
+        };
+      }
+
+      return Promise.reject(validationError);
+    }
+  );
+}

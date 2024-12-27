@@ -1,6 +1,10 @@
+import { LoginForm } from '@/features/auth';
+
 function LoginPage() {
   return (
-    <div>Login Page</div>
+    <div className='w-lvw h-lvh'>
+      <LoginForm/>
+    </div>
   );
 }
 

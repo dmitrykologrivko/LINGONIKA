@@ -7,10 +7,23 @@ const resources = {
       signIn: 'SignIn',
       signUp: 'SignUp',
     },
+    errors: {
+      invalidEmail: 'Invalid email',
+      minLength: '{{what}} must contain at least {{length}} character(s)',
+    },
+    apiErrors: {
+
+    },
+    fields: {
+      username: 'Username',
+      password: 'Password',
+      usernamePlaceholder: 'Enter email address',
+      passwordPlaceholder: 'Enter password',
+    },
     home: {
-      heading: 'Your Language Learning Companion',
-      description: 'Custom flashcards sorted by language and topic to make learning simple and effective.'
-    }
+      heading: 'Your LanguageType Learning Companion',
+      description: 'Custom flashcards sorted by language and topic to make learning simple and effective.',
+    },
   },
 };
 
@@ -21,6 +34,9 @@ i18n
     lng: 'en',
     interpolation: {
       escapeValue: false // react already safes from xss
+    },
+    parseMissingKeyHandler: () => {
+      return null;
     }
   });
 

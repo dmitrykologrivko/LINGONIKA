@@ -1,11 +1,25 @@
+import { useCallback } from 'react';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Button, DefaultHeading, LogoBanner } from '@/components';
+import { getLanguages } from '@/api';
+import { useAsyncQuery, useApiClient, AsyncQueryConfig } from '@/hooks';
+import { Language } from '@/types';
 
 function HomePage() {
   const { t } = useTranslation();
+  const apiClient = useApiClient();
+
+  const queryFn = useCallback((config: AsyncQueryConfig)=> {
+    return getLanguages({}, config.signal, apiClient);
+  }, [apiClient]);
+
+  const { data } = useAsyncQuery<Language[]>(queryFn);
+
   return (
     <div className='w-lvw h-lvh flex justify-center items-center flex-col border-2 border-primary text-center sm:border-4'>
+      <div>{JSON.stringify(data)}</div>
+
       <LogoBanner/>
 
       <DefaultHeading>{t('heading', { ns: 'home' })}</DefaultHeading>
