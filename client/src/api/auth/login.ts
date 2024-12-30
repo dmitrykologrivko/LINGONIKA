@@ -15,8 +15,9 @@ export type LoginResponse = z.infer<typeof LoginSchema>;
 export async function login(
   request: LoginRequest,
   apiClient: AxiosInstance,
-): Promise<void> {
+): Promise<LoginResponse> {
   const response = await apiClient.post<LoginResponse>('/api/auth/jwt/login', request);
   const dto = LoginSchema.parse(response.data);
   setAuthenticationToken(dto.accessToken);
+  return dto;
 }

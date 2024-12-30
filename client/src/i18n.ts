@@ -10,13 +10,24 @@ const resources = {
     errors: {
       invalidEmail: 'Invalid email',
       minLength: '{{what}} must contain at least {{length}} character(s)',
+      maxLength: '{{what}} must be shorter than or equal to {{length}} character(s)',
+      passwordsMatch: 'Passwords must match',
     },
     apiErrors: {},
     fields: {
       username: 'Username',
       password: 'Password',
+      confirmPassword: 'Confirm Password',
+      firstName: 'First Name',
+      lastName: 'Last Name',
       usernamePlaceholder: 'Enter email address',
       passwordPlaceholder: 'Enter password',
+      confirmPasswordPlaceholder: 'Enter password confirmation',
+      firstNamePlaceholder: 'Enter first name',
+      lastNamePlaceholder: 'Enter last name',
+    },
+    labels: {
+      backToHomePage: 'Back to home page',
     },
     home: {
       heading: 'Your Language Learning Companion',
@@ -24,7 +35,9 @@ const resources = {
     },
     login: {
       heading: 'Login into account',
-      backToHomePage: 'Back to home page',
+    },
+    register: {
+      heading: 'Register account',
     }
   },
 };

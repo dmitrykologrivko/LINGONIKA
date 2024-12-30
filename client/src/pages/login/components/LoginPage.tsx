@@ -14,7 +14,7 @@ function LoginPage() {
         <LoginForm onSuccessLogin={() => navigate('/cards')} />
       </div>
       <div className='text-center p-4'>
-        <NavLink className='underline' to={'/'}>{t('backToHomePage', { ns: 'login' })}</NavLink>
+        <NavLink className='underline' to={'/'}>{t('backToHomePage', { ns: 'labels' })}</NavLink>
       </div>
     </div>
   );

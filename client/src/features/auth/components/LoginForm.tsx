@@ -13,17 +13,18 @@ import { useApiClient } from '@/hooks';
 import { login, LoginRequest, ValidationError } from '@/api';
 import { translate } from '@/utils';
 
+const USERNAME_KEY = 'username';
+const PASSWORD_KEY = 'password';
+
 const schema = z.object({
-  username: z.string().email(translate('invalidEmail', { ns: 'errors' })),
-  password: z.string().min(8, translate('minLength', { ns: 'errors', what: 'Password', length: '8' })),
+  [USERNAME_KEY]: z.string().email(translate('invalidEmail', { ns: 'errors' })),
+  [PASSWORD_KEY]: z.string()
+    .min(8, translate('minLength', { ns: 'errors', what: translate(PASSWORD_KEY, { ns: 'fields' }), length: '8' })),
 });
 
 type LoginFromData = z.infer<typeof schema>;
 
 const Form = ReactHookFormZod<LoginFromData>;
-
-const USERNAME_KEY = 'username';
-const PASSWORD_KEY = 'password';
 
 type LoginFormProps = {
   onSuccessLogin: () => void;

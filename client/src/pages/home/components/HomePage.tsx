@@ -8,7 +8,7 @@ function HomePage() {
   usePageTitle(t('heading', { ns: 'home' }));
 
   return (
-    <div className='w-lvw h-lvh flex justify-center items-center flex-col border-2 border-primary text-center sm:border-4'>
+    <div className='w-lvw h-lvh flex justify-center items-center flex-col text-center'>
       <LogoBanner/>
 
       <DefaultHeading>{t('heading', { ns: 'home' })}</DefaultHeading>
