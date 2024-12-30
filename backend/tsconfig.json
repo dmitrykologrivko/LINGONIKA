@@ -21,7 +21,8 @@
       "@app/*": ["src/*"],
       "@shared/*": ["src/shared/*"],
       "@card/*": ["src/card/*"],
-      "@languages/*": ["src/language/*"]
+      "@languages/*": ["src/language/*"],
+      "@profile/*": ["src/profile/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
