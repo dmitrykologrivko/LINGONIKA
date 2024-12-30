@@ -11,9 +11,7 @@ const resources = {
       invalidEmail: 'Invalid email',
       minLength: '{{what}} must contain at least {{length}} character(s)',
     },
-    apiErrors: {
-
-    },
+    apiErrors: {},
     fields: {
       username: 'Username',
       password: 'Password',
@@ -21,9 +19,13 @@ const resources = {
       passwordPlaceholder: 'Enter password',
     },
     home: {
-      heading: 'Your LanguageType Learning Companion',
+      heading: 'Your Language Learning Companion',
       description: 'Custom flashcards sorted by language and topic to make learning simple and effective.',
     },
+    login: {
+      heading: 'Login into account',
+      backToHomePage: 'Back to home page',
+    }
   },
 };
 

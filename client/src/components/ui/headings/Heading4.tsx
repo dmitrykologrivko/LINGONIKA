@@ -1,8 +1,12 @@
 import { PropsWithChildren } from 'react';
 
-function Heading4({ children }: PropsWithChildren) {
+type HeadingProps = {
+  className?: string;
+} & PropsWithChildren;
+
+function Heading4({ children, className }: HeadingProps) {
   return (
-    <h4 className='text-2xl font-bold dark:text-white'>
+    <h4 className={`${className || ''} text-lg font-bold`}>
       {children}
     </h4>
   );
