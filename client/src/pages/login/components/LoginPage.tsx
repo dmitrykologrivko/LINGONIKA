@@ -11,7 +11,7 @@ function LoginPage() {
   return (
     <div className='w-lvw h-lvh flex flex-col'>
       <div className='flex-grow flex justify-center items-center'>
-        <LoginForm onSuccessLogin={() => navigate('/')} />
+        <LoginForm onSuccessLogin={() => navigate('/cards')} />
       </div>
       <div className='text-center p-4'>
         <NavLink className='underline' to={'/'}>{t('backToHomePage', { ns: 'login' })}</NavLink>

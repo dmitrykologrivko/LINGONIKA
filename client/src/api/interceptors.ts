@@ -2,12 +2,12 @@ import { AxiosInstance } from 'axios';
 import { translate, capitalizeFirstLetter } from '@/utils';
 import { BadRequestApiError } from './types';
 import { ValidationError } from './validation.error';
-import { ACCESS_TOKEN_KEY } from './constants';
+import { getAuthenticationToken, clearAuthenticationToken } from './utils';
 
 export function addAuthorizationInterceptor(apiClient: AxiosInstance) {
   apiClient.interceptors.request.use(
     (config) => {
-      const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+      const accessToken = getAuthenticationToken();
       if (accessToken) {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
@@ -28,6 +28,7 @@ export function addUnauthorizedInterceptor(apiClient: AxiosInstance) {
       }
 
       console.warn('Unauthorized: Redirecting to login.');
+      clearAuthenticationToken();
       window.location.href = '/login';
       return Promise.reject(error);
     }

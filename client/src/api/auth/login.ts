@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
-import { ACCESS_TOKEN_KEY } from '../constants';
+import { setAuthenticationToken } from '../utils';
 
 const LoginSchema = z.object({
   accessToken: z.string()
@@ -18,5 +18,5 @@ export async function login(
 ): Promise<void> {
   const response = await apiClient.post<LoginResponse>('/api/auth/jwt/login', request);
   const dto = LoginSchema.parse(response.data);
-  localStorage.setItem(ACCESS_TOKEN_KEY, dto.accessToken);
+  setAuthenticationToken(dto.accessToken);
 }
