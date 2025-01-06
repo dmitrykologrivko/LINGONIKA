@@ -8,7 +8,10 @@ type DynamicRedirectProps = {
 
 function DynamicRedirect({ redirectTo, renderContent }: DynamicRedirectProps) {
   const navigate = useNavigate();
-  const redirectFn = useCallback(() => navigate(redirectTo), [redirectTo]);
+  const redirectFn = useCallback(
+    () => navigate(redirectTo),
+    [redirectTo, navigate],
+  );
   return (
     <>
       {renderContent(redirectFn)}

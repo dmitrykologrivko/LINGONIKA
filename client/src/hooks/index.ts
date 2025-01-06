@@ -4,3 +4,5 @@ export * from './useAsyncQuery';
 export * from './useApiClient';
 export * from './usePageTitle';
 export * from './useLocalStorage';
+export * from './useLoggedIn';
+export * from './useRedirectWhen';

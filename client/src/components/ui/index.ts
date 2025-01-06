@@ -11,4 +11,5 @@ export { default as Heading6 } from './Headings/Heading6';
 export { default as ReactHookForm } from './Form/ReactHookForm';
 export { default as ReactHookFormZod } from './Form/ReactHookFormZod';
 export { default as FormItem } from './Form/FormItem';
-export { default as LogoBanner } from './LogoBanner/LogoBanner.tsx';
+export { default as LogoBanner } from './LogoBanner/LogoBanner';
+export { default as Spinner } from './Spinner/Spinner';

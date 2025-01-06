@@ -1,7 +1,5 @@
-import { PropsWithChildren } from 'react';
-import { createBrowserRouter } from 'react-router';
-import { DynamicRedirect, MainLayout } from '@/components';
-import { AuthGuard } from '@/features/auth';
+import { createBrowserRouter, RouteObject } from 'react-router';
+import { ProtectedRoute, PublicOnlyRoute, MainLayout } from '@/components';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
@@ -9,68 +7,53 @@ import { CardsPage } from '@/pages/cards';
 import { NotFoundPage } from '@/pages/not-found';
 import Boundary from './Boundary';
 
-// eslint-disable-next-line react-refresh/only-export-components
-const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  return (
-    <DynamicRedirect redirectTo={'/login'}
-                     renderContent={(redirect) => (
-                       <AuthGuard onUnauthorized={redirect}>
-                         {children}
-                       </AuthGuard>
-                     )}/>
-  );
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-const PublicOnlyRoute = ({ children }: PropsWithChildren) => {
-  return (
-    <DynamicRedirect redirectTo={'/cards'}
-                     renderContent={(redirect) => (
-                       <AuthGuard onAuthorized={redirect}>
-                         {children}
-                       </AuthGuard>
-                     )}/>
-  );
-};
+const PUBLIC_ROUTE_REDIRECT = '/cards';
+const PROTECTED_ROUTE_REDIRECT = '/login';
 
 export const createRouter = () => {
+  function createRoute(routeObj: Partial<RouteObject>): RouteObject {
+    return {
+      ...routeObj,
+      errorElement: <Boundary/>,
+      hydrateFallbackElement: <div>Loading...</div>,
+    };
+  }
+
   return createBrowserRouter([
-    {
+    createRoute({
       path: '/',
       element: (
-        <PublicOnlyRoute>
+        <PublicOnlyRoute redirectTo={PUBLIC_ROUTE_REDIRECT}>
           <HomePage/>
         </PublicOnlyRoute>
       ),
-      errorElement: <Boundary/>,
-    },
-    {
+    }),
+
+    createRoute({
       path: 'login',
       element: (
-        <PublicOnlyRoute>
+        <PublicOnlyRoute redirectTo={PUBLIC_ROUTE_REDIRECT}>
           <LoginPage/>
         </PublicOnlyRoute>
       ),
-      errorElement: <Boundary/>
-    },
-    {
+    }),
+
+    createRoute({
       path: 'register',
       element: (
-        <PublicOnlyRoute>
+        <PublicOnlyRoute redirectTo={PUBLIC_ROUTE_REDIRECT}>
           <RegisterPage/>
         </PublicOnlyRoute>
       ),
-      errorElement: <Boundary/>
-    },
-    {
+    }),
+
+    createRoute({
       path: '/*',
       element: (
-        <ProtectedRoute>
+        <ProtectedRoute redirectTo={PROTECTED_ROUTE_REDIRECT}>
           <MainLayout/>
         </ProtectedRoute>
       ),
-      errorElement: <Boundary/>,
-      hydrateFallbackElement: <div>Loading...</div>,
       children: [
         {
           path: 'cards',
@@ -80,7 +63,7 @@ export const createRouter = () => {
           path: '*',
           element: <NotFoundPage/>
         }
-      ]
-    },
+      ],
+    }),
   ]);
 };

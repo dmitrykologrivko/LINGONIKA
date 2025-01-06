@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router';
 import Header from '../Header/Header';
+import Spinner from '../../ui/Spinner/Spinner';
 
 function MainLayout() {
   return (
@@ -8,6 +9,7 @@ function MainLayout() {
       <main>
         <Outlet />
       </main>
+      <Spinner show={false} />
     </>
   );
 }
