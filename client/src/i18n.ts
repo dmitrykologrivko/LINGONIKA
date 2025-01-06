@@ -30,6 +30,12 @@ const resources = {
     labels: {
       backToHomePage: 'Back to home page',
     },
+    modals: {
+      logoutTitle: 'Logout',
+      logoutMessage: 'Are you sure you want to proceed logout?',
+    },
+
+    // Pages
     home: {
       heading: 'Your Language Learning Companion',
       description: 'Custom flashcards sorted by language and topic to make learning simple and effective.',

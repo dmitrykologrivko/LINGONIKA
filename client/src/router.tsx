@@ -1,5 +1,10 @@
 import { createBrowserRouter, RouteObject } from 'react-router';
-import { ProtectedRoute, PublicOnlyRoute, MainLayout } from '@/components';
+import {
+  ProtectedRoute,
+  PublicOnlyRoute,
+  ProtectedLayout,
+  Spinner,
+} from '@/components';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
@@ -15,7 +20,7 @@ export const createRouter = () => {
     return {
       ...routeObj,
       errorElement: <Boundary/>,
-      hydrateFallbackElement: <div>Loading...</div>,
+      hydrateFallbackElement: <Spinner show={true}/>,
     };
   }
 
@@ -51,13 +56,13 @@ export const createRouter = () => {
       path: '/*',
       element: (
         <ProtectedRoute redirectTo={PROTECTED_ROUTE_REDIRECT}>
-          <MainLayout/>
+          <ProtectedLayout/>
         </ProtectedRoute>
       ),
       children: [
         {
           path: 'cards',
-          element: <CardsPage/>
+          element: <CardsPage/>,
         },
         {
           path: '*',

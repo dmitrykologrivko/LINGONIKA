@@ -1,5 +1,6 @@
 import { useNavigate, NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { PublicLayout } from '@/components';
 import { LoginForm } from '@/features/auth';
 import { usePageTitle } from '@/hooks';
 
@@ -9,14 +10,16 @@ function LoginPage() {
   usePageTitle(t('heading',  { ns: 'login' }));
 
   return (
-    <div className='w-lvw h-lvh flex flex-col'>
-      <div className='flex-grow flex justify-center items-center'>
-        <LoginForm onSuccessLogin={() => navigate('/cards')} />
+    <PublicLayout>
+      <div className='w-lvw h-lvh flex flex-col'>
+        <div className='flex-grow flex justify-center items-center'>
+          <LoginForm onSuccessLogin={() => navigate('/cards')}/>
+        </div>
+        <div className='text-center p-4'>
+          <NavLink className='underline' to={'/'}>{t('backToHomePage', {ns: 'labels'})}</NavLink>
+        </div>
       </div>
-      <div className='text-center p-4'>
-        <NavLink className='underline' to={'/'}>{t('backToHomePage', { ns: 'labels' })}</NavLink>
-      </div>
-    </div>
+    </PublicLayout>
   );
 }
 
