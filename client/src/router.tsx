@@ -1,40 +1,64 @@
+import { PropsWithChildren } from 'react';
 import { createBrowserRouter } from 'react-router';
+import { DynamicRedirect, MainLayout } from '@/components';
+import { AuthGuard } from '@/features/auth';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
 import { CardsPage } from '@/pages/cards';
 import { NotFoundPage } from '@/pages/not-found';
-import App from './App';
 import Boundary from './Boundary';
-import PublicRoute from './PublicRoute';
-import ProtectedRoute from './ProtectedRoute';
+
+// eslint-disable-next-line react-refresh/only-export-components
+const ProtectedRoute = ({ children }: PropsWithChildren) => {
+  return (
+    <DynamicRedirect redirectTo={'/login'}
+                     renderContent={(redirect) => (
+                       <AuthGuard onUnauthorized={redirect}>
+                         {children}
+                       </AuthGuard>
+                     )}/>
+  );
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+const PublicOnlyRoute = ({ children }: PropsWithChildren) => {
+  return (
+    <DynamicRedirect redirectTo={'/cards'}
+                     renderContent={(redirect) => (
+                       <AuthGuard onAuthorized={redirect}>
+                         {children}
+                       </AuthGuard>
+                     )}/>
+  );
+};
 
 export const createRouter = () => {
   return createBrowserRouter([
     {
       path: '/',
       element: (
-        <PublicRoute>
+        <PublicOnlyRoute>
           <HomePage/>
-        </PublicRoute>
+        </PublicOnlyRoute>
       ),
       errorElement: <Boundary/>,
     },
     {
       path: 'login',
       element: (
-        <PublicRoute>
+        <PublicOnlyRoute>
           <LoginPage/>
-        </PublicRoute>
+        </PublicOnlyRoute>
       ),
       errorElement: <Boundary/>
     },
     {
       path: 'register',
       element: (
-        <PublicRoute>
+        <PublicOnlyRoute>
           <RegisterPage/>
-        </PublicRoute>
+        </PublicOnlyRoute>
       ),
       errorElement: <Boundary/>
     },
@@ -42,7 +66,7 @@ export const createRouter = () => {
       path: '/*',
       element: (
         <ProtectedRoute>
-          <App/>
+          <MainLayout/>
         </ProtectedRoute>
       ),
       errorElement: <Boundary/>,

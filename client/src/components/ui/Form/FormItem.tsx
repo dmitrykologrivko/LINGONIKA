@@ -4,9 +4,9 @@ type FormItemProps = {
   label: string;
   error?: string;
   renderField: (props: object) => ReactElement;
-} & PropsWithChildren;
+};
 
-function FormItem({ renderField, label, error }: FormItemProps) {
+function FormItem({ renderField, label, error }: PropsWithChildren<FormItemProps>) {
   return (
     <div className='form-control w-full'>
       <label className='label'>

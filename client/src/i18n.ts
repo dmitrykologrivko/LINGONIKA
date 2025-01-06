@@ -12,6 +12,7 @@ const resources = {
       minLength: '{{what}} must contain at least {{length}} character(s)',
       maxLength: '{{what}} must be shorter than or equal to {{length}} character(s)',
       passwordsMatch: 'Passwords must match',
+      unauthorizedAccess: 'User must be unauthorized',
     },
     apiErrors: {},
     fields: {

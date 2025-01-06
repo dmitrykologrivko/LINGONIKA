@@ -8,10 +8,10 @@ export const useServiceRegistry = () => useContext(ServiceRegistryContext);
 
 type ServiceRegistryProviderProps = {
   providers: ServiceProvider[];
-} & PropsWithChildren;
+};
 
 export const ServiceRegistryProvider = (
-  { children, providers }: ServiceRegistryProviderProps
+  { children, providers }: PropsWithChildren<ServiceRegistryProviderProps>
 ) => {
   const registry = new ServiceRegistry();
   registry.registerProviders(providers);
