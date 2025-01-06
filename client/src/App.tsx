@@ -2,6 +2,7 @@ import Provider from './Provider';
 
 function App() {
   return (
+    // TODO: ErrorBoundary wrap
     <Provider/>
   );
 }

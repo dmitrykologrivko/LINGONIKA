@@ -1,9 +1,9 @@
-import { PropsWithChildren } from 'react';
+import { Outlet } from 'react-router';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { any } from '@/utils';
 import { Spinner } from '@/components';
 
-function PublicLayout({ children }: PropsWithChildren) {
+function PublicLayout() {
   const shouldShowSpinner = any(
     useIsFetching(),
     useIsMutating(),
@@ -12,7 +12,7 @@ function PublicLayout({ children }: PropsWithChildren) {
   return (
     <>
       <main>
-        {children}
+        <Outlet/>
       </main>
       <Spinner show={shouldShowSpinner}/>
     </>

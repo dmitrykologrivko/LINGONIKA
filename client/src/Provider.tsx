@@ -8,7 +8,7 @@ function Provider() {
   return (
     <ServiceRegistryProvider providers={di.serviceProviders}>
       <QueryClientProvider client={di.queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
         <RouterProvider router={di.router}/>
       </QueryClientProvider>
     </ServiceRegistryProvider>

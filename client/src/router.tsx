@@ -3,6 +3,7 @@ import {
   ProtectedRoute,
   PublicOnlyRoute,
   ProtectedLayout,
+  PublicLayout,
   Spinner,
 } from '@/components';
 import { HomePage } from '@/pages/home';
@@ -11,9 +12,6 @@ import { RegisterPage } from '@/pages/register';
 import { CardsPage } from '@/pages/cards';
 import { NotFoundPage } from '@/pages/not-found';
 import Boundary from './Boundary';
-
-const PUBLIC_ROUTE_REDIRECT = '/cards';
-const PROTECTED_ROUTE_REDIRECT = '/login';
 
 export const createRouter = () => {
   function createRoute(routeObj: Partial<RouteObject>): RouteObject {
@@ -28,47 +26,33 @@ export const createRouter = () => {
     createRoute({
       path: '/',
       element: (
-        <PublicOnlyRoute redirectTo={PUBLIC_ROUTE_REDIRECT}>
-          <HomePage/>
+        <PublicOnlyRoute redirectTo={'/cards'}>
+          <PublicLayout/>
         </PublicOnlyRoute>
       ),
-    }),
-
-    createRoute({
-      path: 'login',
-      element: (
-        <PublicOnlyRoute redirectTo={PUBLIC_ROUTE_REDIRECT}>
-          <LoginPage/>
-        </PublicOnlyRoute>
-      ),
-    }),
-
-    createRoute({
-      path: 'register',
-      element: (
-        <PublicOnlyRoute redirectTo={PUBLIC_ROUTE_REDIRECT}>
-          <RegisterPage/>
-        </PublicOnlyRoute>
-      ),
+      children: [
+        { index: true, element: <HomePage/> },
+        { path: 'login', element: <LoginPage/> },
+        { path: 'register', element: <RegisterPage/> }
+      ],
     }),
 
     createRoute({
       path: '/*',
       element: (
-        <ProtectedRoute redirectTo={PROTECTED_ROUTE_REDIRECT}>
+        <ProtectedRoute redirectTo={'/login'}>
           <ProtectedLayout/>
         </ProtectedRoute>
       ),
       children: [
-        {
-          path: 'cards',
-          element: <CardsPage/>,
-        },
-        {
-          path: '*',
-          element: <NotFoundPage/>
-        }
+        { path: 'cards', element: <CardsPage/> },
+        { path: '*', element: <NotFoundPage/> }
       ],
+    }),
+
+    createRoute({
+      path: '*',
+      element: <NotFoundPage/>
     }),
   ]);
 };
