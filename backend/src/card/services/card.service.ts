@@ -12,7 +12,6 @@ import {
   ClassTransformer,
   CreateInput,
   UpdateInput,
-  InputType,
   InputWrapper,
   ListInput,
   OrderingFilter,
@@ -37,6 +36,8 @@ import { CardDto } from '../dto/card.dto';
 import { BulkDestroyInput } from '../dto/bulk-destroy.input';
 import { CardsStatisticInput } from '../dto/cards-statistic.input';
 import { CardsStatisticOutput } from '../dto/cards-statistic.output';
+import { CardsDictionaryInput } from '../dto/cards-dictionaries.input';
+import { CardsDictionariesOutput } from '../dto/cards-dictionaries.output';
 import { LearnCardsInput } from '../dto/learn-cards.input';
 import { LanguagesFilter } from './languages.filter';
 import {
@@ -46,6 +47,7 @@ import {
 
 const BULK_DESTROY_INPUT = 'bulk_destroy_input';
 const CARDS_STATISTIC_INPUT = 'cards_statistic_input';
+const CARDS_DICTIONARIES_INPUT = 'cards_dictionaries_input';
 const LEARN_CARDS_INPUT = 'learn_cards_input';
 
 @ApplicationService()
@@ -102,34 +104,14 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       proceed(async () => {
         const query = this.getQuery(null, wrapper)
           .addSelect(`COUNT(${this.alias}.id)`, 'totalCount')
-          .addSelect((qb) => {
-            qb.select(`COUNT(${this.alias}.id)`, 'countLearned')
-              .from(Card, this.alias)
-              .where(`${this.alias}.isLearned = :isLearned_0`, {
-                isLearned_0: true,
-              })
-              .andWhere(`${this.alias}.userId = :user`);
-
-            return new LanguagesFilter(
-              qb,
-              input.languageFrom,
-              input.languageTo,
-            ).filter();
-          }, 'countLearned')
-          .addSelect((qb) => {
-            qb.select(`COUNT(${this.alias}.id)`, 'countNotLearned')
-              .from(Card, this.alias)
-              .where(`${this.alias}.isLearned = :isLearned_1`, {
-                isLearned_1: false,
-              })
-              .andWhere(`${this.alias}.userId = :user`);
-
-            return new LanguagesFilter(
-              qb,
-              input.languageFrom,
-              input.languageTo,
-            ).filter();
-          }, 'countNotLearned');
+          .addSelect(
+            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)`,
+            'countLearned',
+          )
+          .addSelect(
+            `COUNT(CASE WHEN ${this.alias}.isLearned = FALSE THEN TRUE END)`,
+            'countNotLearned',
+          );
 
         const rawResult = await new LanguagesFilter(
           query,
@@ -145,6 +127,42 @@ export class CardService extends BaseCrudService<Card, CardDto> {
             countNotLearned: rawResult.countNotLearned,
             totalCount: rawResult.totalCount,
           }),
+        );
+      }),
+    );
+  }
+
+  async cardsDictionaries(
+    input: CardsDictionaryInput,
+  ): Promise<Result<CardsDictionariesOutput[], ValidationContainerException>> {
+    const wrapper = { type: CARDS_DICTIONARIES_INPUT, input };
+
+    return ClassValidator.validate(CardsDictionaryInput, input).then(
+      proceed(async () => {
+        const query = this.getQuery(null, wrapper)
+          .addSelect(`${this.alias}.languageFrom`, 'languageFrom')
+          .addSelect(`${this.alias}.languageTo`, 'languageTo')
+          .addSelect(`COUNT(${this.alias}.id)`, 'totalCount')
+          .addSelect(
+            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)`,
+            'countLearned',
+          )
+          .addGroupBy(`${this.alias}.languageFrom`)
+          .addGroupBy(`${this.alias}.languageTo`)
+          .addOrderBy('totalCount', 'DESC');
+
+        const rawResult = await query.getRawMany();
+
+        return ok(
+          ClassTransformer.toClassObjects(
+            CardsDictionariesOutput,
+            rawResult.map((item) => ({
+              languageFrom: item.languageFrom,
+              languageTo: item.languageTo,
+              countLearned: item.countLearned,
+              totalCount: item.totalCount,
+            })),
+          ),
         );
       }),
     );

@@ -5,7 +5,7 @@ import {
   getTargetName,
 } from '@nestjs-boilerplate/core';
 import { User } from '@nestjs-boilerplate/user';
-import { LanguageCodes } from '@languages/language.constants';
+import { LanguageCodes } from '@language/language.constants';
 import { Linguistic } from './linguistic.interface';
 import { Card } from './card.entity';
 

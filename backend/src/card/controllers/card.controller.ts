@@ -45,6 +45,11 @@ export class CardController extends CrudController<CardDto> {
     );
   }
 
+  @Get('dictionaries')
+  async cardsDictionaries(@AuthorizedUser() user: UserDto) {
+    return unwrapResult(await this.cardService.cardsDictionaries({ user }));
+  }
+
   @Get('learn/languages/:languageFrom/:languageTo')
   async learnCardsByLanguages(
     @Param('languageFrom') languageFrom: string,

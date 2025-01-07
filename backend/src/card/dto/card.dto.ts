@@ -6,7 +6,7 @@ import {
   WriteOnly,
   BaseTimeStampedEntityDto,
 } from '@nestjs-boilerplate/core';
-import { LanguageCodes } from '@languages/language.constants';
+import { LanguageCodes } from '@language/language.constants';
 import {
   TEXT_TO_MAX_LENGTH,
   EXAMPLE_MAX_LENGTH,

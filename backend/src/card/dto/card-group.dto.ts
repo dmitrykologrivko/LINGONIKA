@@ -6,7 +6,7 @@ import {
   PartialUpdate,
   ReadOnly,
 } from '@nestjs-boilerplate/core';
-import { LanguageCodes } from '@languages/language.constants';
+import { LanguageCodes } from '@language/language.constants';
 import { NAME_MAX_LENGTH } from '../entities/card-group.entity';
 
 const READ_CREATE_OPERATIONS = [CrudOperations.READ, CrudOperations.CREATE];

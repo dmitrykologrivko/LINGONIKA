@@ -11,5 +11,6 @@ import { CardGroupController } from './controllers/card-group.controller';
   imports: [DatabaseModule.withEntities([Card, CardGroup])],
   providers: [CardService, CardGroupService],
   controllers: [CardController, CardGroupController],
+  exports: [DatabaseModule],
 })
 export class CardModule {}
