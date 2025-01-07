@@ -107,7 +107,8 @@ export class CardService extends BaseCrudService<Card, CardDto> {
               .from(Card, this.alias)
               .where(`${this.alias}.isLearned = :isLearned_0`, {
                 isLearned_0: true,
-              });
+              })
+              .andWhere(`${this.alias}.userId = :user`);
 
             return new LanguagesFilter(
               qb,
@@ -120,7 +121,8 @@ export class CardService extends BaseCrudService<Card, CardDto> {
               .from(Card, this.alias)
               .where(`${this.alias}.isLearned = :isLearned_1`, {
                 isLearned_1: false,
-              });
+              })
+              .andWhere(`${this.alias}.userId = :user`);
 
             return new LanguagesFilter(
               qb,
