@@ -12,4 +12,5 @@ export { default as ReactHookForm } from './Form/ReactHookForm';
 export { default as ReactHookFormZod } from './Form/ReactHookFormZod';
 export { default as FormItem } from './Form/FormItem';
 export { default as LogoBanner } from './LogoBanner/LogoBanner';
-export { default as Spinner } from './Spinner/Spinner';
+export { default as LoadingOverlay } from './LoadingOverlay/LoadingOverlay';
+export { default as Panel } from './Panel/Panel';

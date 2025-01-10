@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { any } from '@/utils';
-import { Spinner } from '@/components';
+import LoadingOverlay from '../../ui/LoadingOverlay/LoadingOverlay';
 
 function PublicLayout() {
   const shouldShowSpinner = any(
@@ -14,7 +14,7 @@ function PublicLayout() {
       <main>
         <Outlet/>
       </main>
-      <Spinner show={shouldShowSpinner}/>
+      <LoadingOverlay show={shouldShowSpinner}/>
     </>
   );
 }

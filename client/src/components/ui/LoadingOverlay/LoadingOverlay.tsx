@@ -5,7 +5,7 @@ type SpinnerProps = {
   show: boolean;
 };
 
-function Spinner({ show }: SpinnerProps) {
+function LoadingOverlay({ show }: SpinnerProps) {
   return (
     createPortal(
       <div className={`w-full h-full absolute justify-center items-center bg-white/75 z-[1001] ${show ? 'flex' : 'hidden'}`}>
@@ -16,4 +16,4 @@ function Spinner({ show }: SpinnerProps) {
   );
 }
 
-export default Spinner;
+export default LoadingOverlay;

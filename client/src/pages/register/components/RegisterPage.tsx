@@ -14,7 +14,7 @@ function RegisterPage() {
         <RegisterForm onSuccessRegistration={() => navigate('/login')}/>
       </div>
       <div className='text-center p-4'>
-        <NavLink className='underline' to={'/'}>{t('backToHomePage', {ns: 'labels'})}</NavLink>
+        <NavLink className='underline' to={'/'}>{t('backToHomePage', {ns: 'actions'})}</NavLink>
       </div>
     </div>
   );

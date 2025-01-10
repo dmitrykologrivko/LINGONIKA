@@ -3,10 +3,8 @@ import { initReactI18next } from 'react-i18next';
 
 const resources = {
   en: {
-    translation: {
-      signIn: 'SignIn',
-      signUp: 'SignUp',
-    },
+    // Common Pages' and Features' translation
+    translation: {},
     errors: {
       invalidEmail: 'Invalid email',
       minLength: '{{what}} must contain at least {{length}} character(s)',
@@ -17,25 +15,65 @@ const resources = {
     apiErrors: {},
     fields: {
       username: 'Username',
-      password: 'Password',
-      confirmPassword: 'Confirm Password',
-      firstName: 'First Name',
-      lastName: 'Last Name',
       usernamePlaceholder: 'Enter email address',
+      password: 'Password',
       passwordPlaceholder: 'Enter password',
+      confirmPassword: 'Confirm Password',
       confirmPasswordPlaceholder: 'Enter password confirmation',
+      firstName: 'First Name',
       firstNamePlaceholder: 'Enter first name',
+      lastName: 'Last Name',
       lastNamePlaceholder: 'Enter last name',
+      languageFrom: 'Language From',
+      languageFromDefault: 'Select a language',
+      languageTo: 'Language To',
+      languageToDefault: 'Select a language',
+    },
+    actions: {
+      create: 'Create',
+      edit: 'Edit',
+      ok: 'Ok',
+      cancel: 'Cancel',
+      signIn: 'SignIn',
+      signUp: 'SignUp',
+      logout: 'Logout',
+      backToHomePage: 'Back to home page',
+      editProfile: 'Edit Profile',
     },
     labels: {
-      backToHomePage: 'Back to home page',
+      of: 'of',
+      preparing: 'Preparing',
+      BN: 'Bengali',
+      ZH: 'Chinese',
+      DA: 'Danish',
+      NL: 'Dutch',
+      EN: 'English',
+      FI: 'Finnish',
+      FR: 'France',
+      DE: 'German',
+      EL: 'Greek',
+      HU: 'Hungarian',
+      HI: 'Hindi',
+      IT: 'Italian',
+      IN: 'Indonesian',
+      JA: 'Japan',
+      KK: 'Kazakh',
+      KO: 'Korean',
+      LA: 'Latin',
+      NO: 'Norwegian',
+      PL: 'Polish',
+      PT: 'Portuguese',
+      RU: 'Russian',
+      ES: 'Spanish',
+      TR: 'Turkish',
+      UK: 'Ukrainian',
     },
     modals: {
       logoutTitle: 'Logout',
       logoutMessage: 'Are you sure you want to proceed logout?',
     },
 
-    // Pages
+    // Independent Pages' and Features' translation
     home: {
       heading: 'Your Language Learning Companion',
       description: 'Custom flashcards sorted by language and topic to make learning simple and effective.',
@@ -45,7 +83,26 @@ const resources = {
     },
     register: {
       heading: 'Register account',
-    }
+    },
+    dashboard: {
+      heading: 'Dashboard',
+      yourDictionaries: 'Your Dictionaries',
+      learnedWords: 'Learned Vocabulary',
+      notLearnedWords: 'Pending Vocabulary',
+      totalWords: 'Total Vocabulary',
+      addCard: 'Add Flashcard',
+      noDictionaries: 'You haven’t created any flashcards yet!',
+    },
+    cards: {
+      createCardTitle: 'Create Flashcard',
+      editCardTitle: 'Edit Flashcard',
+      textFrom: 'Word or phrase for learning',
+      textFromPlaceholder: 'Enter word or phrase for learning',
+      textTo: 'Translation',
+      textToPlaceholder: 'Enter translation',
+      example: 'Example',
+      examplePlaceholder: 'Enter example',
+    },
   },
 };
 

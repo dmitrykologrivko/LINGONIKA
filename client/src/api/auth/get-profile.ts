@@ -22,9 +22,9 @@ export async function getProfile(
 
 export function getProfileOptions(apiClient: AxiosInstance) {
   return queryOptions({
-    queryKey: ['getProfile'],
+    queryKey: [getProfile.name],
     queryFn: ({ signal }) => getProfile(signal, apiClient),
-    staleTime: 1000 * 60 * 60 * 24, // 24 hours
-    gcTime: 1000 * 60 * 60 * 24, // 24 hours
+    staleTime: Infinity,
+    gcTime: Infinity,
   })
 }

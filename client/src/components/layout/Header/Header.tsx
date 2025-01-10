@@ -1,11 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
-import { Modal, Button } from 'react-daisyui';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, NavLink } from 'react-router';
+import { Modal, Button, Dropdown } from 'react-daisyui';
 import { useTranslation } from 'react-i18next';
 import { useApiClient } from '@/hooks';
 import { getProfileOptions, clearAuthenticationToken } from '@/api';
 import logoWhite from '@/assets/logo-white.svg';
-import logoutIcon from '@/assets/logout-white.svg';
+import downChevronIcon from '@/assets/down-chevron-white.svg';
+import profileIcon from '@/assets/profile-round-black.svg';
+import logoutIcon from '@/assets/logout-black.svg';
 
 function Header() {
   const { t } = useTranslation();
@@ -13,27 +15,43 @@ function Header() {
   const { Dialog, handleShow } = Modal.useDialog();
 
   const apiClient = useApiClient();
+  const queryClient = useQueryClient();
   const profile = useQuery(getProfileOptions(apiClient));
 
   function logout() {
     clearAuthenticationToken();
+    queryClient.removeQueries();
     navigate('/');
   }
 
   return (
-    <div className='w-full p-4 bg-primary flex items-center'>
-      <div className='grow flex items-center gap-2'>
+    <div className='w-full p-4 bg-primary flex items-center justify-between'>
+      <NavLink className='flex items-center gap-2' to={'/'}>
         <img src={logoWhite} alt='logo' className='w-10 h-10'/>
         <span className='text-white uppercase font-bold'>Lingonika</span>
-      </div>
+      </NavLink>
 
       {profile.isFetched && (
-        <div className='flex items-center gap-2'>
-          <a className='text-white underline cursor-pointer'>
-            {profile.data?.firstName + ' ' + profile.data?.lastName}
-          </a>
-          <img src={logoutIcon} alt='Logout' className='w-6 h-6 cursor-pointer' onClick={handleShow}/>
-        </div>
+        <Dropdown hover end>
+          <Dropdown.Toggle button={false}>
+            <div className='flex items-center gap-2 cursor-pointer'>
+              <a className='text-white'>
+                {profile.data?.firstName + ' ' + profile.data?.lastName}
+              </a>
+              <img src={downChevronIcon} alt='Chevron Down Icon' className='w-6 h-6'/>
+            </div>
+          </Dropdown.Toggle>
+          <Dropdown.Menu className='w-40'>
+            <Dropdown.Item className='flex justify-between'>
+              {t('editProfile', {ns: 'actions'})}
+              <img src={profileIcon} alt='Profile Icon' className='w-4 h-4'/>
+            </Dropdown.Item>
+            <Dropdown.Item className='flex justify-between' onClick={handleShow}>
+              {t('logout', {ns: 'actions'})}
+              <img src={logoutIcon} alt='Logout Icon' className='w-4 h-4'/>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       )}
 
       <Dialog>
@@ -41,8 +59,8 @@ function Header() {
         <Modal.Body>{t('logoutMessage', {ns: 'modals'})}</Modal.Body>
         <Modal.Actions>
           <form method="dialog" className='flex gap-2'>
-            <Button color='neutral' onClick={logout}>Ok</Button>
-            <Button color='error'>Close</Button>
+            <Button color='neutral' onClick={logout}>{t('ok', { ns: 'actions' })}</Button>
+            <Button color='error'>{t('cancel', { ns: 'actions' })}</Button>
           </form>
         </Modal.Actions>
       </Dialog>

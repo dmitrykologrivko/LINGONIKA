@@ -4,11 +4,12 @@ import {
   PublicOnlyRoute,
   ProtectedLayout,
   PublicLayout,
-  Spinner,
+  LoadingOverlay,
 } from '@/components';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
+import { DashboardPage } from '@/pages/dashboard';
 import { CardsPage } from '@/pages/cards';
 import { NotFoundPage } from '@/pages/not-found';
 import Boundary from './Boundary';
@@ -18,7 +19,7 @@ export const createRouter = () => {
     return {
       ...routeObj,
       errorElement: <Boundary/>,
-      hydrateFallbackElement: <Spinner show={true}/>,
+      hydrateFallbackElement: <LoadingOverlay show={true}/>,
     };
   }
 
@@ -26,7 +27,7 @@ export const createRouter = () => {
     createRoute({
       path: '/',
       element: (
-        <PublicOnlyRoute redirectTo={'/cards'}>
+        <PublicOnlyRoute redirectTo={'/dashboard'}>
           <PublicLayout/>
         </PublicOnlyRoute>
       ),
@@ -45,6 +46,7 @@ export const createRouter = () => {
         </ProtectedRoute>
       ),
       children: [
+        { path: 'dashboard', element: <DashboardPage/> },
         { path: 'cards', element: <CardsPage/> },
         { path: '*', element: <NotFoundPage/> }
       ],

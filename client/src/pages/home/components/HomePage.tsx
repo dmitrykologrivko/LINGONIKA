@@ -22,10 +22,10 @@ function HomePage() {
 
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button color='primary' wide={true} variant='outline'>
-          <NavLink to={'login'}>{t('signIn')}</NavLink>
+          <NavLink to={'login'}>{t('signIn', { ns: 'actions' })}</NavLink>
         </Button>
         <Button color='primary' wide={true} variant='outline'>
-          <NavLink to={'register'}>{t('signUp')}</NavLink>
+          <NavLink to={'register'}>{t('signUp', { ns: 'actions' })}</NavLink>
         </Button>
       </div>
     </div>

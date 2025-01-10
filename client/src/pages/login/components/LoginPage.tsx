@@ -11,10 +11,10 @@ function LoginPage() {
   return (
     <div className='w-lvw h-lvh flex flex-col'>
       <div className='flex-grow flex justify-center items-center'>
-        <LoginForm onSuccessLogin={() => navigate('/cards')}/>
+        <LoginForm onSuccessLogin={() => navigate('/dashboard')}/>
       </div>
       <div className='text-center p-4'>
-        <NavLink className='underline' to={'/'}>{t('backToHomePage', {ns: 'labels'})}</NavLink>
+        <NavLink className='underline' to={'/'}>{t('backToHomePage', {ns: 'actions'})}</NavLink>
       </div>
     </div>
   );

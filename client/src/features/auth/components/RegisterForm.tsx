@@ -122,7 +122,7 @@ function RegisterForm({ onSuccessRegistration }: RegisterFormProps) {
 
                 <Button className='mt-4' type="submit" color='primary' fullWidth={true} animation={false}
                         disabled={mutation.isPending}>
-                  {t('signIn')}
+                  {t('signIn', { ns: 'actions' })}
                 </Button>
               </>
             )}/>
