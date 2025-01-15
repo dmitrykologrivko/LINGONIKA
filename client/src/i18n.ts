@@ -32,6 +32,7 @@ const resources = {
     actions: {
       create: 'Create',
       edit: 'Edit',
+      delete: 'Delete',
       ok: 'Ok',
       cancel: 'Cancel',
       signIn: 'SignIn',
@@ -102,6 +103,25 @@ const resources = {
       textToPlaceholder: 'Enter translation',
       example: 'Example',
       examplePlaceholder: 'Enter example',
+      allFlashCards: 'All Flashcards',
+    },
+    groups: {
+      noGroups: 'There are no groups',
+      renameGroup: 'Rename Group',
+      deleteGroup: 'Delete Group',
+      addCardToGroup: 'Add Card to Group',
+      createGroupTitle: 'Create Group',
+      editGroupTitle: 'Edit Group',
+      name: 'Name',
+      namePlaceholder: 'Enter group name',
+      deleteGroupTitle: 'Delete Group',
+      deleteGroupMessage: 'Are you sure you want to delete this group?',
+    },
+    dictionaries: {
+      heading: 'Dictionary {{languageFrom}} - {{languageTo}}',
+      dictionary: '{{languageFrom}} - {{languageTo}} dictionary',
+      groups: 'Groups',
+      addGroup: 'Add Group',
     },
   },
 };

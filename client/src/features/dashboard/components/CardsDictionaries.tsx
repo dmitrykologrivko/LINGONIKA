@@ -19,19 +19,19 @@ function CardsDictionaries(
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const { isFetching, data } = useQuery(getCardsDictionariesOptions(apiClient));
+  const { isFetching, isFetched, data } = useQuery(getCardsDictionariesOptions(apiClient));
 
   return (
-    <section className={className}>
+    <div className={className}>
       {isFetching && (
         <Skeleton className='h-32'/>
       )}
 
-      {(!isFetching && data!.length === 0) && (
+      {(isFetched && data!.length === 0) && (
         <div className='text-center pt-4'>{t('noDictionaries', { ns: 'dashboard' })}</div>
       )}
 
-      {(!isFetching && data!.length > 0) && (
+      {(isFetched && data!.length > 0) && (
         <ul>
           {data?.map((dictionary, index) => (
             <li key={index} className='pb-2'>
@@ -62,7 +62,7 @@ function CardsDictionaries(
           ))}
         </ul>
       )}
-    </section>
+    </div>
   );
 }
 

@@ -16,11 +16,11 @@ export type CardsStatisticsQuery = {
 export type CardsStatisticsResponse = z.infer<typeof CardsStatisticsSchema>;
 
 export async function getCardsStatistics(
-  _: CardsStatisticsQuery,
+  query: CardsStatisticsQuery,
   signal: AbortSignal,
   apiClient: AxiosInstance
 ) {
-  const response = await apiClient.get<CardsStatisticsResponse>('/api/cards/stats',  { signal });
+  const response = await apiClient.get<CardsStatisticsResponse>('/api/cards/stats',  { signal, params: query });
   return CardsStatisticsSchema.parse(response.data);
 }
 

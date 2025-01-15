@@ -59,8 +59,8 @@ function Header() {
         <Modal.Body>{t('logoutMessage', {ns: 'modals'})}</Modal.Body>
         <Modal.Actions>
           <form method="dialog" className='flex gap-2'>
-            <Button color='neutral' onClick={logout}>{t('ok', { ns: 'actions' })}</Button>
-            <Button color='error'>{t('cancel', { ns: 'actions' })}</Button>
+            <Button color='neutral'>{t('cancel', { ns: 'actions' })}</Button>
+            <Button color='error' onClick={logout}>{t('ok', { ns: 'actions' })}</Button>
           </form>
         </Modal.Actions>
       </Dialog>

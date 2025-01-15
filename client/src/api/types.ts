@@ -11,3 +11,10 @@ export type BadRequestApiError = {
 } & ApiError;
 
 export type QueryParams = object;
+
+export type PaginatedContainer<T = any> = {
+  count: number;
+  next?:  string | null | undefined;
+  previous?:  string | null | undefined;
+  results: T[];
+};

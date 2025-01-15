@@ -48,6 +48,7 @@ type CardFormModalProps = {
   onSuccessSubmission: () => void;
   languageFrom?: string;
   languageTo?: string;
+  groupId?: number;
 };
 
 function CardFormModal({
@@ -57,6 +58,7 @@ function CardFormModal({
                          onSuccessSubmission,
                          languageFrom,
                          languageTo,
+                         groupId,
                        }: CardFormModalProps
 ) {
   const { t } = useTranslation();
@@ -122,7 +124,8 @@ function CardFormModal({
         languageFrom: data.languageFrom,
         languageTo:  data.languageTo,
         example: data.example,
-        isLearned: false
+        isLearned: false,
+        groupId: groupId,
       }, {
         onSuccess: onSuccessSubmission,
       });
@@ -164,7 +167,7 @@ function CardFormModal({
           <Form onSubmit={onSubmit} schema={schema} useFormProps={formProps}
                 renderForm={({ register, formState: { errors } }) => (
                   <>
-                    {!cardId && (
+                    {(!cardId && !languageFrom) && (
                       <FormItem label={translation.languageFrom} required error={errors[LANGUAGE_FROM_KEY]?.message}
                                 renderField={(props) => (
                                   <Select {...props} {...register(LANGUAGE_FROM_KEY)}>
@@ -187,7 +190,7 @@ function CardFormModal({
                                           placeholder={translation.textFromPlaceholder}/>
                               )}/>
 
-                    {!cardId && (
+                    {(!cardId && !languageTo) && (
                       <FormItem label={translation.languageTo} required error={errors[LANGUAGE_TO_KEY]?.message}
                                 renderField={(props) => (
                                   <Select {...props} {...register(LANGUAGE_TO_KEY)}>

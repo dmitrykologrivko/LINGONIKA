@@ -2,6 +2,7 @@ import { useCallback, useState, ReactElement } from 'react';
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Heading1, Heading3 } from '@/components';
+import { usePageTitle } from '@/hooks';
 import {
   CardsStatistics,
   CardsDictionaries,
@@ -13,6 +14,7 @@ function DashboardPage() {
   const [shouldShowCardForm, setShouldShowCardForm] = useState(false);
 
   const { t } = useTranslation();
+  usePageTitle(t('heading', { ns: 'dashboard' }));
   const invalidateDashboard = useInvalidateDashboard();
 
   const onCloseModal = useCallback(() => setShouldShowCardForm(false), []);

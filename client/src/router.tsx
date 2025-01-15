@@ -11,6 +11,7 @@ import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
 import { DashboardPage } from '@/pages/dashboard';
 import { CardsPage } from '@/pages/cards';
+import { DictionaryPage } from '@/pages/dictionary';
 import { NotFoundPage } from '@/pages/not-found';
 import Boundary from './Boundary';
 
@@ -47,6 +48,7 @@ export const createRouter = () => {
       ),
       children: [
         { path: 'dashboard', element: <DashboardPage/> },
+        { path: 'dictionary/:languageFrom/:languageTo/', element: <DictionaryPage/> },
         { path: 'cards', element: <CardsPage/> },
         { path: '*', element: <NotFoundPage/> }
       ],

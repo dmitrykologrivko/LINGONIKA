@@ -12,15 +12,15 @@ function CardsStatistics({ className }: CardsStatisticsProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const { isFetching, data } = useQuery(getCardsStatisticsOptions({}, apiClient));
+  const { isFetching, isFetched, data } = useQuery(getCardsStatisticsOptions({}, apiClient));
 
   return (
-    <section className={className}>
+    <div className={className}>
       {isFetching && (
         <Skeleton className='h-14'/>
       )}
 
-      {!isFetching && (
+      {isFetched && (
         <Panel rounded shadow>
           <div className='flex flex-col gap-1 md:gap-0 md:flex-row md:justify-evenly md:items-center'>
             <div className='flex justify-between md:block'>
@@ -37,7 +37,7 @@ function CardsStatistics({ className }: CardsStatisticsProps) {
           </div>
         </Panel>
       )}
-    </section>
+    </div>
   );
 }
 
