@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
 import { Group } from '@/types';
-import { GroupSchema } from './group.schema.ts';
+import { GroupSchema } from './group.schema';
 import { QueryParams, PaginatedContainer } from '../types';
 import { getPaginatedContainerSchema } from '../schemas';
 
