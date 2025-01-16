@@ -85,6 +85,11 @@ const resources = {
     register: {
       heading: 'Register account',
     },
+    profile: {
+      heading: 'Edit Profile',
+      editProfile: 'Edit Profile',
+      profileSaved: 'Profile saved successfully',
+    },
     dashboard: {
       heading: 'Dashboard',
       yourDictionaries: 'Your Dictionaries',

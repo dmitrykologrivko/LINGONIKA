@@ -3,6 +3,7 @@ import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import { any } from '@/utils';
 import Header from '../Header/Header';
 import LoadingOverlay from '../../ui/LoadingOverlay/LoadingOverlay';
+import AlertsRenderer from '../../ui/Alerts/AlertsRenderer';
 
 function ProtectedLayout() {
   const shouldShowSpinner = any(
@@ -16,6 +17,7 @@ function ProtectedLayout() {
       <main>
         <Outlet/>
       </main>
+      <AlertsRenderer/>
       <LoadingOverlay show={shouldShowSpinner}/>
     </>
   );

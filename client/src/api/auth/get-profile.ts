@@ -2,13 +2,7 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
 import { Profile } from '@/types';
-
-const ProfileSchema = z.object({
-  username: z.string(),
-  email: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
-});
+import { ProfileSchema } from './profile.schema';
 
 export type ProfileResponse = z.infer<typeof ProfileSchema>;
 

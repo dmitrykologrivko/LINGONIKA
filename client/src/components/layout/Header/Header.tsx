@@ -18,6 +18,12 @@ function Header() {
   const queryClient = useQueryClient();
   const profile = useQuery(getProfileOptions(apiClient));
 
+  profile.isError
+
+  function navigateToProfile() {
+    navigate('/profile');
+  }
+
   function logout() {
     clearAuthenticationToken();
     queryClient.removeQueries();
@@ -31,7 +37,7 @@ function Header() {
         <span className='text-white uppercase font-bold'>Lingonika</span>
       </NavLink>
 
-      {profile.isFetched && (
+      {(profile.isFetched) && (
         <Dropdown hover end>
           <Dropdown.Toggle button={false}>
             <div className='flex items-center gap-2 cursor-pointer'>
@@ -42,7 +48,7 @@ function Header() {
             </div>
           </Dropdown.Toggle>
           <Dropdown.Menu className='w-40'>
-            <Dropdown.Item className='flex justify-between'>
+            <Dropdown.Item className='flex justify-between' onClick={navigateToProfile}>
               {t('editProfile', {ns: 'actions'})}
               <img src={profileIcon} alt='Profile Icon' className='w-4 h-4'/>
             </Dropdown.Item>

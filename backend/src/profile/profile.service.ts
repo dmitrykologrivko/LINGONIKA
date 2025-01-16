@@ -18,6 +18,8 @@ import { GetProfileInput } from './dto/get-profile.input';
 import { GetProfileOutput } from './dto/get-profile.output';
 import { RegisterProfileInput } from './dto/register-profile.input';
 import { RegisterProfileOutput } from './dto/register-profile.output';
+import { UpdateProfileInput } from './dto/update-profile.input';
+import { UpdateProfileOutput } from './dto/update-profile.output';
 
 @ApplicationService()
 export class ProfileService {
@@ -63,6 +65,23 @@ export class ProfileService {
             );
           }),
         );
+      }),
+    );
+  }
+
+  async updateProfile(
+    input: UpdateProfileInput,
+  ): Promise<Result<UpdateProfileOutput, ValidationContainerException>> {
+    return ClassValidator.validate(UpdateProfileInput, input).then(
+      proceed(async () => {
+        const user = await this.userRepository.findOne({
+          where: { id: input.userId },
+        });
+
+        user.changeName(input.firstName, input.lastName);
+        await this.userRepository.save(user);
+
+        return ok(ClassTransformer.toClassObject(UpdateProfileOutput, user));
       }),
     );
   }

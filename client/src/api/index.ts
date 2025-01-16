@@ -3,6 +3,7 @@ export * from './query-client';
 export * from './auth/login';
 export * from './auth/register';
 export * from './auth/get-profile';
+export * from './auth/update-profile';
 export * from './languages/get-languages';
 export * from './cards/get-cards-statistics';
 export * from './cards/get-cards-dictionaries';
