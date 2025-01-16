@@ -6,3 +6,5 @@ export * from './usePageTitle';
 export * from './useLocalStorage';
 export * from './useLoggedIn';
 export * from './useRedirectWhen';
+export * from './useInvalidationKey';
+export * from './useInvalidateQueries';

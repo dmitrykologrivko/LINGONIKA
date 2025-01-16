@@ -1,18 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useInvalidateQueries } from '@/hooks';
 import { getCardsStatisticsOptions } from '@/api';
 import { Panel, Divider, Skeleton } from '@/components';
 
 type CardsStatisticsProps = {
   className?: string;
+  invalidationKey?: string;
 };
 
-function CardsStatistics({ className }: CardsStatisticsProps) {
+function CardsStatistics({ className, invalidationKey }: CardsStatisticsProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const { isFetching, isFetched, data } = useQuery(getCardsStatisticsOptions({}, apiClient));
+  const queryOptions = getCardsStatisticsOptions({}, apiClient);
+  const { isFetching, isFetched, data } = useQuery(queryOptions);
+
+  useInvalidateQueries(invalidationKey, queryOptions);
 
   return (
     <div className={className}>

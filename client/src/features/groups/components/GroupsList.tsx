@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useInvalidateQueries } from '@/hooks';
 import { getGroupsOptions } from '@/api';
 import { Skeleton, Card, Dropdown, Heading5 } from '@/components';
 import dotsMenuIcon from '@/assets/dots-menu-black.svg';
@@ -16,6 +16,7 @@ type GroupsListProps = {
   onRenameGroupClick: (groupId: number) => void;
   onDeleteGroupClick: (groupId: number) => void;
   onAddCardToGroupClick: (groupId: number) => void;
+  invalidationKey?: string;
 }
 
 function GroupsList({ className,
@@ -24,13 +25,15 @@ function GroupsList({ className,
                       renderLink,
                       onRenameGroupClick,
                       onDeleteGroupClick,
-                      onAddCardToGroupClick }: GroupsListProps) {
+                      onAddCardToGroupClick,
+                      invalidationKey }: GroupsListProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const { isFetched, isFetching, data } = useQuery(
-    getGroupsOptions({ languageFrom, languageTo, limit: GROUPS_LIMIT }, apiClient),
-  );
+  const queryOptions = getGroupsOptions({ languageFrom, languageTo, limit: GROUPS_LIMIT }, apiClient);
+  const { isFetched, isFetching, data } = useQuery(queryOptions);
+
+  useInvalidateQueries(invalidationKey, queryOptions);
 
   return (
     <div className={className}>

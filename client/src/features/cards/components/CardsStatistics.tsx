@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useInvalidateQueries } from '@/hooks';
 import { getCardsStatisticsOptions } from '@/api';
 import { Panel, Skeleton } from '@/components';
 import rightArrowIcon from '@/assets/right-arrow-black.svg';
@@ -11,13 +11,21 @@ type CardsStatisticsProps = {
   languageFrom: string;
   languageTo: string;
   renderLink: (children: ReactElement) => ReactElement;
+  invalidationKey?: string;
 };
 
-function CardsStatistics({ className, languageFrom, languageTo, renderLink }: CardsStatisticsProps) {
+function CardsStatistics({ className,
+                           languageFrom,
+                           languageTo,
+                           renderLink,
+                           invalidationKey }: CardsStatisticsProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const { isFetching, isFetched, data } = useQuery(getCardsStatisticsOptions({ languageFrom, languageTo }, apiClient));
+  const queryOptions = getCardsStatisticsOptions({ languageFrom, languageTo }, apiClient);
+  const { isFetching, isFetched, data } = useQuery(queryOptions);
+
+  useInvalidateQueries(invalidationKey, queryOptions);
 
   return (
     <div className={className}>

@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useInvalidateQueries } from '@/hooks';
 import { getCardsDictionariesOptions } from '@/api';
 import { Skeleton, Card, Heading5 } from '@/components';
 
@@ -11,15 +11,19 @@ import bookBookmarkIcon from '@/assets/book-bookmark-minimalistic-black.svg';
 type CardsDictionariesProps = {
   className?: string;
   renderLink: (children: ReactElement, languageFrom: string, languageTo: string) => ReactElement;
+  invalidationKey?: string;
 };
 
 function CardsDictionaries(
-  { className, renderLink }: CardsDictionariesProps
+  { className, renderLink, invalidationKey }: CardsDictionariesProps
 ) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const { isFetching, isFetched, data } = useQuery(getCardsDictionariesOptions(apiClient));
+  const queryOptions = getCardsDictionariesOptions(apiClient);
+  const { isFetching, isFetched, data } = useQuery(queryOptions);
+
+  useInvalidateQueries(invalidationKey, queryOptions);
 
   return (
     <div className={className}>

@@ -2,18 +2,9 @@ import { ReactElement, useCallback, useState } from 'react';
 import { NavLink, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Heading1, Heading3 } from '@/components';
-import { usePageTitle } from '@/hooks';
-import {
-  CardsStatistics,
-  CardFormModal,
-  useInvalidateCardsStatistics,
-} from '@/features/cards';
-import {
-  GroupsList,
-  GroupFormModal,
-  GroupDeleteDialog,
-  useInvalidateGroupsList,
-} from '@/features/groups';
+import { usePageTitle, useInvalidationKey } from '@/hooks';
+import { CardsStatistics, CardFormModal } from '@/features/cards';
+import { GroupsList, GroupFormModal, GroupDeleteDialog } from '@/features/groups';
 
 function DictionaryPage() {
   const [activeGroupId, setActiveGroupId] = useState<number | undefined>(undefined);
@@ -23,15 +14,14 @@ function DictionaryPage() {
 
   const params = useParams();
   const { t } = useTranslation();
+  const cardsStatisticsInvalidation = useInvalidationKey();
+  const groupsInvalidation = useInvalidationKey();
 
   const languageFrom = (params.languageFrom as string).toUpperCase();
   const languageTo = (params.languageTo as string).toUpperCase();
   const languageFromLabel = t(languageFrom, { ns: 'labels' });
   const languageToLabel = t(languageTo, { ns: 'labels' });
   usePageTitle(t('heading', { ns: 'dictionaries', languageFrom: languageFromLabel, languageTo: languageToLabel }));
-
-  const invalidateGroupsList = useInvalidateGroupsList();
-  const invalidateCardsStatistics = useInvalidateCardsStatistics();
 
   const renderLink = useCallback((children: ReactElement): ReactElement => {
     return (
@@ -52,8 +42,8 @@ function DictionaryPage() {
   const onGroupModification = useCallback(() => {
     setActiveGroupId(undefined);
     setShouldShowGroupForm(false);
-    invalidateGroupsList();
-  }, [invalidateGroupsList]);
+    groupsInvalidation.invalidate();
+  }, [groupsInvalidation]);
 
   const onCloseGroupDeleteDialog = useCallback(() => {
     setActiveGroupId(undefined);
@@ -62,9 +52,9 @@ function DictionaryPage() {
   const onGroupDeleted = useCallback(() => {
     setActiveGroupId(undefined);
     setShouldShowGroupDeleteDialog(false);
-    invalidateGroupsList();
-    invalidateCardsStatistics();
-  }, [invalidateGroupsList, invalidateCardsStatistics]);
+    groupsInvalidation.invalidate();
+    cardsStatisticsInvalidation.invalidate();
+  }, [groupsInvalidation, cardsStatisticsInvalidation]);
 
   const onCloseCardForm = useCallback(() => {
     setActiveGroupId(undefined);
@@ -73,9 +63,9 @@ function DictionaryPage() {
   const onCardCreated = useCallback(() => {
     setActiveGroupId(undefined);
     setShouldShowCardForm(false);
-    invalidateGroupsList();
-    invalidateCardsStatistics();
-  }, [invalidateGroupsList, invalidateCardsStatistics]);
+    groupsInvalidation.invalidate();
+    cardsStatisticsInvalidation.invalidate();
+  }, [groupsInvalidation, cardsStatisticsInvalidation]);
 
   const onRenameGroupClick = (groupId: number): void => {
     setActiveGroupId(groupId);
@@ -97,7 +87,8 @@ function DictionaryPage() {
       </Heading1>
 
       <CardsStatistics className='mt-4 mb-4' renderLink={renderLink}
-                       languageFrom={languageFrom} languageTo={languageTo}/>
+                       languageFrom={languageFrom} languageTo={languageTo}
+                       invalidationKey={cardsStatisticsInvalidation.invalidationKey}/>
 
       <div className='pt-4 pb-4 flex justify-between'>
         <Heading3>{t('groups', { ns: 'dictionaries' })}</Heading3>
@@ -107,7 +98,7 @@ function DictionaryPage() {
       </div>
       <GroupsList languageFrom={languageFrom} languageTo={languageTo} renderLink={renderGroupLink}
                   onRenameGroupClick={onRenameGroupClick} onDeleteGroupClick={onDeleteGroupClick}
-                  onAddCardToGroupClick={onAddCardToGroupClick}/>
+                  onAddCardToGroupClick={onAddCardToGroupClick} invalidationKey={groupsInvalidation.invalidationKey}/>
 
       <GroupFormModal show={shouldShowGroupForm} groupId={activeGroupId}
                       languageFrom={languageFrom} languageTo={languageTo}
