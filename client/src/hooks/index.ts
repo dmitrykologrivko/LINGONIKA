@@ -8,3 +8,4 @@ export * from './useLoggedIn';
 export * from './useRedirectWhen';
 export * from './useInvalidationKey';
 export * from './useInvalidateQueries';
+export * from './useAlertsManager';

@@ -11,9 +11,8 @@ import {
   Input,
   Button,
   ProfileSkeleton,
-  useAlerts
 } from '@/components';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useAlertsManager } from '@/hooks';
 import {
   getProfileOptions,
   updateProfile,
@@ -53,7 +52,7 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
     lastNamePlaceholder: t('lastNamePlaceholder', { ns: 'fields' }),
   };
 
-  const alerts = useAlerts();
+  const alertsManager = useAlertsManager();
 
   const apiClient = useApiClient();
   const queryClient = useQueryClient();
@@ -82,7 +81,7 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
           queryKey: queryOptions.queryKey,
         });
 
-        alerts.showAlert({
+        alertsManager.addAlert({
           text: t('profileSaved', { ns: 'profile' }),
           status: 'success',
         });
@@ -92,7 +91,7 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
         }
       },
       onError: () => {
-        alerts.showAlert({
+        alertsManager.addAlert({
           text: 'Error updating profile',
           status: 'error',
         });
