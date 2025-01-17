@@ -9,7 +9,7 @@ import {
   Input,
   Button,
 } from '@/components';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useHandleMutationError } from '@/hooks';
 import { login, LoginRequest, ValidationError } from '@/api';
 import { translate } from '@/utils';
 
@@ -44,6 +44,7 @@ function LoginForm({ onSuccessLogin }: LoginFormProps) {
   const mutation = useMutation({
     mutationFn: (req: LoginRequest) => login(req, apiClient)
   });
+  const handleMutationError = useHandleMutationError();
 
   const formProps = {
     errors: mutation.error instanceof ValidationError ? mutation.error.fieldErrors : undefined,
@@ -51,7 +52,8 @@ function LoginForm({ onSuccessLogin }: LoginFormProps) {
 
   const onSubmit = (data: LoginFromData) => {
     mutation.mutate(data, {
-      onSuccess: onSuccessLogin
+      onSuccess: onSuccessLogin,
+      onError: handleMutationError,
     });
   };
 

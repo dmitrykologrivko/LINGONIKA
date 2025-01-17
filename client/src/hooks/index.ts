@@ -9,3 +9,4 @@ export * from './useRedirectWhen';
 export * from './useInvalidationKey';
 export * from './useInvalidateQueries';
 export * from './useAlertsManager';
+export * from './useHandleMutationError';

@@ -11,6 +11,7 @@ const resources = {
       maxLength: '{{what}} must be shorter than or equal to {{length}} character(s)',
       passwordsMatch: 'Passwords must match',
       unauthorizedAccess: 'User must be unauthorized',
+      unableToProcessRequest: 'Unable to process the request. Please try again later',
     },
     apiErrors: {},
     fields: {

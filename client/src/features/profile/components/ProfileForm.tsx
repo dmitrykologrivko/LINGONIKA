@@ -12,7 +12,11 @@ import {
   Button,
   ProfileSkeleton,
 } from '@/components';
-import { useApiClient, useAlertsManager } from '@/hooks';
+import {
+  useApiClient,
+  useAlertsManager,
+  useHandleMutationError,
+} from '@/hooks';
 import {
   getProfileOptions,
   updateProfile,
@@ -61,6 +65,7 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
   const mutation = useMutation({
     mutationFn: (req: UpdateProfileRequest) => updateProfile(req, apiClient),
   });
+  const handleMutationError = useHandleMutationError();
 
   const formProps = {
     errors: mutation.error instanceof ValidationError ? mutation.error.fieldErrors : undefined,
@@ -77,25 +82,20 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
       lastName: formData?.lastName,
     }, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: queryOptions.queryKey,
-        });
-
         alertsManager.addAlert({
           text: t('profileSaved', { ns: 'profile' }),
           status: 'success',
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: queryOptions.queryKey,
         });
 
         if (onSuccessSubmission) {
           onSuccessSubmission();
         }
       },
-      onError: () => {
-        alertsManager.addAlert({
-          text: 'Error updating profile',
-          status: 'error',
-        });
-      }
+      onError: handleMutationError,
     });
   };
 

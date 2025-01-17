@@ -9,7 +9,7 @@ import {
   Input,
   Button,
 } from '@/components';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useHandleMutationError } from '@/hooks';
 import { register, RegisterRequest, ValidationError } from '@/api';
 import { translate } from '@/utils';
 
@@ -64,6 +64,7 @@ function RegisterForm({ onSuccessRegistration }: RegisterFormProps) {
   const mutation = useMutation({
     mutationFn: (req: RegisterRequest) => register(req, apiClient)
   });
+  const handleMutationError = useHandleMutationError();
 
   const formProps = {
     errors: mutation.error instanceof ValidationError ? mutation.error.fieldErrors : undefined,
@@ -76,7 +77,8 @@ function RegisterForm({ onSuccessRegistration }: RegisterFormProps) {
       firstName: data.firstName,
       lastName: data.lastName,
     }, {
-      onSuccess: onSuccessRegistration
+      onSuccess: onSuccessRegistration,
+      onError: handleMutationError,
     });
   };
 

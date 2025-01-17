@@ -11,7 +11,7 @@ import {
   Select,
   Loading,
 } from '@/components';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useHandleMutationError } from '@/hooks';
 import {
   getLanguagesOptions,
   getCardOptions,
@@ -96,6 +96,7 @@ function CardFormModal({
   const updateMutation = useMutation({
     mutationFn: (req: UpdateCardRequest) => updateCard(req, apiClient),
   });
+  const handleMutationError = useHandleMutationError();
   const isFetching = any(languagesQuery.isFetching, cardQuery.isFetching);
   const isFetched = cardId ? all(languagesQuery.isFetched, cardQuery.isFetched) : languagesQuery.isFetched;
   const isMutating = createMutation.isPending || updateMutation.isPending;
@@ -128,6 +129,7 @@ function CardFormModal({
         groupId: groupId,
       }, {
         onSuccess: onSuccessSubmission,
+        onError: handleMutationError,
       });
       return;
     }
@@ -140,7 +142,8 @@ function CardFormModal({
       languageTo:  data.languageTo,
       example: data.example,
     }, {
-      onSuccess: onSuccessSubmission
+      onSuccess: onSuccessSubmission,
+      onError: handleMutationError,
     });
   };
 

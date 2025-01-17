@@ -9,7 +9,7 @@ import {
   Textarea,
   Loading,
 } from '@/components';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useHandleMutationError } from '@/hooks';
 import {
   getGroupOptions,
   createGroup,
@@ -67,6 +67,7 @@ function GroupFormModal({ groupId,
   const updateMutation = useMutation({
     mutationFn: (req: UpdateGroupRequest) => updateGroup(req, apiClient),
   });
+  const handleMutationError = useHandleMutationError();
   const isFetching = groupId ? groupQuery.isFetching : false;
   const isFetched = groupId ? groupQuery.isFetched : true;
   const isMutating = createMutation.isPending || updateMutation.isPending;
@@ -90,7 +91,8 @@ function GroupFormModal({ groupId,
         languageFrom: languageFrom!,
         languageTo: languageTo!,
       }, {
-        onSuccess: onSuccessSubmission
+        onSuccess: onSuccessSubmission,
+        onError: handleMutationError,
       });
       return;
     }
@@ -100,6 +102,7 @@ function GroupFormModal({ groupId,
       name: data.name,
     }, {
       onSuccess: onSuccessSubmission,
+      onError: handleMutationError,
     });
   };
 
