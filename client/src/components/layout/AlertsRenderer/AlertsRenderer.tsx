@@ -26,11 +26,12 @@ function AlertsRenderer() {
   return (
     <Toast>
       {alerts.map((alert) => (
-        <Alert key={alert.id} status={alert.status} >
+        <Alert className='flex' key={alert.id} status={alert.status}>
           <div className="w-full flex items-center justify-between">
-            <div className='grow'>{alert.text}</div>
+            <div className='min-w-32 text-white'>{alert.text}</div>
             {alert.cancellable && (
-              <Button size='sm' color="ghost" onClick={() => alertsManager.clearAlert(alert.id)}>
+              <Button className='text-white' size='sm' color="ghost"
+                      onClick={() => alertsManager.clearAlert(alert.id)}>
                 X
               </Button>
             )}
