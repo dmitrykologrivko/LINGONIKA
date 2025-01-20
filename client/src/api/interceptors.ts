@@ -18,18 +18,23 @@ export function addAuthorizationInterceptor(apiClient: AxiosInstance) {
   );
 }
 
-export function addUnauthorizedInterceptor(apiClient: AxiosInstance) {
+export function addUnauthorizedInterceptor(
+  apiClient: AxiosInstance,
+  unauthorizedHandler?: () => Promise<void>,
+) {
   apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
       const statusCode = error.response?.status;
       if (statusCode !== 401) {
         return Promise.reject(error);
       }
 
-      console.warn('Unauthorized: Redirecting to login.');
       clearAuthenticationToken();
-      window.location.href = '/login';
+      if (unauthorizedHandler) {
+        await unauthorizedHandler();
+      }
+
       return Promise.reject(error);
     }
   );

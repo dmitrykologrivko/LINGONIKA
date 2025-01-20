@@ -5,7 +5,9 @@ import {
   addBadRequestInterceptor,
 } from './interceptors';
 
-export function createApiClient(): AxiosInstance {
+export function createApiClient(
+  unauthorizedHandler?: () => Promise<void>,
+): AxiosInstance {
   const apiClient = axios.create({
     //baseURL: process.env.VUE_APP_API_URL || 'http://localhost:8000',
     baseURL: 'http://localhost:8000',
@@ -16,7 +18,7 @@ export function createApiClient(): AxiosInstance {
   });
 
   addAuthorizationInterceptor(apiClient);
-  addUnauthorizedInterceptor(apiClient);
+  addUnauthorizedInterceptor(apiClient, unauthorizedHandler);
   addBadRequestInterceptor(apiClient);
 
   return apiClient;

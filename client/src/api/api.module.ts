@@ -12,13 +12,23 @@ type ApiModule = {
   queryClient: ServiceProvider<QueryClient>;
 };
 
-export const createApiModule = createServiceModule<ApiModule>(() => ({
-  apiClient: {
-    token: API_CLIENT_INJECTION_TOKEN,
-    useValue: createApiClient()
-  },
-  queryClient: {
-    token: QUERY_CLIENT_INJECTION_TOKEN,
-    useValue: createQueryClient()
-  }
-}));
+type ApiModuleConfig = {
+  unauthorizedHandler?: () => Promise<void>;
+};
+
+type ApiModuleRequiredServices = {
+  config?: ApiModuleConfig;
+};
+
+export const createApiModule = createServiceModule<ApiModule, ApiModuleRequiredServices>(
+  (requiredServices) => ({
+    apiClient: {
+      token: API_CLIENT_INJECTION_TOKEN,
+      useValue: createApiClient(requiredServices.config?.unauthorizedHandler)
+    },
+    queryClient: {
+      token: QUERY_CLIENT_INJECTION_TOKEN,
+      useValue: createQueryClient()
+    }
+  })
+);
