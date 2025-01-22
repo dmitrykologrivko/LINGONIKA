@@ -58,11 +58,6 @@ export const createRouter = () => {
     }),
 
     createRoute({
-      path: 'not-found',
-      element: <NotFoundPage/>
-    }),
-
-    createRoute({
       path: '*',
       element: <NotFoundPage/>
     }),
