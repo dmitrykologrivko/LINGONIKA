@@ -1,9 +1,11 @@
 import Provider from './Provider';
+import ErrorBoundary  from './ErrorBoundary.tsx';
 
 function App() {
   return (
-    // TODO: ErrorBoundary wrap
-    <Provider/>
+    <ErrorBoundary>
+      <Provider/>
+    </ErrorBoundary>
   );
 }
 

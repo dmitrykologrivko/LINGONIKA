@@ -45,7 +45,8 @@ export function addBadRequestInterceptor(apiClient: AxiosInstance) {
     (response) => response,
     (error) => {
       const statusCode = error.response?.status;
-      if (statusCode !== 400) {
+      const method = error.response?.request?.method;
+      if (statusCode !== 400 && !['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
         return Promise.reject(error);
       }
 

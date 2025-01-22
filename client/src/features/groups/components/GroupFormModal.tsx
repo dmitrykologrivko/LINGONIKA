@@ -8,8 +8,9 @@ import {
   FormItem,
   Textarea,
   Loading,
+  ErrorView,
 } from '@/components';
-import { useApiClient, useHandleMutationError } from '@/hooks';
+import { useApiClient, useHandleMutationError, useHandleQueryError } from '@/hooks';
 import {
   getGroupOptions,
   createGroup,
@@ -57,20 +58,23 @@ function GroupFormModal({ groupId,
   };
 
   const apiClient = useApiClient();
+
   const groupQuery = useQuery({
     ...getGroupOptions(groupId!, apiClient),
     enabled: show && groupId !== undefined
   });
+  const isLoading = groupId ? groupQuery.isLoading : false;
+  const isSuccess = groupId ? groupQuery.isSuccess : true;
+  const errorMessage = useHandleQueryError(groupQuery.error);
+
   const createMutation = useMutation({
     mutationFn: (req: CreateGroupRequest) => createGroup(req, apiClient),
   });
   const updateMutation = useMutation({
     mutationFn: (req: UpdateGroupRequest) => updateGroup(req, apiClient),
   });
-  const handleMutationError = useHandleMutationError();
-  const isFetching = groupId ? groupQuery.isFetching : false;
-  const isFetched = groupId ? groupQuery.isFetched : true;
   const isMutating = createMutation.isPending || updateMutation.isPending;
+  const handleMutationError = useHandleMutationError();
 
   const { Dialog } = Modal.useDialog();
 
@@ -79,9 +83,7 @@ function GroupFormModal({ groupId,
       (createMutation.error instanceof ValidationError ? createMutation.error.fieldErrors : undefined)
       || (updateMutation.error instanceof ValidationError ? updateMutation.error.fieldErrors : undefined)
     ),
-    defaultValues: {
-      [NAME_KEY]: groupQuery.data?.name
-    }
+    defaultValues: groupQuery.data || {},
   };
 
   const onSubmit = (data: GroupFormData) => {
@@ -113,14 +115,18 @@ function GroupFormModal({ groupId,
       </Modal.Header>
 
       <Modal.Body>
-        {isFetching && (
+        {isLoading && (
           <div className='flex justify-center items-center gap-2'>
             {translation.preparing}
             <Loading variant='spinner'/>
           </div>
         )}
 
-        {isFetched && (
+        {groupQuery.error && (
+          <ErrorView errorMessage={errorMessage} handleRetry={groupQuery.refetch}/>
+        )}
+
+        {isSuccess && (
           <Form onSubmit={onSubmit} schema={schema} useFormProps={formProps}
                 renderForm={({ register, formState: { errors } }) => (
                   <>

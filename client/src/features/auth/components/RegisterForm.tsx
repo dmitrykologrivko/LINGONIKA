@@ -41,10 +41,11 @@ type RegisterFromData = z.infer<typeof schema>;
 const Form = ReactHookFormZod<RegisterFromData>;
 
 type RegisterFormProps = {
+  className?: string;
   onSuccessRegistration: () => void;
 };
 
-function RegisterForm({ onSuccessRegistration }: RegisterFormProps) {
+function RegisterForm({ className, onSuccessRegistration }: RegisterFormProps) {
   const { t } = useTranslation();
   const translation = {
     heading: t('heading', { ns: 'register' }),
@@ -83,7 +84,7 @@ function RegisterForm({ onSuccessRegistration }: RegisterFormProps) {
   };
 
   return (
-    <div className='min-w-80 md:min-w-96'>
+    <div className={className}>
       <LogoBanner/>
       <Heading1 className='text-center'>{translation.heading}</Heading1>
 

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueries } from '@tanstack/react-query';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,8 +10,14 @@ import {
   Textarea,
   Select,
   Loading,
+  ErrorView,
 } from '@/components';
-import { useApiClient, useHandleMutationError } from '@/hooks';
+import {
+  useApiClient,
+  useHandleQueryError,
+  useHandleMutationError,
+  useQueriesState,
+} from '@/hooks';
 import {
   getLanguagesOptions,
   getCardOptions,
@@ -21,7 +27,6 @@ import {
   UpdateCardRequest,
   ValidationError,
 } from '@/api';
-import { any, all } from '@/utils';
 
 const LANGUAGE_FROM_KEY = 'languageFrom';
 const LANGUAGE_TO_KEY = 'languageTo';
@@ -82,14 +87,24 @@ function CardFormModal({
   };
 
   const apiClient = useApiClient();
-  const languagesQuery = useQuery({
-    ...getLanguagesOptions({}, apiClient),
-    enabled: show,
+
+  const queries = useQueries({
+    queries: [
+      {
+        ...getLanguagesOptions({}, apiClient),
+        enabled: show,
+      },
+      {
+        ...getCardOptions(cardId!, apiClient),
+        enabled: show && cardId !== undefined
+      }
+    ],
   });
-  const cardQuery = useQuery({
-    ...getCardOptions(cardId!, apiClient),
-    enabled: show && cardId !== undefined
-  });
+  const languagesQuery = queries[0];
+  const cardQuery = queries[1];
+  const queriesState = useQueriesState(queries);
+  const errorMessage = useHandleQueryError(queriesState.firstError);
+
   const createMutation = useMutation({
     mutationFn: (req: CreateCardRequest) => createCard(req, apiClient),
   });
@@ -97,8 +112,6 @@ function CardFormModal({
     mutationFn: (req: UpdateCardRequest) => updateCard(req, apiClient),
   });
   const handleMutationError = useHandleMutationError();
-  const isFetching = any(languagesQuery.isFetching, cardQuery.isFetching);
-  const isFetched = cardId ? all(languagesQuery.isFetched, cardQuery.isFetched) : languagesQuery.isFetched;
   const isMutating = createMutation.isPending || updateMutation.isPending;
 
   const { Dialog } = Modal.useDialog();
@@ -109,11 +122,9 @@ function CardFormModal({
       || (updateMutation.error instanceof ValidationError ? updateMutation.error.fieldErrors : undefined)
     ),
     defaultValues: {
+      ...cardQuery.data,
       [LANGUAGE_FROM_KEY]: cardQuery.data?.languageFrom || languageFrom,
       [LANGUAGE_TO_KEY]: cardQuery.data?.languageTo || languageTo,
-      [TEXT_FROM_KEY]: cardQuery.data?.textFrom,
-      [TEXT_TO_KEY]: cardQuery.data?.textTo,
-      [EXAMPLE_KEY]: cardQuery.data?.example,
     }
   };
 
@@ -159,14 +170,25 @@ function CardFormModal({
       </Modal.Header>
 
       <Modal.Body>
-        {isFetching && (
+        {(queriesState.isLoading) && (
           <div className='flex justify-center items-center gap-2'>
             {translation.preparing}
             <Loading variant='spinner'/>
           </div>
         )}
 
-        {isFetched && (
+        {queriesState.isError && (
+          <div>
+            <ErrorView errorMessage={errorMessage} bordered={false} handleRetry={queriesState.referch}/>
+            <div className='flex gap-2 justify-end mt-8'>
+              <Button type='button' color='neutral' onClick={onClose}>
+                {translation.cancel}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {queriesState.isSuccess && (
           <Form onSubmit={onSubmit} schema={schema} useFormProps={formProps}
                 renderForm={({ register, formState: { errors } }) => (
                   <>

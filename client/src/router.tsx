@@ -5,6 +5,7 @@ import {
   ProtectedLayout,
   PublicLayout,
   LoadingOverlay,
+  RouteErrorBoundary,
 } from '@/components';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
@@ -14,13 +15,12 @@ import { CardsPage } from '@/pages/cards';
 import { DictionaryPage } from '@/pages/dictionary';
 import { ProfilePage } from '@/pages/profile';
 import { NotFoundPage } from '@/pages/not-found';
-import Boundary from './Boundary';
 
 export const createRouter = () => {
   function createRoute(routeObj: Partial<RouteObject>): RouteObject {
     return {
       ...routeObj,
-      errorElement: <Boundary/>,
+      errorElement: <RouteErrorBoundary loginRoute='/login' notFoundRoute='/not-found'/>,
       hydrateFallbackElement: <LoadingOverlay show={true}/>,
     };
   }
@@ -52,8 +52,14 @@ export const createRouter = () => {
         { path: 'profile', element: <ProfilePage/> },
         { path: 'dictionary/:languageFrom/:languageTo/', element: <DictionaryPage/> },
         { path: 'cards', element: <CardsPage/> },
+        { path: 'not-found', element: <NotFoundPage/> },
         { path: '*', element: <NotFoundPage/> }
       ],
+    }),
+
+    createRoute({
+      path: 'not-found',
+      element: <NotFoundPage/>
     }),
 
     createRoute({

@@ -11,10 +11,12 @@ import {
   Input,
   Button,
   ProfileSkeleton,
+  ErrorView,
 } from '@/components';
 import {
   useApiClient,
   useAlertsManager,
+  useHandleQueryError,
   useHandleMutationError,
 } from '@/hooks';
 import {
@@ -57,11 +59,13 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
   };
 
   const alertsManager = useAlertsManager();
-
   const apiClient = useApiClient();
   const queryClient = useQueryClient();
+
   const queryOptions = getProfileOptions(apiClient);
-  const { isFetching, isFetched, data } = useQuery(queryOptions);
+  const { isLoading, error, data, refetch } = useQuery(queryOptions);
+  const errorMessage = useHandleQueryError(error);
+
   const mutation = useMutation({
     mutationFn: (req: UpdateProfileRequest) => updateProfile(req, apiClient),
   });
@@ -69,10 +73,7 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
 
   const formProps = {
     errors: mutation.error instanceof ValidationError ? mutation.error.fieldErrors : undefined,
-    defaultValues: {
-      [FIRST_NAME_KEY]: data?.firstName,
-      [LAST_NAME_KEY]: data?.lastName,
-    }
+    defaultValues: data || {}
   };
 
   const onSubmit = (formData: ProfileFromData) => {
@@ -99,44 +100,52 @@ function ProfileForm({ className, onSuccessSubmission }: ProfileFormProps) {
     });
   };
 
-  return (
-    <div className={`${className} min-w-80 md:min-w-96`}>
-      {isFetching && (
+  if (isLoading) {
+    return (
+      <div className={className}>
         <ProfileSkeleton/>
-      )}
+      </div>
+    );
+  }
 
-      {isFetched && (
-        <>
-          <div className='mt-4 mb-4 flex flex-col items-center justify-center gap-2'>
-            <img src={profileIcon} alt='Chevron Down Icon' className='w-32 h-32'/>
-            {data?.username}
-          </div>
+  if (error) {
+    return (
+      <div className={className}>
+        <ErrorView errorMessage={errorMessage} handleRetry={refetch}/>
+      </div>
+    );
+  }
 
-          <Form onSubmit={onSubmit} schema={schema} useFormProps={formProps}
-                renderForm={({register, formState: {errors}}) => (
-                  <>
-                  <FormItem label={translation.firstNameLabel} error={errors[FIRST_NAME_KEY]?.message}
-                              renderField={(props) => (
-                                <Input {...props} {...register(FIRST_NAME_KEY)}
-                                       placeholder={translation.firstNamePlaceholder}/>
-                              )}/>
+  return (
+    <div className={className}>
+      <div className='mt-4 mb-4 flex flex-col items-center justify-center gap-2'>
+        <img src={profileIcon} alt='Chevron Down Icon' className='w-32 h-32'/>
+        {data?.username}
+      </div>
 
-                    <FormItem label={translation.lastNameLabel} error={errors[LAST_NAME_KEY]?.message}
-                              renderField={(props) => (
-                                <Input {...props} {...register(LAST_NAME_KEY)}
-                                       placeholder={translation.lastNamePlaceholder}/>
-                              )}/>
+      <Form onSubmit={onSubmit} schema={schema} useFormProps={formProps}
+            renderForm={({register, formState: {errors}}) => (
+              <>
+                <FormItem label={translation.firstNameLabel} error={errors[FIRST_NAME_KEY]?.message}
+                          renderField={(props) => (
+                            <Input {...props} {...register(FIRST_NAME_KEY)}
+                                   placeholder={translation.firstNamePlaceholder}/>
+                          )}/>
 
-                    {errors.root && (<div className='mt-4 text-error'>{errors.root?.message}</div>)}
+                <FormItem label={translation.lastNameLabel} error={errors[LAST_NAME_KEY]?.message}
+                          renderField={(props) => (
+                            <Input {...props} {...register(LAST_NAME_KEY)}
+                                   placeholder={translation.lastNamePlaceholder}/>
+                          )}/>
 
-                    <Button className='mt-4' type="submit" color='primary' fullWidth={true} animation={false}
-                            disabled={mutation.isPending}>
-                      {t('editProfile', {ns: 'profile'})}
-                    </Button>
-                  </>
-                )}/>
-        </>
-      )}
+                {errors.root && (<div className='mt-4 text-error'>{errors.root?.message}</div>)}
+
+                <Button className='mt-4' type="submit" color='primary' fullWidth={true} animation={false}
+                        disabled={mutation.isPending}>
+                  {t('editProfile', {ns: 'profile'})}
+                </Button>
+              </>
+            )}/>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient, useInvalidateQueries } from '@/hooks';
+import { useApiClient, useInvalidateQueries, useHandleQueryError } from '@/hooks';
 import { getGroupsOptions } from '@/api';
-import { Skeleton, Card, Dropdown, Heading5 } from '@/components';
+import { Skeleton, Card, Dropdown, Heading5, ErrorView } from '@/components';
 import dotsMenuIcon from '@/assets/dots-menu-black.svg';
 
 const GROUPS_LIMIT = 1000;
@@ -31,21 +31,34 @@ function GroupsList({ className,
 
   const apiClient = useApiClient();
   const queryOptions = getGroupsOptions({ languageFrom, languageTo, limit: GROUPS_LIMIT }, apiClient);
-  const { isFetched, isFetching, data } = useQuery(queryOptions);
+  const { isLoading, error, data, refetch } = useQuery(queryOptions);
+  const errorMessage = useHandleQueryError(error);
 
   useInvalidateQueries(invalidationKey, queryOptions);
 
+  if (isLoading) {
+    return (
+      <div className={className}>
+        <Skeleton className='h-32'/>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={className}>
+        <ErrorView errorMessage={errorMessage} handleRetry={refetch}/>
+      </div>
+    );
+  }
+
   return (
     <div className={className}>
-      {isFetching && (
-        <Skeleton className='h-32'/>
-      )}
-
-      {(isFetched && data!.count === 0) && (
+      {(data!.count === 0) && (
         <div className='text-center pt-4'>{t('noGroups', { ns: 'groups' })}</div>
       )}
 
-      {(isFetched && data!.count > 0) && (
+      {(data!.count > 0) && (
         <ul>
           {data?.results.map((group) => (
             <li key={group.id} className='pb-2'>

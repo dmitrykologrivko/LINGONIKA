@@ -10,3 +10,5 @@ export * from './useInvalidationKey';
 export * from './useInvalidateQueries';
 export * from './useAlertsManager';
 export * from './useHandleMutationError';
+export * from './useHandleQueryError';
+export * from './useQueriesState';

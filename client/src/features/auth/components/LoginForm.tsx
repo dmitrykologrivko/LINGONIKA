@@ -27,10 +27,11 @@ type LoginFromData = z.infer<typeof schema>;
 const Form = ReactHookFormZod<LoginFromData>;
 
 type LoginFormProps = {
+  className?: string;
   onSuccessLogin: () => void;
 };
 
-function LoginForm({ onSuccessLogin }: LoginFormProps) {
+function LoginForm({ className, onSuccessLogin }: LoginFormProps) {
   const { t } = useTranslation();
   const translation = {
     heading: t('heading', { ns: 'login' }),
@@ -58,7 +59,7 @@ function LoginForm({ onSuccessLogin }: LoginFormProps) {
   };
 
   return (
-    <div className='min-w-80 md:min-w-96'>
+    <div className={className}>
       <LogoBanner/>
       <Heading1 className='text-center'>{translation.heading}</Heading1>
 

@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient, useInvalidateQueries } from '@/hooks';
+import { useApiClient, useInvalidateQueries, useHandleQueryError } from '@/hooks';
 import { getCardsDictionariesOptions } from '@/api';
-import { Skeleton, Card, Heading5 } from '@/components';
+import { Skeleton, Card, Heading5, ErrorView } from '@/components';
 
 import rightArrowIcon from '@/assets/right-arrow-black.svg';
 import bookBookmarkIcon from '@/assets/book-bookmark-minimalistic-black.svg';
@@ -21,21 +21,34 @@ function CardsDictionaries(
 
   const apiClient = useApiClient();
   const queryOptions = getCardsDictionariesOptions(apiClient);
-  const { isFetching, isFetched, data } = useQuery(queryOptions);
+  const { isLoading, error, data, refetch } = useQuery(queryOptions);
+  const errorMessage = useHandleQueryError(error);
 
   useInvalidateQueries(invalidationKey, queryOptions);
 
+  if (isLoading) {
+    return (
+      <div className={className}>
+        <Skeleton className='h-32'/>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={className}>
+        <ErrorView errorMessage={errorMessage} handleRetry={refetch}/>
+      </div>
+    );
+  }
+
   return (
     <div className={className}>
-      {isFetching && (
-        <Skeleton className='h-32'/>
-      )}
-
-      {(isFetched && data!.length === 0) && (
+      {(data!.length === 0) && (
         <div className='text-center pt-4'>{t('noDictionaries', { ns: 'dashboard' })}</div>
       )}
 
-      {(isFetched && data!.length > 0) && (
+      {(data!.length > 0) && (
         <ul>
           {data?.map((dictionary, index) => (
             <li key={index} className='pb-2'>

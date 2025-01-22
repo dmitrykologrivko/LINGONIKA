@@ -9,7 +9,7 @@ function ProfilePage() {
   return (
     <div className='w-lvw flex flex-col'>
       <div className='flex-grow flex justify-center items-center mt-4'>
-        <ProfileForm/>
+        <ProfileForm className='min-w-80 md:min-w-96'/>
       </div>
     </div>
   );

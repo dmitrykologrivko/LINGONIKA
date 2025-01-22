@@ -16,3 +16,4 @@ export { default as LoadingOverlay } from './LoadingOverlay/LoadingOverlay';
 export { default as Panel } from './Panel/Panel';
 export { default as ProfileSkeleton } from './Skeletons/ProfileSkeleton';
 export { default as CardSkeleton } from './Skeletons/CardSkeleton';
+export { default as ErrorView } from './ErrorView/ErrorView';

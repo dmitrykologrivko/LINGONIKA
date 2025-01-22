@@ -35,7 +35,7 @@ function Header() {
         <span className='text-white uppercase font-bold'>Lingonika</span>
       </NavLink>
 
-      {profile.isFetched && (
+      {profile.isSuccess && (
         <Dropdown hover end>
           <Dropdown.Toggle button={false}>
             <div className='flex items-center gap-2 cursor-pointer'>

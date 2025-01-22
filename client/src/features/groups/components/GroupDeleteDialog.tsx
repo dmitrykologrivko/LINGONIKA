@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from '@/components';
 import { deleteGroup } from '@/api';
-import { useApiClient } from '@/hooks';
+import { useApiClient, useHandleMutationError } from '@/hooks';
 
 type GroupDeleteDialogProps = {
   show: boolean;
@@ -18,11 +18,13 @@ function GroupDeleteDialog({ show, groupId, onClose, onSuccessDeletion }: GroupD
   const apiClient = useApiClient();
   const deleteMutation = useMutation({
     mutationFn: () => deleteGroup(groupId, apiClient),
-  })
+  });
+  const handleMutationError = useHandleMutationError();
 
   const onDeleteGroup = () => {
     deleteMutation.mutate(undefined, {
       onSuccess: onSuccessDeletion,
+      onError: handleMutationError,
     });
   };
 
