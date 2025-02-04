@@ -1,0 +1,27 @@
+.input-w-full:not([type='checkbox']):not([type='radio']) {
+  width: 100%;
+}
+
+.form-control.form-control-inline {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.form-control.form-control-inline > .col-label {
+}
+
+.form-control.form-control-inline > .col-field {
+  position: relative;
+}
+
+.form-control.form-control-inline .label-error {
+  position: absolute;
+}
+
+.form-control.form-control-inline:has(.label-error) {
+  margin-bottom: 2rem;
+}

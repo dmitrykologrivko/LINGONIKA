@@ -11,8 +11,11 @@ export const CardsSchema = getPaginatedContainerSchema(CardSchema);
 export type CardsQuery = {
   languageFrom?: string;
   languageTo?: string;
+  groupId?: number;
+  isLearned?: boolean;
   limit?: number;
   offset?: number;
+  sortBy?: string;
 } & QueryParams;
 export type CardsResponse = z.infer<typeof CardsSchema>;
 
@@ -21,7 +24,31 @@ export async function getCards(
   signal: AbortSignal,
   apiClient: AxiosInstance,
 ): Promise<PaginatedContainer<Card>> {
-  const response = await apiClient.get<CardsResponse>(`/api/cards/`, { signal, params: query });
+  const params: {
+    languageFrom?: string;
+    languageTo?: string;
+    isLearned?: boolean;
+    where?: string[];
+    limit?: number;
+    offset?: number;
+    sortBy?: string;
+  } = {
+    languageFrom: query.languageFrom,
+    languageTo: query.languageTo,
+    isLearned: query.isLearned,
+    where: [],
+    limit: query.limit,
+    offset: query.offset,
+    sortBy: query.sortBy,
+  };
+  if (query.isLearned !== undefined) {
+    params.where?.push(`isLearned__eq=${Number(query.isLearned)}`);
+  }
+  if (query.groupId) {
+    params.where?.push(`group__eq=${Number(query.groupId)}`);
+  }
+
+  const response = await apiClient.get<CardsResponse>(`/api/cards/`, { signal, params });
   return CardsSchema.parse(response.data);
 }
 

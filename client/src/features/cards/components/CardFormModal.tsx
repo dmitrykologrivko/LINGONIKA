@@ -9,6 +9,7 @@ import {
   FormItem,
   Textarea,
   Select,
+  Checkbox,
   Loading,
   ErrorView,
 } from '@/components';
@@ -33,13 +34,15 @@ const LANGUAGE_TO_KEY = 'languageTo';
 const TEXT_FROM_KEY = 'textFrom';
 const TEXT_TO_KEY = 'textTo';
 const EXAMPLE_KEY = 'example';
+const IS_LEARNED_KEY = 'isLearned';
 
 const schema = z.object({
   [LANGUAGE_FROM_KEY]: z.string(),
   [LANGUAGE_TO_KEY]: z.string(),
   [TEXT_FROM_KEY]: z.string().min(1).max(250),
   [TEXT_TO_KEY]: z.string().min(1).max(250),
-  [EXAMPLE_KEY]: z.string().max(3000).optional(),
+  [EXAMPLE_KEY]: z.string().max(3000).optional().nullable(),
+  [IS_LEARNED_KEY]: z.boolean().optional(),
 });
 
 type CardFormData = z.infer<typeof schema>;
@@ -81,6 +84,7 @@ function CardFormModal({
     textToPlaceholder: t('textToPlaceholder', { ns: 'cards' }),
     example: t('example', { ns: 'cards' }),
     examplePlaceholder: t('examplePlaceholder', { ns: 'cards' }),
+    learned: t('learned', { ns: 'cards' }),
     cancel: t('cancel', { ns: 'actions' }),
     create: t('create', { ns: 'actions' }),
     edit: t('edit', { ns: 'actions' }),
@@ -152,6 +156,7 @@ function CardFormModal({
       languageFrom: data.languageFrom,
       languageTo:  data.languageTo,
       example: data.example,
+      isLearned: data.isLearned,
     }, {
       onSuccess: onSuccessSubmission,
       onError: handleMutationError,
@@ -242,6 +247,12 @@ function CardFormModal({
                               renderField={(props) => (
                                 <Textarea {...props} {...register(EXAMPLE_KEY)}
                                           placeholder={translation.examplePlaceholder}/>
+                              )}/>
+
+                    <FormItem inline label={translation.learned} error={errors[IS_LEARNED_KEY]?.message}
+                              colLabelWidth='w-2/12' colFieldWidth='w-10/12'
+                              renderField={(props) => (
+                                <Checkbox {...props} {...register(IS_LEARNED_KEY)} color='primary'/>
                               )}/>
 
                     <div className='flex gap-2 justify-end mt-8'>

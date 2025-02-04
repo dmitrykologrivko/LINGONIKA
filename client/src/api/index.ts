@@ -12,6 +12,7 @@ export * from './cards/get-card';
 export * from './cards/create-card';
 export * from './cards/update-card';
 export * from './cards/delete-card';
+export * from './cards/delete-cards';
 export * from './groups/get-groups';
 export * from './groups/get-group';
 export * from './groups/create-group';

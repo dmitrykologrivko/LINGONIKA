@@ -4,7 +4,11 @@ export type Card = {
   textTo: string;
   languageFrom: string;
   languageTo: string;
-  example?: string;
-  isLearned: boolean;
-  groupId?: number;
+  example?: string | null;
+  isLearned?: boolean;
+  groupId?: number | null;
+  group?: {
+    id: number;
+    name: string;
+  } | null;
 };

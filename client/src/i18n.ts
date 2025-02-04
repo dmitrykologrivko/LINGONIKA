@@ -51,6 +51,7 @@ const resources = {
       editProfile: 'Edit Profile',
     },
     labels: {
+      all: 'all',
       of: 'of',
       preparing: 'Preparing',
       BN: 'Bengali',
@@ -109,6 +110,11 @@ const resources = {
       noDictionaries: 'You haven’t created any flashcards yet!',
     },
     cards: {
+      defaultHeading: 'Cards',
+      allCardsHeading: '{{languageFrom}} - {{languageTo}} Cards',
+      groupCardsHeading: '{{groupName}} Cards',
+      noCards: 'There are no cards',
+      addCard: 'Add Flashcard',
       createCardTitle: 'Create Flashcard',
       editCardTitle: 'Edit Flashcard',
       textFrom: 'Word or phrase for learning',
@@ -118,6 +124,12 @@ const resources = {
       example: 'Example',
       examplePlaceholder: 'Enter example',
       allFlashCards: 'All Flashcards',
+      learned: 'Learned',
+      notLearned: 'Not learned',
+      oneCardSelected: '1 flashcard selected',
+      multipleCardsSelected: '{{count}} flashcards selected',
+      oneCardDeleted: '1 flashcard deleted',
+      multipleCardsDeleted: '{{count}} flashcards deleted',
     },
     groups: {
       noGroups: 'There are no groups',

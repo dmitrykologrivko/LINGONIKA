@@ -51,7 +51,8 @@ export const createRouter = () => {
         { path: 'dashboard', element: <DashboardPage/> },
         { path: 'profile', element: <ProfilePage/> },
         { path: 'dictionary/:languageFrom/:languageTo/', element: <DictionaryPage/> },
-        { path: 'cards', element: <CardsPage/> },
+        { path: 'cards/language/:languageFrom/:languageTo/', element: <CardsPage/> },
+        { path: 'cards/group/:groupId/', element: <CardsPage/> },
         { path: 'not-found', element: <NotFoundPage/> },
         { path: '*', element: <NotFoundPage/> }
       ],
