@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  useQuery,
+  useInfiniteQuery,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import {
-  getCardsOptions,
+  getInfiniteCardsOptions,
   deleteCards,
   DeleteCardsRequest,
 } from '@/api';
@@ -16,14 +16,16 @@ import {
   useHandleQueryError,
   useHandleMutationError,
   useAlertsManager,
+  useIntersection,
 } from '@/hooks';
 import {
   Skeleton,
   Card,
   ErrorView,
   Checkbox,
+  InfiniteLoading,
 } from '@/components';
-import { capitalizeFirstLetter } from '@/utils';
+import { capitalizeFirstLetter, empty } from '@/utils';
 import calendarBlackIcon from '@/assets/calendar-black.svg';
 import calendarPrimaryIcon from '@/assets/calendar-primary.svg';
 import azSortBlackIcon from '@/assets/az-sort-black.svg';
@@ -61,15 +63,28 @@ function CardsList({
   const queryClient = useQueryClient();
   const alertsManager = useAlertsManager();
 
-  const queryOptions = getCardsOptions({
+  const queryOptions = getInfiniteCardsOptions({
     languageFrom,
     languageTo,
     groupId,
     isLearned,
     sortBy,
   }, apiClient);
-  const { isLoading, error, data, refetch } = useQuery(queryOptions);
+  const {
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    error,
+    data,
+    refetch,
+    fetchNextPage,
+  } = useInfiniteQuery(queryOptions);
   const errorMessage = useHandleQueryError(error);
+  const infiniteLoadingRef = useIntersection(() => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  });
 
   useInvalidateQueries(invalidationKey, queryOptions);
 
@@ -90,7 +105,7 @@ function CardsList({
     if (selectedIds.length > 0) {
       setSelectedIds([]);
     } else {
-      setSelectedIds([...data!.results.map(card => card.id)]);
+      setSelectedIds([...data!.map(card => card.id)]);
     }
   }
 
@@ -148,11 +163,11 @@ function CardsList({
         </span>
       </nav>
 
-      {(data!.count === 0) && (
+      {empty(data) && (
         <div className='text-center pt-4'>{t('noCards', { ns: 'cards' })}</div>
       )}
 
-      {(data!.count > 0) && (
+      {!empty(data) && (
         <>
           <Card className='bg-white'>
             <Card.Body className='pl-6 pr-6 pt-4 pb-4'>
@@ -189,7 +204,7 @@ function CardsList({
             </Card.Body>
           </Card>
           <ul>
-            {data?.results.map((card) => (
+            {data?.map((card) => (
               <li key={card.id} className='pt-2 pb-2'>
                 <Card className='bg-white'>
                   <Card.Body className='pl-6 pr-6 pt-2 pb-2'>
@@ -219,6 +234,8 @@ function CardsList({
               </li>
             ))}
           </ul>
+
+          <InfiniteLoading ref={infiniteLoadingRef} isLoading={isFetchingNextPage}/>
         </>
       )}
     </div>

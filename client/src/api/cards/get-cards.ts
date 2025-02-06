@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
-import { queryOptions } from '@tanstack/react-query';
+import { queryOptions, infiniteQueryOptions } from '@tanstack/react-query';
 import { Card } from '@/types';
 import { CardSchema } from './card.schema';
 import { QueryParams, PaginatedContainer } from '../types';
 import { getPaginatedContainerSchema } from '../schemas';
+import { flatMapPages } from '../utils';
 
 export const CardsSchema = getPaginatedContainerSchema(CardSchema);
 
@@ -14,7 +15,7 @@ export type CardsQuery = {
   groupId?: number;
   isLearned?: boolean;
   limit?: number;
-  offset?: number;
+  page?: number;
   sortBy?: string;
 } & QueryParams;
 export type CardsResponse = z.infer<typeof CardsSchema>;
@@ -30,7 +31,7 @@ export async function getCards(
     isLearned?: boolean;
     where?: string[];
     limit?: number;
-    offset?: number;
+    page?: number;
     sortBy?: string;
   } = {
     languageFrom: query.languageFrom,
@@ -38,7 +39,7 @@ export async function getCards(
     isLearned: query.isLearned,
     where: [],
     limit: query.limit,
-    offset: query.offset,
+    page: query.page,
     sortBy: query.sortBy,
   };
   if (query.isLearned !== undefined) {
@@ -57,4 +58,16 @@ export function getCardsOptions(query: CardsQuery, apiClient: AxiosInstance) {
     queryKey: [getCards.name, query],
     queryFn: ({ signal }) => getCards(query, signal, apiClient),
   })
+}
+
+export function getInfiniteCardsOptions(query: CardsQuery, apiClient: AxiosInstance) {
+  return infiniteQueryOptions({
+    queryKey: [getCards.name, query],
+    queryFn: ({ signal, pageParam }) =>
+      getCards({ ...query, page: pageParam }, signal, apiClient),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      lastPage.next ? lastPageParam + 1 : undefined,
+    select: flatMapPages,
+  });
 }

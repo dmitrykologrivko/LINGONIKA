@@ -15,3 +15,7 @@ export function any(...args: any[]) {
   }
   return false;
 }
+
+export function empty(arr: Array<any> | undefined) {
+  return !arr || arr.length === 0;
+}

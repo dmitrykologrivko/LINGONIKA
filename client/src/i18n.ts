@@ -54,6 +54,8 @@ const resources = {
       all: 'all',
       of: 'of',
       preparing: 'Preparing',
+      loading: 'Loading...',
+      loadingMore: 'Loading more...',
       BN: 'Bengali',
       ZH: 'Chinese',
       DA: 'Danish',
