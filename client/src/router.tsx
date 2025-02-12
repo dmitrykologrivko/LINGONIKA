@@ -13,6 +13,7 @@ import { RegisterPage } from '@/pages/register';
 import { DashboardPage } from '@/pages/dashboard';
 import { CardsPage } from '@/pages/cards';
 import { DictionaryPage } from '@/pages/dictionary';
+import { TutorPage } from '@/pages/tutor';
 import { ProfilePage } from '@/pages/profile';
 import { NotFoundPage } from '@/pages/not-found';
 
@@ -53,6 +54,8 @@ export const createRouter = () => {
         { path: 'dictionary/:languageFrom/:languageTo/', element: <DictionaryPage/> },
         { path: 'cards/language/:languageFrom/:languageTo/', element: <CardsPage/> },
         { path: 'cards/group/:groupId/', element: <CardsPage/> },
+        { path: 'tutor/language/:languageFrom/:languageTo/', element: <TutorPage/> },
+        { path: 'tutor/group/:groupId/', element: <TutorPage/> },
         { path: 'not-found', element: <NotFoundPage/> },
         { path: '*', element: <NotFoundPage/> }
       ],

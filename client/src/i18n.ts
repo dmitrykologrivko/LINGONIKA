@@ -151,6 +151,11 @@ const resources = {
       groups: 'Groups',
       addGroup: 'Add Group',
     },
+    tutor: {
+      heading: 'Flashcards Tutor',
+      allCards: 'All Flashcards',
+      finishTutorial: 'Finish Tutorial'
+    },
   },
 };
 

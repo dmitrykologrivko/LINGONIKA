@@ -8,7 +8,7 @@ import AlertsRenderer from '../AlertsRenderer/AlertsRenderer';
 function ProtectedLayout() {
   const shouldShowSpinner = any(
     useIsFetching(),
-    useIsMutating(),
+    useIsMutating({ predicate: mutation => !mutation.meta?.isOptimistic }),
   );
 
   return (

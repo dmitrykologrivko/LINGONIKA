@@ -6,7 +6,7 @@ import { GroupSchema } from './group.schema';
 import { QueryParams, PaginatedContainer } from '../types';
 import { getPaginatedContainerSchema } from '../schemas';
 
-export const GroupsSchema = getPaginatedContainerSchema(GroupSchema);
+const GroupsSchema = getPaginatedContainerSchema(GroupSchema);
 
 export type GroupsQuery = {
   languageFrom?: string;

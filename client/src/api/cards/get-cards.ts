@@ -7,7 +7,7 @@ import { QueryParams, PaginatedContainer } from '../types';
 import { getPaginatedContainerSchema } from '../schemas';
 import { flatMapPages } from '../utils';
 
-export const CardsSchema = getPaginatedContainerSchema(CardSchema);
+const CardsSchema = getPaginatedContainerSchema(CardSchema);
 
 export type CardsQuery = {
   languageFrom?: string;
