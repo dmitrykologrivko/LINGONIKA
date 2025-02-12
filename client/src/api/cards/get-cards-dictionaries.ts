@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
+import { CARDS_QUERY_KEY } from './constants';
 
 const CardsDictionarySchema = z.object({
   languageFrom: z.string(),
@@ -22,7 +23,7 @@ export async function getCardsDictionaries(
 
 export function getCardsDictionariesOptions(apiClient: AxiosInstance) {
   return queryOptions({
-    queryKey: [getCardsDictionaries.name],
+    queryKey: [CARDS_QUERY_KEY, getCardsDictionaries.name],
     queryFn: ({ signal }) => getCardsDictionaries(signal, apiClient),
   });
 }

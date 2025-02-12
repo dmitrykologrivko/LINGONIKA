@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
 import { Card } from '@/types';
 import { CardSchema } from './card.schema';
+import { CARDS_QUERY_KEY } from './constants';
 
 const CardsSchema = z.array(CardSchema);
 export type LearnCardsByLanguagesResponse = z.infer<typeof CardsSchema>;
@@ -23,7 +24,7 @@ export function learnCardsByLanguagesOptions(
   apiClient: AxiosInstance,
 ) {
   return queryOptions({
-    queryKey: [learnCardsByLanguages.name, languageFrom, languageTo],
+    queryKey: [CARDS_QUERY_KEY, learnCardsByLanguages.name, languageFrom, languageTo],
     queryFn: ({ signal }) =>
       learnCardsByLanguages(languageFrom, languageTo, signal, apiClient),
   })

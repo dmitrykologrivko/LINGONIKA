@@ -2,7 +2,7 @@ import { ReactElement, useCallback, useState } from 'react';
 import { NavLink, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Heading1, Heading3 } from '@/components';
-import { usePageTitle, useInvalidationKey } from '@/hooks';
+import { usePageTitle } from '@/hooks';
 import { CardsStatistics, CardFormModal } from '@/features/cards';
 import { GroupsList, GroupFormModal, GroupDeleteDialog } from '@/features/groups';
 
@@ -14,8 +14,6 @@ function DictionaryPage() {
 
   const params = useParams();
   const { t } = useTranslation();
-  const cardsStatisticsInvalidation = useInvalidationKey();
-  const groupsInvalidation = useInvalidationKey();
 
   const languageFrom = (params.languageFrom as string).toUpperCase();
   const languageTo = (params.languageTo as string).toUpperCase();
@@ -39,33 +37,16 @@ function DictionaryPage() {
     setActiveGroupId(undefined);
     setShouldShowGroupForm(false);
   }, []);
-  const onGroupModification = useCallback(() => {
-    setActiveGroupId(undefined);
-    setShouldShowGroupForm(false);
-    groupsInvalidation.invalidate();
-  }, [groupsInvalidation]);
 
   const onCloseGroupDeleteDialog = useCallback(() => {
     setActiveGroupId(undefined);
     setShouldShowGroupDeleteDialog(false);
   }, []);
-  const onGroupDeleted = useCallback(() => {
-    setActiveGroupId(undefined);
-    setShouldShowGroupDeleteDialog(false);
-    groupsInvalidation.invalidate();
-    cardsStatisticsInvalidation.invalidate();
-  }, [groupsInvalidation, cardsStatisticsInvalidation]);
 
   const onCloseCardForm = useCallback(() => {
     setActiveGroupId(undefined);
     setShouldShowCardForm(false);
   }, []);
-  const onCardCreated = useCallback(() => {
-    setActiveGroupId(undefined);
-    setShouldShowCardForm(false);
-    groupsInvalidation.invalidate();
-    cardsStatisticsInvalidation.invalidate();
-  }, [groupsInvalidation, cardsStatisticsInvalidation]);
 
   const onRenameGroupClick = (groupId: number): void => {
     setActiveGroupId(groupId);
@@ -87,8 +68,7 @@ function DictionaryPage() {
       </Heading1>
 
       <CardsStatistics className='mt-4 mb-4' renderLink={renderLink}
-                       languageFrom={languageFrom} languageTo={languageTo}
-                       invalidationKey={cardsStatisticsInvalidation.invalidationKey}/>
+                       languageFrom={languageFrom} languageTo={languageTo}/>
 
       <div className='pt-4 pb-4 flex justify-between'>
         <Heading3>{t('groups', { ns: 'dictionaries' })}</Heading3>
@@ -98,18 +78,18 @@ function DictionaryPage() {
       </div>
       <GroupsList languageFrom={languageFrom} languageTo={languageTo} renderLink={renderGroupLink}
                   onRenameGroupClick={onRenameGroupClick} onDeleteGroupClick={onDeleteGroupClick}
-                  onAddCardToGroupClick={onAddCardToGroupClick} invalidationKey={groupsInvalidation.invalidationKey}/>
+                  onAddCardToGroupClick={onAddCardToGroupClick}/>
 
       <GroupFormModal show={shouldShowGroupForm} groupId={activeGroupId}
                       languageFrom={languageFrom} languageTo={languageTo}
-                      onClose={onCloseGroupForm} onSuccessSubmission={onGroupModification}/>
+                      onClose={onCloseGroupForm}/>
 
       <GroupDeleteDialog show={shouldShowGroupDeleteDialog} groupId={activeGroupId!}
-                         onClose={onCloseGroupDeleteDialog} onSuccessDeletion={onGroupDeleted}/>
+                         onClose={onCloseGroupDeleteDialog}/>
 
       <CardFormModal show={shouldShowCardForm} groupId={activeGroupId}
                      languageFrom={languageFrom} languageTo={languageTo}
-                     onClose={onCloseCardForm} onSuccessSubmission={onCardCreated}/>
+                     onClose={onCloseCardForm}/>
     </div>
   );
 }

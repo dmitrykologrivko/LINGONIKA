@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient, useInvalidateQueries, useHandleQueryError } from '@/hooks';
-import { getCardsStatisticsOptions } from '@/api';
+import { useApiClient, useInvalidateQueriesAfterMutation, useHandleQueryError } from '@/hooks';
+import { getCardsStatisticsOptions, DELETE_GROUP_MUTATION_KEY } from '@/api';
 import { Panel, Skeleton, ErrorView } from '@/components';
 import rightArrowIcon from '@/assets/right-arrow-black.svg';
 
@@ -11,22 +11,23 @@ type CardsStatisticsProps = {
   languageFrom: string;
   languageTo: string;
   renderLink: (children: ReactElement) => ReactElement;
-  invalidationKey?: string;
 };
 
-function CardsStatistics({ className,
+function CardsStatistics({
+                           className,
                            languageFrom,
                            languageTo,
                            renderLink,
-                           invalidationKey }: CardsStatisticsProps) {
+                         }: CardsStatisticsProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
+
   const queryOptions = getCardsStatisticsOptions({ languageFrom, languageTo }, apiClient);
   const { isLoading, error, data, refetch } = useQuery(queryOptions);
   const errorMessage = useHandleQueryError(error);
 
-  useInvalidateQueries(invalidationKey, queryOptions);
+  useInvalidateQueriesAfterMutation(DELETE_GROUP_MUTATION_KEY, queryOptions);
 
   if (isLoading) {
     return (

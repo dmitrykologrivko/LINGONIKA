@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient, useInvalidateQueries, useHandleQueryError } from '@/hooks';
+import { useApiClient, useHandleQueryError } from '@/hooks';
 import { getCardsDictionariesOptions } from '@/api';
 import { Skeleton, Card, Heading5, ErrorView } from '@/components';
 
@@ -11,20 +11,18 @@ import bookBookmarkIcon from '@/assets/book-bookmark-minimalistic-black.svg';
 type CardsDictionariesProps = {
   className?: string;
   renderLink: (children: ReactElement, languageFrom: string, languageTo: string) => ReactElement;
-  invalidationKey?: string;
 };
 
 function CardsDictionaries(
-  { className, renderLink, invalidationKey }: CardsDictionariesProps
+  { className, renderLink }: CardsDictionariesProps
 ) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const queryOptions = getCardsDictionariesOptions(apiClient);
-  const { isLoading, error, data, refetch } = useQuery(queryOptions);
+  const { isLoading, error, data, refetch } = useQuery(
+    getCardsDictionariesOptions(apiClient),
+  );
   const errorMessage = useHandleQueryError(error);
-
-  useInvalidateQueries(invalidationKey, queryOptions);
 
   if (isLoading) {
     return (

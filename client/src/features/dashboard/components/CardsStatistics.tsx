@@ -1,23 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useApiClient, useInvalidateQueries, useHandleQueryError } from '@/hooks';
+import { useApiClient, useHandleQueryError } from '@/hooks';
 import { getCardsStatisticsOptions } from '@/api';
 import { Panel, Divider, Skeleton, ErrorView } from '@/components';
 
 type CardsStatisticsProps = {
   className?: string;
-  invalidationKey?: string;
 };
 
-function CardsStatistics({ className, invalidationKey }: CardsStatisticsProps) {
+function CardsStatistics({ className }: CardsStatisticsProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
-  const queryOptions = getCardsStatisticsOptions({}, apiClient);
-  const { isLoading, error, data, refetch } = useQuery(queryOptions);
+  const { isLoading, error, data, refetch } = useQuery(
+    getCardsStatisticsOptions({}, apiClient),
+  );
   const errorMessage = useHandleQueryError(error);
-
-  useInvalidateQueries(invalidationKey, queryOptions);
 
   if (isLoading) {
     return (

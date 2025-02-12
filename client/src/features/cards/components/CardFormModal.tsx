@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useMutation, useQueries } from '@tanstack/react-query';
+import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import {
@@ -27,6 +27,9 @@ import {
   CreateCardRequest,
   UpdateCardRequest,
   ValidationError,
+  CARDS_QUERY_KEY,
+  CREATE_CARD_MUTATION_KEY,
+  UPDATE_CARD_MUTATION_KEY,
 } from '@/api';
 
 const LANGUAGE_FROM_KEY = 'languageFrom';
@@ -53,7 +56,7 @@ type CardFormModalProps = {
   cardId?: number;
   show: boolean;
   onClose: () => void;
-  onSuccessSubmission: () => void;
+  onSuccessSubmission?: () => void;
   languageFrom?: string;
   languageTo?: string;
   groupId?: number;
@@ -91,6 +94,7 @@ function CardFormModal({
   };
 
   const apiClient = useApiClient();
+  const queryClient = useQueryClient();
 
   const queries = useQueries({
     queries: [
@@ -100,6 +104,7 @@ function CardFormModal({
       },
       {
         ...getCardOptions(cardId!, apiClient),
+        queryKey: [`${CARDS_QUERY_KEY}_${cardId}`],
         enabled: show && cardId !== undefined
       }
     ],
@@ -111,9 +116,11 @@ function CardFormModal({
 
   const createMutation = useMutation({
     mutationFn: (req: CreateCardRequest) => createCard(req, apiClient),
+    mutationKey: [CREATE_CARD_MUTATION_KEY],
   });
   const updateMutation = useMutation({
     mutationFn: (req: UpdateCardRequest) => updateCard(req, apiClient),
+    mutationKey: [UPDATE_CARD_MUTATION_KEY],
   });
   const handleMutationError = useHandleMutationError();
   const isMutating = createMutation.isPending || updateMutation.isPending;
@@ -133,6 +140,14 @@ function CardFormModal({
   };
 
   const onSubmit = (data: CardFormData) => {
+    const onSuccess = () => {
+      queryClient.invalidateQueries({ queryKey: [CARDS_QUERY_KEY] });
+
+      if (onSuccessSubmission) onSuccessSubmission();
+
+      onClose();
+    };
+
     if (!cardId) {
       createMutation.mutate({
         textFrom: data.textFrom,
@@ -143,7 +158,7 @@ function CardFormModal({
         isLearned: false,
         groupId: groupId,
       }, {
-        onSuccess: onSuccessSubmission,
+        onSuccess,
         onError: handleMutationError,
       });
       return;
@@ -158,7 +173,7 @@ function CardFormModal({
       example: data.example,
       isLearned: data.isLearned,
     }, {
-      onSuccess: onSuccessSubmission,
+      onSuccess,
       onError: handleMutationError,
     });
   };

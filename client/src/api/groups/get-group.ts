@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
 import { Group } from '@/types';
 import { GroupSchema } from './group.schema.ts';
+import { GROUPS_QUERY_KEY } from './constants';
 
 export type GroupResponse = z.infer<typeof GroupSchema>;
 
@@ -17,7 +18,7 @@ export async function getGroup(
 
 export function getGroupOptions(id: number, apiClient: AxiosInstance) {
   return queryOptions({
-    queryKey: [getGroup.name, id],
+    queryKey: [GROUPS_QUERY_KEY, getGroup.name, id],
     queryFn: ({ signal }) => getGroup(id, signal, apiClient),
   })
 }

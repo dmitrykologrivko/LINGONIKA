@@ -6,6 +6,7 @@ import { CardSchema } from './card.schema';
 import { QueryParams, PaginatedContainer } from '../types';
 import { getPaginatedContainerSchema } from '../schemas';
 import { flatMapPages } from '../utils';
+import { CARDS_QUERY_KEY } from './constants';
 
 const CardsSchema = getPaginatedContainerSchema(CardSchema);
 
@@ -55,14 +56,14 @@ export async function getCards(
 
 export function getCardsOptions(query: CardsQuery, apiClient: AxiosInstance) {
   return queryOptions({
-    queryKey: [getCards.name, query],
+    queryKey: [CARDS_QUERY_KEY, getCards.name, query],
     queryFn: ({ signal }) => getCards(query, signal, apiClient),
   })
 }
 
 export function getInfiniteCardsOptions(query: CardsQuery, apiClient: AxiosInstance) {
   return infiniteQueryOptions({
-    queryKey: [getCards.name, query],
+    queryKey: [CARDS_QUERY_KEY, getCards.name, query],
     queryFn: ({ signal, pageParam }) =>
       getCards({ ...query, page: pageParam }, signal, apiClient),
     initialPageParam: 1,

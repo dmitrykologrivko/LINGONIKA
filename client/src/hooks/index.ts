@@ -8,6 +8,7 @@ export * from './useLoggedIn';
 export * from './useRedirectWhen';
 export * from './useInvalidationKey';
 export * from './useInvalidateQueries';
+export * from './useInvalidateQueriesAfterMutation';
 export * from './useAlertsManager';
 export * from './useHandleMutationError';
 export * from './useHandleQueryError';

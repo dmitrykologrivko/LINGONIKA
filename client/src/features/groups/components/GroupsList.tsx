@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useApiClient, useInvalidateQueries, useHandleQueryError } from '@/hooks';
-import { getGroupsOptions } from '@/api';
+import { useApiClient, useInvalidateQueriesAfterMutation, useHandleQueryError } from '@/hooks';
+import { getGroupsOptions, CREATE_CARD_MUTATION_KEY } from '@/api';
 import { Skeleton, Card, Dropdown, Heading5, ErrorView } from '@/components';
 import dotsMenuIcon from '@/assets/dots-menu-black.svg';
 
@@ -16,25 +16,26 @@ type GroupsListProps = {
   onRenameGroupClick: (groupId: number) => void;
   onDeleteGroupClick: (groupId: number) => void;
   onAddCardToGroupClick: (groupId: number) => void;
-  invalidationKey?: string;
 }
 
-function GroupsList({ className,
+function GroupsList({
+                      className,
                       languageFrom,
                       languageTo,
                       renderLink,
                       onRenameGroupClick,
                       onDeleteGroupClick,
                       onAddCardToGroupClick,
-                      invalidationKey }: GroupsListProps) {
+                    }: GroupsListProps) {
   const { t } = useTranslation();
 
   const apiClient = useApiClient();
+
   const queryOptions = getGroupsOptions({ languageFrom, languageTo, limit: GROUPS_LIMIT }, apiClient);
   const { isLoading, error, data, refetch } = useQuery(queryOptions);
   const errorMessage = useHandleQueryError(error);
 
-  useInvalidateQueries(invalidationKey, queryOptions);
+  useInvalidateQueriesAfterMutation(CREATE_CARD_MUTATION_KEY, queryOptions);
 
   if (isLoading) {
     return (

@@ -1,14 +1,14 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from '@/components';
-import { deleteGroup } from '@/api';
+import { deleteGroup, GROUPS_QUERY_KEY, DELETE_GROUP_MUTATION_KEY } from '@/api';
 import { useApiClient, useHandleMutationError } from '@/hooks';
 
 type GroupDeleteDialogProps = {
   show: boolean;
   groupId: number;
   onClose: () => void;
-  onSuccessDeletion: () => void;
+  onSuccessDeletion?: () => void;
 };
 
 function GroupDeleteDialog({ show, groupId, onClose, onSuccessDeletion }: GroupDeleteDialogProps) {
@@ -16,14 +16,23 @@ function GroupDeleteDialog({ show, groupId, onClose, onSuccessDeletion }: GroupD
   const { Dialog } = Modal.useDialog();
 
   const apiClient = useApiClient();
+  const queryClient = useQueryClient();
+
   const deleteMutation = useMutation({
     mutationFn: () => deleteGroup(groupId, apiClient),
+    mutationKey: [DELETE_GROUP_MUTATION_KEY],
   });
   const handleMutationError = useHandleMutationError();
 
   const onDeleteGroup = () => {
     deleteMutation.mutate(undefined, {
-      onSuccess: onSuccessDeletion,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [GROUPS_QUERY_KEY] });
+
+        if (onSuccessDeletion) onSuccessDeletion();
+
+        onClose();
+      },
       onError: handleMutationError,
     });
   };

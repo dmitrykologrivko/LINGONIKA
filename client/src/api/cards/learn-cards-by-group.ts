@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
 import { Card } from '@/types';
 import { CardSchema } from './card.schema';
+import { CARDS_QUERY_KEY } from './constants';
 
 const CardsSchema = z.array(CardSchema);
 export type LearnCardsByGroupResponse = z.infer<typeof CardsSchema>;
@@ -18,7 +19,7 @@ export async function learnCardsByGroup(
 
 export function learnCardsByGroupOptions(groupId: number, apiClient: AxiosInstance) {
   return queryOptions({
-    queryKey: [learnCardsByGroup.name, groupId],
+    queryKey: [CARDS_QUERY_KEY, learnCardsByGroup.name, groupId],
     queryFn: ({ signal }) => learnCardsByGroup(groupId, signal, apiClient),
   })
 }

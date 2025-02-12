@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import {
@@ -18,6 +18,9 @@ import {
   CreateGroupRequest,
   UpdateGroupRequest,
   ValidationError,
+  GROUPS_QUERY_KEY,
+  CREATE_GROUP_MUTATION_KEY,
+  UPDATE_GROUP_MUTATION_KEY,
 } from '@/api';
 
 const NAME_KEY = 'name';
@@ -34,17 +37,19 @@ type GroupFormModalProps = {
   groupId?: number;
   show: boolean;
   onClose: () => void;
-  onSuccessSubmission: () => void;
+  onSuccessSubmission?: () => void;
   languageFrom?: string;
   languageTo?: string;
 };
 
-function GroupFormModal({ groupId,
+function GroupFormModal({
+                          groupId,
                           show,
                           onClose,
                           onSuccessSubmission,
                           languageFrom,
-                          languageTo }: GroupFormModalProps) {
+                          languageTo
+                        }: GroupFormModalProps) {
   const { t } = useTranslation();
   const translation = {
     createGroupTitle: t('createGroupTitle', { ns: 'groups' }),
@@ -58,9 +63,11 @@ function GroupFormModal({ groupId,
   };
 
   const apiClient = useApiClient();
+  const queryClient = useQueryClient();
 
   const groupQuery = useQuery({
     ...getGroupOptions(groupId!, apiClient),
+    queryKey: [`${GROUPS_QUERY_KEY}_${groupId}`],
     enabled: show && groupId !== undefined
   });
   const isLoading = groupId ? groupQuery.isLoading : false;
@@ -69,9 +76,11 @@ function GroupFormModal({ groupId,
 
   const createMutation = useMutation({
     mutationFn: (req: CreateGroupRequest) => createGroup(req, apiClient),
+    mutationKey: [CREATE_GROUP_MUTATION_KEY],
   });
   const updateMutation = useMutation({
     mutationFn: (req: UpdateGroupRequest) => updateGroup(req, apiClient),
+    mutationKey: [UPDATE_GROUP_MUTATION_KEY],
   });
   const isMutating = createMutation.isPending || updateMutation.isPending;
   const handleMutationError = useHandleMutationError();
@@ -87,13 +96,21 @@ function GroupFormModal({ groupId,
   };
 
   const onSubmit = (data: GroupFormData) => {
+    const onSuccess = () => {
+      queryClient.invalidateQueries({ queryKey: [GROUPS_QUERY_KEY] });
+
+      if (onSuccessSubmission) onSuccessSubmission();
+
+      onClose();
+    };
+
     if (!groupId) {
       createMutation.mutate({
         name: data.name,
         languageFrom: languageFrom!,
         languageTo: languageTo!,
       }, {
-        onSuccess: onSuccessSubmission,
+        onSuccess,
         onError: handleMutationError,
       });
       return;
@@ -103,7 +120,7 @@ function GroupFormModal({ groupId,
       ...groupQuery.data!,
       name: data.name,
     }, {
-      onSuccess: onSuccessSubmission,
+      onSuccess,
       onError: handleMutationError,
     });
   };

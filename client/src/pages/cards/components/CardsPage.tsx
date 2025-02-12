@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Heading1 } from '@/components';
 import { CardsList, CardFormModal } from '@/features/cards';
-import { useApiClient, usePageTitle, useInvalidationKey } from '@/hooks';
+import { useApiClient, usePageTitle } from '@/hooks';
 import { getGroupOptions } from '@/api';
 
 function CardsPage() {
@@ -13,7 +13,6 @@ function CardsPage() {
 
   const { t } = useTranslation();
   const apiClient = useApiClient();
-  const cardsInvalidation = useInvalidationKey();
 
   const params = useParams();
   const languageFrom = params.languageFrom ? (params.languageFrom as string).toUpperCase() : undefined;
@@ -29,11 +28,6 @@ function CardsPage() {
 
   function onCloseModal() {
     setShouldShowCardForm(false);
-  }
-
-  function onCardSuccessSubmission() {
-    setShouldShowCardForm(false);
-    cardsInvalidation.invalidate();
   }
 
   function onAddCardClick() {
@@ -64,8 +58,7 @@ function CardsPage() {
 
       <div className='flex flex-col-reverse md:flex-row gap-4'>
         <div className='w-full md:w-8/12'>
-          <CardsList groupId={groupId} invalidationKey={cardsInvalidation.invalidationKey}
-                     languageFrom={languageFrom} languageTo={languageTo}
+          <CardsList groupId={groupId} languageFrom={languageFrom} languageTo={languageTo}
                      onAddCardClick={onAddCardClick} onCardClick={onCardClick}/>
         </div>
         <div className='w-full h-32 md:w-4/12 bg-success rounded text-white'>Tutorial</div>
@@ -73,7 +66,7 @@ function CardsPage() {
 
       <CardFormModal show={shouldShowCardForm} cardId={activeCardId}
                      languageFrom={languageFrom} languageTo={languageTo}
-                     onClose={onCloseModal} onSuccessSubmission={onCardSuccessSubmission}/>
+                     onClose={onCloseModal}/>
     </div>
   );
 }

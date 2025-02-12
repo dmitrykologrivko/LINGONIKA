@@ -5,6 +5,7 @@ import { Group } from '@/types';
 import { GroupSchema } from './group.schema';
 import { QueryParams, PaginatedContainer } from '../types';
 import { getPaginatedContainerSchema } from '../schemas';
+import { GROUPS_QUERY_KEY } from './constants';
 
 const GroupsSchema = getPaginatedContainerSchema(GroupSchema);
 
@@ -27,7 +28,7 @@ export async function getGroups(
 
 export function getGroupsOptions(query: GroupsQuery, apiClient: AxiosInstance) {
   return queryOptions({
-    queryKey: [getGroups.name, query],
+    queryKey: [GROUPS_QUERY_KEY, getGroups.name, query],
     queryFn: ({ signal }) => getGroups(query, signal, apiClient),
   })
 }

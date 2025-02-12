@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 import { queryOptions } from '@tanstack/react-query';
 import { QueryParams } from '../types';
+import { CARDS_QUERY_KEY } from './constants';
 
 const CardsStatisticsSchema = z.object({
   countLearned: z.number(),
@@ -29,7 +30,7 @@ export function getCardsStatisticsOptions(
   apiClient: AxiosInstance
 ) {
   return queryOptions({
-    queryKey: [getCardsStatistics.name, query],
+    queryKey: [CARDS_QUERY_KEY, getCardsStatistics.name, query],
     queryFn: ({ signal }) => getCardsStatistics(query, signal, apiClient),
   });
 }
