@@ -158,6 +158,11 @@ const resources = {
       clickToSee: 'Click To See',
       learned: 'Learned',
       markAsLearned: 'Mark as Learned',
+      learnCards: 'Learn Cards',
+      wordTranslation: 'Word - Translation',
+      translationWord: 'Translation - Word',
+      startLearning: 'Start Learning',
+      noCards: 'Cannot start learning, there are no ready cards',
     },
   },
 };

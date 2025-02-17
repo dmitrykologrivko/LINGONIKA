@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router';
+import { useParams, NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Heading1 } from '@/components';
+import { Heading1, Skeleton } from '@/components';
 import { CardsList, CardFormModal } from '@/features/cards';
+import { TutorBanner, TutorMode } from '@/features/tutor';
 import { useApiClient, usePageTitle } from '@/hooks';
 import { getGroupOptions } from '@/api';
 
@@ -25,6 +26,24 @@ function CardsPage() {
     ...getGroupOptions(groupId!, apiClient),
     enabled: groupId !== undefined,
   });
+
+  const renderTutorLink = useCallback((mode: TutorMode) => {
+    const selectedMode = mode.toLowerCase();
+
+    if (groupQuery.data?.id) {
+      return (
+        <NavLink to={`/tutor/group/${groupQuery.data.id}?mode=${selectedMode}`}>
+          {t('startLearning', { ns: 'tutor' })}
+        </NavLink>
+      );
+    }
+
+    return (
+      <NavLink to={`/tutor/language/${languageFrom?.toLowerCase()}/${languageTo?.toLowerCase()}?mode=${selectedMode}`}>
+        {t('startLearning', { ns: 'tutor' })}
+      </NavLink>
+    );
+  }, [t, groupQuery, languageFrom, languageTo]);
 
   function onCloseModal() {
     setShouldShowCardForm(false);
@@ -61,7 +80,16 @@ function CardsPage() {
           <CardsList groupId={groupId} languageFrom={languageFrom} languageTo={languageTo}
                      onAddCardClick={onAddCardClick} onCardClick={onCardClick}/>
         </div>
-        <div className='w-full h-32 md:w-4/12 bg-success rounded text-white'>Tutorial</div>
+
+        <div className='w-full md:w-4/12'>
+          {groupQuery.isLoading ? (
+            <Skeleton className='h-32'/>
+          ) : (
+            <TutorBanner languageFrom={(languageFrom || groupQuery.data?.languageFrom)!}
+                         languageTo={(languageTo || groupQuery.data?.languageTo)!}
+                         renderLink={renderTutorLink}/>
+          )}
+        </div>
       </div>
 
       <CardFormModal show={shouldShowCardForm} cardId={activeCardId}

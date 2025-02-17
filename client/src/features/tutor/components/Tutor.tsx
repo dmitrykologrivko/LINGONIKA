@@ -1,30 +1,17 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useMutation, useQueries, useQueryClient,} from '@tanstack/react-query';
+import {Card, ErrorView, Progress, Skeleton,} from '@/components';
 import {
-  useQueries,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import {
-  Skeleton,
-  Card,
-  Progress,
-  ErrorView,
-} from '@/components';
-import {
+  getGroupOptions,
   learnCardsByGroupOptions,
   learnCardsByLanguagesOptions,
-  getGroupOptions,
   updateCard,
   UpdateCardRequest,
 } from '@/api';
-import {
-  useApiClient,
-  useHandleQueryError,
-  useHandleMutationError,
-  useQueriesState,
-} from '@/hooks';
-import { Card as CardType } from '@/types';
+import {useApiClient, useHandleMutationError, useHandleQueryError, useQueriesState,} from '@/hooks';
+import {Card as CardType} from '@/types';
+import {TutorMode} from '../tutor-mode.enum';
 import chevronRight from '@/assets/chevron-right-black.svg';
 import chevronLeft from '@/assets/chevron-left-black.svg';
 
@@ -33,11 +20,18 @@ type TutorProps = {
   languageFrom?: string;
   languageTo?: string;
   groupId?: number;
+  mode: TutorMode;
 };
 
 const MAX_PROGRESS_VALUE = 100;
 
-function Tutor({ className, languageTo, languageFrom, groupId }: TutorProps) {
+function Tutor({
+                 className,
+                 languageTo,
+                 languageFrom,
+                 groupId,
+                 mode,
+               }: TutorProps) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [openedCards, setOpenedCards] = useState<number[]>([]);
 
@@ -144,69 +138,83 @@ function Tutor({ className, languageTo, languageFrom, groupId }: TutorProps) {
 
   return (
     <div className={className}>
-      <div className='flex flex-col items-center justify-center gap-2 pt-4 pb-4'>
-        <span className='text-xl font-bold'>
-          {group ? group.name : t('allCards', { ns: 'tutor' })}
-        </span>
-        <span className='font-bold'>
-          {`${currentCardIndex + 1} / ${cards?.length}`}
-        </span>
-        <Progress className='w-1/2' color='success' value={progressValue} max={MAX_PROGRESS_VALUE}/>
-      </div>
+      {cards!.length === 0 && (
+        <div className='flex justify-center'>{t('noCards', { ns: 'tutor' })}</div>
+      )}
 
-      <div className='flex gap-2'>
-        {hasPreviousCard ? (
-          <div className='flex items-center cursor-pointer' onClick={previousCard}>
-            <img src={chevronLeft} className='w-8 h-8' alt='Chevron Left'/>
+      {cards!.length > 0 && (
+        <>
+          <div className='flex flex-col items-center justify-center gap-2 pt-4 pb-4'>
+            <span className='text-xl font-bold'>
+              {group ? group.name : t('allCards', {ns: 'tutor'})}
+            </span>
+            <span className='font-bold'>
+              {`${currentCardIndex + 1} / ${cards?.length}`}
+            </span>
+            <Progress className='w-1/2' color='success' value={progressValue} max={MAX_PROGRESS_VALUE}/>
           </div>
-        ) : (
-          <div className='w-8'></div>
-        )}
 
-        <div className='flex flex-grow'>
-          {cards?.map((card, index) => (
-            <Card key={card.id} className='bg-white w-full min-h-96'
-                  style={{display: currentCardIndex === index ? 'initial' : 'none'}}>
-              <Card.Body className='h-full'>
-                <div className='flex flex-col items-center justify-center flex-grow text-center'>
-                  <span className='text-2xl font-bold'>{card.textFrom}</span>
-                  {openedCards.includes(index) ? (
-                    <span className='text-xl font-bold p-4'>{card.textTo}</span>
-                  ) : (
-                    <div className='relative cursor-pointer text-center p-4 min-w-36'
-                         onClick={() => openCard(index)}>
-                      <span className='text-xl font-bold blur'>{card.textTo}</span>
-                      <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-bold'>
-                        {t('clickToSee', { ns: 'tutor' })}
+          <div className='flex gap-2'>
+            {hasPreviousCard ? (
+              <div className='flex items-center cursor-pointer' onClick={previousCard}>
+                <img src={chevronLeft} className='w-8 h-8' alt='Chevron Left'/>
+              </div>
+            ) : (
+              <div className='w-8'></div>
+            )}
+
+            <div className='flex flex-grow'>
+              {cards?.map((card, index) => (
+                <Card key={card.id} className='bg-white w-full min-h-96'
+                      style={{display: currentCardIndex === index ? 'initial' : 'none'}}>
+                  <Card.Body className='h-full'>
+                    <div className='flex flex-col items-center justify-center flex-grow text-center'>
+                      <span className='text-2xl font-bold'>
+                        {mode === TutorMode.WORD_TRANSLATION ? card.textFrom : card.textTo}
                       </span>
+                      {openedCards.includes(index) ? (
+                        <span className='text-xl font-bold p-4'>
+                          {mode === TutorMode.WORD_TRANSLATION ? card.textTo : card.textFrom}
+                        </span>
+                      ) : (
+                        <div className='relative cursor-pointer text-center p-4 min-w-36'
+                             onClick={() => openCard(index)}>
+                          <span className='text-xl font-bold blur'>
+                            {mode === TutorMode.WORD_TRANSLATION ? card.textTo : card.textFrom}
+                          </span>
+                          <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-bold'>
+                            {t('clickToSee', {ns: 'tutor'})}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                {card.isLearned ? (
-                  <div className='text-center font-bold text-success cursor-pointer hover:underline'
-                       onClick={() => learnCard(card)}>
-                    {t('learned', { ns: 'tutor' })}
-                  </div>
-                ) : (
-                  <div className='text-center text-primary underline cursor-pointer'
-                       onClick={() => learnCard(card)}>
-                    {t('markAsLearned', { ns: 'tutor' })}
-                  </div>
-                )}
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
+                    {card.isLearned ? (
+                      <div className='text-center font-bold text-success cursor-pointer hover:underline'
+                           onClick={() => learnCard(card)}>
+                        {t('learned', {ns: 'tutor'})}
+                      </div>
+                    ) : (
+                      <div className='text-center text-primary underline cursor-pointer'
+                           onClick={() => learnCard(card)}>
+                        {t('markAsLearned', {ns: 'tutor'})}
+                      </div>
+                    )}
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
 
-        {hasNextCard ? (
-          <div className='flex items-center cursor-pointer' onClick={nextCard}>
-            <img src={chevronRight} className='w-8 h-8' alt='Chevron Right'/>
+            {hasNextCard ? (
+              <div className='flex items-center cursor-pointer' onClick={nextCard}>
+                <img src={chevronRight} className='w-8 h-8' alt='Chevron Right'/>
+              </div>
+            ) : (
+              <div className='w-8'></div>
+            )}
           </div>
-        ) : (
-          <div className='w-8'></div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

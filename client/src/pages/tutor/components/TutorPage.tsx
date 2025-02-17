@@ -1,8 +1,8 @@
 import { useRef } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Tutor } from '@/features/tutor';
-import { usePageTitle, useAvailableHeight } from '@/hooks';
+import { Tutor, TutorMode } from '@/features/tutor';
+import { useAvailableHeight, usePageTitle } from '@/hooks';
 
 function TutorPage() {
   const { t } = useTranslation();
@@ -12,6 +12,9 @@ function TutorPage() {
   const languageTo = params.languageTo ? (params.languageTo as string).toUpperCase() : undefined;
   const groupId = params.groupId ? Number(params.groupId) : undefined;
 
+  const [searchParams] = useSearchParams();
+  const mode = (searchParams.get('mode') || '').toUpperCase() as TutorMode;
+
   const containerRef = useRef(null);
   const availableHeight = useAvailableHeight(containerRef);
 
@@ -20,7 +23,7 @@ function TutorPage() {
   return (
     <div ref={containerRef} className='p-2 md:p-8 flex flex-col justify-between items-center'
          style={{height: availableHeight}}>
-      <Tutor className='w-full md:w-1/2' groupId={groupId}
+      <Tutor className='w-full md:w-1/2' mode={mode} groupId={groupId}
              languageFrom={languageFrom} languageTo={languageTo}/>
       <a className='text-primary font-bold cursor-pointer mb-4'
          onClick={() => window.history.back()}>
