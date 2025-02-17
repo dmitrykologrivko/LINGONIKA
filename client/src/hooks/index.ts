@@ -14,3 +14,4 @@ export * from './useHandleMutationError';
 export * from './useHandleQueryError';
 export * from './useQueriesState';
 export * from './useIntersection';
+export * from './useAvailableHeight';

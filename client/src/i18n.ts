@@ -154,7 +154,10 @@ const resources = {
     tutor: {
       heading: 'Flashcards Tutor',
       allCards: 'All Flashcards',
-      finishTutorial: 'Finish Tutorial'
+      finishTutorial: 'Finish Tutorial',
+      clickToSee: 'Click To See',
+      learned: 'Learned',
+      markAsLearned: 'Mark as Learned',
     },
   },
 };

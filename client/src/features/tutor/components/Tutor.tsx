@@ -145,8 +145,12 @@ function Tutor({ className, languageTo, languageFrom, groupId }: TutorProps) {
   return (
     <div className={className}>
       <div className='flex flex-col items-center justify-center gap-2 pt-4 pb-4'>
-        <span className='text-xl font-bold'>{group ? group.name : t('allCards', { ns: 'tutor' })}</span>
-        <span className='font-bold'>{`${currentCardIndex + 1} / ${cards?.length}`}</span>
+        <span className='text-xl font-bold'>
+          {group ? group.name : t('allCards', { ns: 'tutor' })}
+        </span>
+        <span className='font-bold'>
+          {`${currentCardIndex + 1} / ${cards?.length}`}
+        </span>
         <Progress className='w-1/2' color='success' value={progressValue} max={MAX_PROGRESS_VALUE}/>
       </div>
 
@@ -172,20 +176,22 @@ function Tutor({ className, languageTo, languageFrom, groupId }: TutorProps) {
                     <div className='relative cursor-pointer text-center p-4 min-w-36'
                          onClick={() => openCard(index)}>
                       <span className='text-xl font-bold blur'>{card.textTo}</span>
-                      <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-bold'>Click To See</span>
+                      <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-bold'>
+                        {t('clickToSee', { ns: 'tutor' })}
+                      </span>
                     </div>
                   )}
                 </div>
 
                 {card.isLearned ? (
-                  <div className='text-center font-bold text-success'
+                  <div className='text-center font-bold text-success cursor-pointer hover:underline'
                        onClick={() => learnCard(card)}>
-                    Learned
+                    {t('learned', { ns: 'tutor' })}
                   </div>
                 ) : (
                   <div className='text-center text-primary underline cursor-pointer'
                        onClick={() => learnCard(card)}>
-                    Mark as Learned
+                    {t('markAsLearned', { ns: 'tutor' })}
                   </div>
                 )}
               </Card.Body>
