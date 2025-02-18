@@ -1,19 +1,32 @@
 services:
-  server:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: application
+    depends_on:
+      - db
     ports:
       - "8000:8000"
     environment:
       NODE_ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lingonika
+      POSTGRES_HOST: db
     command:
       npm run start
 
-  postgres:
-    image: postgres:16-alpine
+  db:
+    image: postgres:17-alpine
+    container_name: database
     restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lingonika
     volumes:
-      - ./.docker/postgresql/data:/var/lib/postgresql/data:z
-    ports:
-      - "5432:5432"
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
