@@ -14,7 +14,7 @@
     "build": "npm run --prefix client build",
     "postbuild": "mkdir backend/public && mv client/dist/* backend/public",
     "deploy": "npm run build && rm -r -f client/node_modules",
-    "start": "npm run --prefix backend start",
+    "start": "npm run --prefix backend start:prod",
     "start-dev": "npm run --prefix backend start | npm run --prefix client start"
   },
   "bugs": {
