@@ -102,14 +102,14 @@ export class CardService extends BaseCrudService<Card, CardDto> {
 
     return ClassValidator.validate(CardsStatisticInput, input).then(
       proceed(async () => {
-        const query = this.getQuery(null, wrapper)
-          .addSelect(`COUNT(${this.alias}.id)`, 'totalCount')
+        const query = this.getSimpleQuery(null, wrapper)
+          .addSelect(`COUNT(${this.alias}.id)::INTEGER`, 'totalCount')
           .addSelect(
-            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)`,
+            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)::INTEGER`,
             'countLearned',
           )
           .addSelect(
-            `COUNT(CASE WHEN ${this.alias}.isLearned = FALSE THEN TRUE END)`,
+            `COUNT(CASE WHEN ${this.alias}.isLearned = FALSE THEN TRUE END)::INTEGER`,
             'countNotLearned',
           );
 
@@ -123,9 +123,9 @@ export class CardService extends BaseCrudService<Card, CardDto> {
 
         return ok(
           ClassTransformer.toClassObject(CardsStatisticOutput, {
-            countLearned: rawResult.countLearned,
-            countNotLearned: rawResult.countNotLearned,
-            totalCount: rawResult.totalCount,
+            countLearned: rawResult?.countLearned || 0,
+            countNotLearned: rawResult?.countNotLearned || 0,
+            totalCount: rawResult?.totalCount || 0,
           }),
         );
       }),
@@ -139,17 +139,17 @@ export class CardService extends BaseCrudService<Card, CardDto> {
 
     return ClassValidator.validate(CardsDictionaryInput, input).then(
       proceed(async () => {
-        const query = this.getQuery(null, wrapper)
+        const query = this.getSimpleQuery(null, wrapper)
           .addSelect(`${this.alias}.languageFrom`, 'languageFrom')
           .addSelect(`${this.alias}.languageTo`, 'languageTo')
-          .addSelect(`COUNT(${this.alias}.id)`, 'totalCount')
+          .addSelect(`COUNT(${this.alias}.id)::INTEGER`, 'totalCount')
           .addSelect(
-            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)`,
+            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)::INTEGER`,
             'countLearned',
           )
           .addGroupBy(`${this.alias}.languageFrom`)
           .addGroupBy(`${this.alias}.languageTo`)
-          .addOrderBy('totalCount', 'DESC');
+          .addOrderBy('"totalCount"', 'DESC');
 
         const rawResult = await query.getRawMany();
 
@@ -251,6 +251,25 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       .getQuery(queryRunner, wrapper)
       .leftJoinAndSelect(`${this.alias}.group`, 'group')
       .leftJoinAndSelect(`${this.alias}.user`, 'user');
+
+    if (wrapper) {
+      query.andWhere('user.id = :user', {
+        user: (wrapper.input as Authorizable<UserDto>).user.id,
+      });
+    }
+
+    return query;
+  }
+
+  protected getSimpleQuery(
+    queryRunner?: QueryRunner,
+    wrapper?: InputWrapper,
+  ): SelectQueryBuilder<Card> {
+    const query = super
+      .getQuery(queryRunner, wrapper)
+      .select([])
+      .leftJoin(`${this.alias}.group`, 'group')
+      .leftJoin(`${this.alias}.user`, 'user');
 
     if (wrapper) {
       query.andWhere('user.id = :user', {

@@ -9,8 +9,7 @@ export function createApiClient(
   unauthorizedHandler?: () => Promise<void>,
 ): AxiosInstance {
   const apiClient = axios.create({
-    //baseURL: process.env.VUE_APP_API_URL || 'http://localhost:8000',
-    baseURL: 'http://localhost:8000',
+    baseURL: import.meta.env.VITE_NODE_ENV === 'production' ? window.location.href : 'http://localhost:8000',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

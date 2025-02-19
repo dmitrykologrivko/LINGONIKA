@@ -8,7 +8,11 @@ import { CardController } from './controllers/card.controller';
 import { CardGroupController } from './controllers/card-group.controller';
 
 @Module({
-  imports: [DatabaseModule.withEntities([Card, CardGroup])],
+  imports: [
+    DatabaseModule.withEntities([Card, CardGroup], {
+      cli: `${__dirname}/**/*.entity{.ts,.js}`,
+    }),
+  ],
   providers: [CardService, CardGroupService],
   controllers: [CardController, CardGroupController],
   exports: [DatabaseModule],

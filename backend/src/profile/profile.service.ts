@@ -53,7 +53,7 @@ export class ProfileService {
           input.username,
           input.firstName,
           input.lastName,
-          false,
+          true,
           false,
           false,
           this.config.get(USER_PASSWORD_SALT_ROUNDS_PROPERTY),
