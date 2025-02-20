@@ -1,8 +1,7 @@
 {
   "name": "lingonika-backend",
   "version": "0.0.0",
-  "description": "",
-  "author": "",
+  "author": "Dmitry Kologrivko",
   "private": true,
   "license": "MIT",
   "scripts": {

@@ -1,7 +1,9 @@
 {
   "name": "lingonika-client",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "author": "Dmitry Kologrivko",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
