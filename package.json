@@ -13,7 +13,7 @@
     "prebuild": "rm -r -f backend/public client/dist",
     "build": "npm run --prefix client build && npm run --prefix backend build",
     "postbuild": "mkdir backend/public && mv client/dist/* backend/public",
-    "deploy": "npm run build && rm -r -f client/node_modules",
+    "deploy": "npm run build && rm -r -f client",
     "migrate": "npm run --prefix backend migrate:prod",
     "start": "npm run --prefix backend start:prod",
     "start-dev": "npm run --prefix backend start | npm run --prefix client start"

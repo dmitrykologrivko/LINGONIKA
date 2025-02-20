@@ -150,11 +150,6 @@ function CardsList({
     );
   }
 
-  // if (deletionPerformed && empty(data) && groupId) {
-  //   onEmptyGroupDeleted();
-  //   return;
-  // }
-
   return (
     <div className={className}>
       <nav className='flex gap-2 mt-2 mb-2 ml-1 mr-1 p-1 border-b'>
