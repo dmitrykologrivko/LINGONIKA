@@ -40,6 +40,8 @@ export class CardGroup extends BaseTypeormEntity implements Linguistic {
   @OneToMany(() => Card, (card) => card.group, {
     eager: false,
     persistence: false,
+    cascade: true,
+    onDelete: 'CASCADE',
   })
   cards: Card[];
 

@@ -12,6 +12,7 @@ import {
   ClassTransformer,
   CreateInput,
   UpdateInput,
+  DestroyInput,
   InputWrapper,
   ListInput,
   OrderingFilter,
@@ -83,12 +84,41 @@ export class CardService extends BaseCrudService<Card, CardDto> {
             .andWhereInIds(input.ids)
             .getCount();
 
-          if (input.ids.length === count) {
-            await queryRunner.manager.delete(Card, { id: In(input.ids) });
-            return ok<void>(null);
-          } else {
+          if (input.ids.length !== count) {
             return err(new ActionDeclinedException());
           }
+
+          const initialGroupIds = await this.getSimpleQuery(
+            queryRunner,
+            wrapper,
+          )
+            .select([`${this.alias}.groupId as group`])
+            .whereInIds(input.ids)
+            .andWhere('"group" IS NOT NULL')
+            .distinct()
+            .getRawMany();
+
+          await queryRunner.manager.delete(Card, { id: In(input.ids) });
+
+          if (initialGroupIds && initialGroupIds.length > 0) {
+            const alias = CardGroup.name;
+            const emptyGroupIds = await queryRunner.manager
+              .createQueryBuilder(CardGroup, alias, queryRunner)
+              .select([`${alias}.id as group`])
+              .leftJoin(`${alias}.cards`, 'card')
+              .whereInIds(initialGroupIds.map((item) => item.group))
+              .having(`COUNT(card.groupId) = 0`)
+              .groupBy('"group"')
+              .getRawMany();
+
+            if (emptyGroupIds && emptyGroupIds.length > 0) {
+              await queryRunner.manager.delete(CardGroup, {
+                id: In(emptyGroupIds.map((item) => item.group)),
+              });
+            }
+          }
+
+          return ok<void>(null);
         }),
       );
 
@@ -224,6 +254,29 @@ export class CardService extends BaseCrudService<Card, CardDto> {
     }
 
     return super.performUpdateEntity(input, entity, queryRunner);
+  }
+
+  protected async performDestroyEntity(
+    input: DestroyInput,
+    entity: Card,
+    queryRunner: QueryRunner,
+  ): Promise<Result<Card, any>> {
+    const result = await super.performDestroyEntity(input, entity, queryRunner);
+
+    const group = entity.group;
+    if (group) {
+      const countCards = await queryRunner.manager.count(Card, {
+        where: {
+          groupId: group.id,
+        },
+      });
+
+      if (countCards === 0) {
+        await queryRunner.manager.delete(CardGroup, group.id);
+      }
+    }
+
+    return result;
   }
 
   protected getPagination(input: ListInput, qb: SelectQueryBuilder<Card>) {

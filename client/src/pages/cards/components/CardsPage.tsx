@@ -16,30 +16,35 @@ function CardsPage() {
   const apiClient = useApiClient();
 
   const params = useParams();
-  const languageFrom = params.languageFrom ? (params.languageFrom as string).toUpperCase() : undefined;
-  const languageTo = params.languageTo ? (params.languageTo as string).toUpperCase() : undefined;
   const groupId = params.groupId ? Number(params.groupId) : undefined;
-  const languageFromLabel = languageFrom ? t(languageFrom, { ns: 'labels' }) : undefined;
-  const languageToLabel = languageTo ? t(languageTo, { ns: 'labels' }) : undefined;
 
   const groupQuery = useQuery({
     ...getGroupOptions(groupId!, apiClient),
     enabled: groupId !== undefined,
   });
 
+  const languageFrom = (groupQuery.data ? groupQuery.data.languageFrom : undefined)
+    || (params.languageFrom ? (params.languageFrom as string).toUpperCase() : undefined);
+  const languageTo = (groupQuery.data ? groupQuery.data.languageTo : undefined)
+    || (params.languageTo ? (params.languageTo as string).toUpperCase() : undefined);
+  const languageFromLabel = languageFrom ? t(languageFrom, { ns: 'labels' }) : undefined;
+  const languageToLabel = languageTo ? t(languageTo, { ns: 'labels' }) : undefined;
+
   const renderTutorLink = useCallback((mode: TutorMode) => {
     const selectedMode = mode.toLowerCase();
 
     if (groupQuery.data?.id) {
       return (
-        <NavLink to={`/tutor/group/${groupQuery.data.id}?mode=${selectedMode}`}>
+        <NavLink className='w-full h-full content-center'
+                 to={`/tutor/group/${groupQuery.data.id}?mode=${selectedMode}`}>
           {t('startLearning', { ns: 'tutor' })}
         </NavLink>
       );
     }
 
     return (
-      <NavLink to={`/tutor/language/${languageFrom?.toLowerCase()}/${languageTo?.toLowerCase()}?mode=${selectedMode}`}>
+      <NavLink className='w-full h-full content-center'
+               to={`/tutor/language/${languageFrom?.toLowerCase()}/${languageTo?.toLowerCase()}?mode=${selectedMode}`}>
         {t('startLearning', { ns: 'tutor' })}
       </NavLink>
     );
@@ -57,6 +62,10 @@ function CardsPage() {
   function onCardClick(cardId: number) {
     setActiveCardId(cardId);
     setShouldShowCardForm(true);
+  }
+
+  function onEmptyGroupIsDeleted() {
+    window.history.back();
   }
 
   function getHeading() {
@@ -78,7 +87,8 @@ function CardsPage() {
       <div className='flex flex-col-reverse md:flex-row gap-4'>
         <div className='w-full md:w-8/12'>
           <CardsList groupId={groupId} languageFrom={languageFrom} languageTo={languageTo}
-                     onAddCardClick={onAddCardClick} onCardClick={onCardClick}/>
+                     onAddCardClick={onAddCardClick} onCardClick={onCardClick}
+                     onEmptyGroupDeleted={onEmptyGroupIsDeleted}/>
         </div>
 
         <div className='w-full md:w-4/12'>
@@ -92,7 +102,7 @@ function CardsPage() {
         </div>
       </div>
 
-      <CardFormModal show={shouldShowCardForm} cardId={activeCardId}
+      <CardFormModal show={shouldShowCardForm} cardId={activeCardId} groupId={groupQuery.data?.id}
                      languageFrom={languageFrom} languageTo={languageTo}
                      onClose={onCloseModal}/>
     </div>

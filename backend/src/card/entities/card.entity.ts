@@ -48,7 +48,7 @@ export class Card extends BaseTypeormEntity implements Linguistic {
     nullable: true,
     persistence: false,
     eager: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({
     name: 'groupId',

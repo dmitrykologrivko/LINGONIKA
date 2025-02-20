@@ -155,7 +155,7 @@ function CardFormModal({
         languageFrom: data.languageFrom,
         languageTo:  data.languageTo,
         example: data.example,
-        isLearned: false,
+        isLearned: data.isLearned,
         groupId: groupId,
       }, {
         onSuccess,

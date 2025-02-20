@@ -6,13 +6,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import {
+  getGroupOptions,
   getInfiniteCardsOptions,
   deleteCards,
   DeleteCardsRequest,
 } from '@/api';
 import {
   useApiClient,
-  useInvalidateQueries,
   useHandleQueryError,
   useHandleMutationError,
   useAlertsManager,
@@ -39,7 +39,7 @@ type CardsListProps = {
   groupId?: number;
   onAddCardClick: () => void;
   onCardClick: (cardId: number) => void;
-  invalidationKey?: string;
+  onEmptyGroupDeleted: () => void;
 };
 
 const SORT_BY_DATE = '-id';
@@ -52,7 +52,7 @@ function CardsList({
                      groupId,
                      onAddCardClick,
                      onCardClick,
-                     invalidationKey
+                     onEmptyGroupDeleted,
                    }: CardsListProps) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState(SORT_BY_DATE);
@@ -86,8 +86,6 @@ function CardsList({
     }
   });
 
-  useInvalidateQueries(invalidationKey, queryOptions);
-
   const deleteCardsMutation = useMutation({
     mutationFn: (req: DeleteCardsRequest)=> deleteCards(req, apiClient),
   });
@@ -111,7 +109,7 @@ function CardsList({
 
   function bulkDeleteCards() {
     deleteCardsMutation.mutate({ ids: selectedIds },  {
-      onSuccess: () => {
+      onSuccess: async () => {
         const messageKey = selectedIds.length === 1
           ? 'oneCardDeleted'
           : 'multipleCardsDeleted';
@@ -125,6 +123,12 @@ function CardsList({
           queryKey: queryOptions.queryKey,
         });
         setSelectedIds([]);
+
+        // Ensure that group still exists after deletion it's cards
+        if (groupId) {
+          queryClient.fetchQuery(getGroupOptions(groupId, apiClient))
+            .catch(onEmptyGroupDeleted);
+        }
       },
       onError: handleMutationError,
     });
@@ -145,6 +149,11 @@ function CardsList({
       </div>
     );
   }
+
+  // if (deletionPerformed && empty(data) && groupId) {
+  //   onEmptyGroupDeleted();
+  //   return;
+  // }
 
   return (
     <div className={className}>
@@ -186,7 +195,7 @@ function CardsList({
                 </div>
 
                 {selectedIds.length > 0 && (
-                  <div className='flex items-center' onClick={bulkDeleteCards}>
+                  <div className='flex items-center cursor-pointer' onClick={bulkDeleteCards}>
                     <img src={deleteIcon} className='w-6 h-6 inline-block' alt='Delete Icon'/>
                     Delete
                   </div>

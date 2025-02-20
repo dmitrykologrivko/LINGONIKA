@@ -10,7 +10,6 @@ import {
   Authorizable,
 } from '@nestjs-boilerplate/core';
 import { UserDto } from '@nestjs-boilerplate/user';
-import { Card } from '../entities/card.entity';
 import { CardGroup } from '../entities/card-group.entity';
 import { CardGroupDto } from '../dto/card-group.dto';
 import { LanguagesFilter } from './languages.filter';

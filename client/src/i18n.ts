@@ -114,7 +114,7 @@ const resources = {
     cards: {
       defaultHeading: 'Cards',
       allCardsHeading: '{{languageFrom}} - {{languageTo}} Cards',
-      groupCardsHeading: '{{groupName}} Cards',
+      groupCardsHeading: '{{groupName}} - Cards',
       noCards: 'There are no cards',
       addCard: 'Add Flashcard',
       createCardTitle: 'Create Flashcard',

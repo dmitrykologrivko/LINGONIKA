@@ -3,7 +3,8 @@ FROM node:20.14 as build
 WORKDIR .
 COPY . .
 
-#ENV NODE_ENV=production
+ENV NODE_ENV=production
+ENV VITE_NODE_ENV=production
 
 RUN npm install
 RUN npm run deploy
