@@ -1,4 +1,4 @@
-# IT-Сообщество Ставрополя
+# LINGONIKA
 
 LINGONIKA is your language learning companion. 
 Custom flashcards sorted by language and topic to make learning simple and effective.
