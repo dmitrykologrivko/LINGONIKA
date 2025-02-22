@@ -20,6 +20,7 @@ Custom flashcards sorted by language and topic to make learning simple and effec
 ### Then locally
 
 ```
+$ export SECRET_KEY=your_secret_key_for_backend_here
 $ npm install
 $ npm run migrate
 $ npm run start-dev
@@ -28,6 +29,7 @@ $ npm run start-dev
 ### Then on production
 
 ```
+$ export SECRET_KEY=your_secret_key_for_backend_here
 $ npm install
 $ npm run deploy
 $ npm run migrate
@@ -43,6 +45,7 @@ $ npm run start
 ### Then
 
 ```
+$ echo "SECRET_KEY=your_secret_key_for_backend_here" > .env.docker
 $ docker-compose up -d
 ```
 
