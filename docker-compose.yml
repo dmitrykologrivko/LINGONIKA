@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: application
     ports:
-      - "${APP_PORT:-8000}:8000"
+      - "8000:8000"
     env_file:
       - .env.docker
     environment:
@@ -22,7 +22,7 @@ services:
     image: postgres:17-alpine
     container_name: database
     ports:
-      - "${DATABASE_PORT:-8001}:5432"
+      - "8001:5432"
     env_file:
       - .env.docker
     restart: always
