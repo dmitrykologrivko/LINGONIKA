@@ -22,7 +22,7 @@ services:
     image: postgres:17-alpine
     container_name: database
     ports:
-      - "${DATABASE_PORT:-8100}:5432"
+      - "${DATABASE_PORT:-8001}:5432"
     env_file:
       - .env.docker
     restart: always
