@@ -1,9 +1,5 @@
 import { UseGuards, Post, Body, Get, Query, Param } from '@nestjs/common';
-import {
-  CrudController,
-  ApiController,
-  unwrapResult,
-} from '@nestjs-boilerplate/core';
+import { CrudController, ApiController } from '@nestjs-boilerplate/core';
 import { AuthorizedUser, JwtAuthGuard } from '@nestjs-boilerplate/auth';
 import { UserDto } from '@nestjs-boilerplate/user';
 import { CardService } from '../services/card.service';
@@ -22,12 +18,10 @@ export class CardController extends CrudController<CardDto> {
     @Body() input: BulkDestroyInput,
     @AuthorizedUser() user: UserDto,
   ) {
-    return unwrapResult(
-      await this.cardService.bulkDestroy({
-        ...input,
-        user,
-      }),
-    );
+    return this.cardService.bulkDestroy({
+      ...input,
+      user,
+    });
   }
 
   @Get('stats')
@@ -36,18 +30,16 @@ export class CardController extends CrudController<CardDto> {
     @Query('languageTo') languageTo: string,
     @AuthorizedUser() user: UserDto,
   ) {
-    return unwrapResult(
-      await this.cardService.cardsStatistic({
-        languageFrom,
-        languageTo,
-        user,
-      }),
-    );
+    return this.cardService.cardsStatistic({
+      languageFrom,
+      languageTo,
+      user,
+    });
   }
 
   @Get('dictionaries')
   async cardsDictionaries(@AuthorizedUser() user: UserDto) {
-    return unwrapResult(await this.cardService.cardsDictionaries({ user }));
+    return this.cardService.cardsDictionaries({ user });
   }
 
   @Get('learn/languages/:languageFrom/:languageTo')
@@ -56,15 +48,13 @@ export class CardController extends CrudController<CardDto> {
     @Param('languageTo') languageTo: string,
     @AuthorizedUser() user: UserDto,
   ) {
-    return unwrapResult(
-      await this.cardService.learnCards({
-        languages: {
-          languageFrom,
-          languageTo,
-        },
-        user,
-      }),
-    );
+    return this.cardService.learnCards({
+      languages: {
+        languageFrom,
+        languageTo,
+      },
+      user,
+    });
   }
 
   @Get('learn/group/:group')
@@ -72,11 +62,9 @@ export class CardController extends CrudController<CardDto> {
     @Param('group') groupId: number,
     @AuthorizedUser() user: UserDto,
   ) {
-    return unwrapResult(
-      await this.cardService.learnCards({
-        groupId,
-        user,
-      }),
-    );
+    return this.cardService.learnCards({
+      groupId,
+      user,
+    });
   }
 }
