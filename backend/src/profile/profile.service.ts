@@ -5,10 +5,6 @@ import {
   InjectRepository,
   ClassValidator,
   ClassTransformer,
-  ValidationContainerException,
-  Result,
-  proceed,
-  ok,
 } from '@nestjs-boilerplate/core';
 import {
   User,
@@ -29,60 +25,47 @@ export class ProfileService {
     private readonly config: PropertyConfigService,
   ) {}
 
-  async getProfile(
-    input: GetProfileInput,
-  ): Promise<Result<GetProfileOutput, ValidationContainerException>> {
-    return ClassValidator.validate(GetProfileInput, input).then(
-      proceed(async () => {
-        const user = await this.userRepository.findOne({
-          where: { id: input.userId },
-        });
-        return ok(ClassTransformer.toClassObject(GetProfileOutput, user));
-      }),
-    );
+  async getProfile(input: GetProfileInput): Promise<GetProfileOutput> {
+    await ClassValidator.validate(GetProfileInput, input);
+
+    const user = await this.userRepository.findOne({
+      where: { id: input.userId },
+    });
+
+    return ClassTransformer.toClassObject(GetProfileOutput, user);
   }
 
   async registerProfile(
     input: RegisterProfileInput,
-  ): Promise<Result<RegisterProfileOutput, ValidationContainerException>> {
-    return ClassValidator.validate(RegisterProfileInput, input).then(
-      proceed(async () => {
-        return User.create(
-          input.username,
-          input.password,
-          input.username,
-          input.firstName,
-          input.lastName,
-          true,
-          false,
-          false,
-          this.config.get(USER_PASSWORD_SALT_ROUNDS_PROPERTY),
-        ).then(
-          proceed(async (user) => {
-            user = await this.userRepository.save(user);
-            return ok(
-              ClassTransformer.toClassObject(RegisterProfileOutput, user),
-            );
-          }),
-        );
-      }),
+  ): Promise<RegisterProfileOutput> {
+    await ClassValidator.validate(RegisterProfileInput, input);
+
+    let user = await User.create(
+      input.username,
+      input.password,
+      input.username,
+      input.firstName,
+      input.lastName,
+      true,
+      false,
+      false,
+      this.config.get(USER_PASSWORD_SALT_ROUNDS_PROPERTY),
     );
+    user = await this.userRepository.save(user);
+
+    return ClassTransformer.toClassObject(RegisterProfileOutput, user);
   }
 
-  async updateProfile(
-    input: UpdateProfileInput,
-  ): Promise<Result<UpdateProfileOutput, ValidationContainerException>> {
-    return ClassValidator.validate(UpdateProfileInput, input).then(
-      proceed(async () => {
-        const user = await this.userRepository.findOne({
-          where: { id: input.userId },
-        });
+  async updateProfile(input: UpdateProfileInput): Promise<UpdateProfileOutput> {
+    await ClassValidator.validate(UpdateProfileInput, input);
 
-        user.changeName(input.firstName, input.lastName);
-        await this.userRepository.save(user);
+    const user = await this.userRepository.findOne({
+      where: { id: input.userId },
+    });
 
-        return ok(ClassTransformer.toClassObject(UpdateProfileOutput, user));
-      }),
-    );
+    user.changeName(input.firstName, input.lastName);
+    await this.userRepository.save(user);
+
+    return ClassTransformer.toClassObject(UpdateProfileOutput, user);
   }
 }

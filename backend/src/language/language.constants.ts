@@ -25,7 +25,7 @@ export enum LanguageCodes {
   UK = 'UK', // Ukrainian
 }
 
-export const Languages = {
+export const Languages: Record<string, string> = {
   [LanguageCodes.BN]: 'Bengali',
   [LanguageCodes.ZH]: 'Chinese',
   [LanguageCodes.DA]: 'Danish',

@@ -33,12 +33,15 @@ export class CardGroupService extends BaseCrudService<CardGroup, CardGroupDto> {
   }
 
   protected getFilters(input: ListInput, qb: SelectQueryBuilder<CardGroup>) {
+    const languageFrom = input.query.languageFrom as string;
+    const languageTo = input.query.languageTo as string;
+
     return [
       new OrderingFilter(qb, input, {
         orderingFields: ['id', 'name'],
         defaultOrdering: ['-id'],
       }),
-      new LanguagesFilter(qb, input.query.languageFrom, input.query.languageTo),
+      new LanguagesFilter(qb, languageFrom, languageTo),
     ];
   }
 
@@ -71,7 +74,7 @@ export class CardGroupService extends BaseCrudService<CardGroup, CardGroupDto> {
   }
 
   protected async mapCreateInput(
-    input: CreateInput<CardGroupDto>,
+    input: CreateInput<CardGroupDto, UserDto>,
     queryRunner: QueryRunner,
   ): Promise<CardGroup> {
     return {

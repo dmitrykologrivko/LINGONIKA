@@ -20,13 +20,7 @@ import {
   PagePagination,
   Authorizable,
   transaction,
-  Result,
-  ok,
-  err,
-  proceed,
-  ValidationContainerException,
   ValidationException,
-  TransactionRollbackException,
   CrudOperations,
 } from '@nestjs-boilerplate/core';
 import { UserDto } from '@nestjs-boilerplate/user';
@@ -65,144 +59,126 @@ export class CardService extends BaseCrudService<Card, CardDto> {
     });
   }
 
-  async bulkDestroy(
-    input: BulkDestroyInput,
-  ): Promise<
-    Result<
-      void,
-      | ValidationContainerException
-      | ActionDeclinedException
-      | TransactionRollbackException
-    >
-  > {
+  async bulkDestroy(input: BulkDestroyInput): Promise<void> {
     const wrapper = { type: BULK_DESTROY_INPUT, input };
 
-    const handler = (queryRunner: QueryRunner) =>
-      ClassValidator.validate(BulkDestroyInput, input).then(
-        proceed(async () => {
-          const count = await this.getQuery(queryRunner, wrapper)
-            .andWhereInIds(input.ids)
-            .getCount();
+    const handler = async (queryRunner: QueryRunner) => {
+      await ClassValidator.validate(BulkDestroyInput, input);
 
-          if (input.ids.length !== count) {
-            return err(new ActionDeclinedException());
-          }
+      const count = await this.getQuery(queryRunner, wrapper)
+        .andWhereInIds(input.ids)
+        .getCount();
 
-          const initialGroupIds = await this.getSimpleQuery(
-            queryRunner,
-            wrapper,
-          )
-            .select([`${this.alias}.groupId as group`])
-            .whereInIds(input.ids)
-            .andWhere('"group" IS NOT NULL')
-            .distinct()
-            .getRawMany();
+      if (input.ids.length !== count) {
+        throw new ActionDeclinedException();
+      }
 
-          await queryRunner.manager.delete(Card, { id: In(input.ids) });
+      const initialGroupIds = await this.getSimpleQuery(queryRunner, wrapper)
+        .select([`${this.alias}.groupId as group`])
+        .whereInIds(input.ids)
+        .andWhere('"group" IS NOT NULL')
+        .distinct()
+        .getRawMany<Card>();
 
-          if (initialGroupIds && initialGroupIds.length > 0) {
-            const alias = CardGroup.name;
-            const emptyGroupIds = await queryRunner.manager
-              .createQueryBuilder(CardGroup, alias, queryRunner)
-              .select([`${alias}.id as group`])
-              .leftJoin(`${alias}.cards`, 'card')
-              .whereInIds(initialGroupIds.map((item) => item.group))
-              .having(`COUNT(card.groupId) = 0`)
-              .groupBy('"group"')
-              .getRawMany();
+      await queryRunner.manager.delete(Card, { id: In(input.ids) });
 
-            if (emptyGroupIds && emptyGroupIds.length > 0) {
-              await queryRunner.manager.delete(CardGroup, {
-                id: In(emptyGroupIds.map((item) => item.group)),
-              });
-            }
-          }
+      if (initialGroupIds && initialGroupIds.length > 0) {
+        const alias = CardGroup.name;
+        const emptyGroupIds = await queryRunner.manager
+          .createQueryBuilder(CardGroup, alias, queryRunner)
+          .select([`${alias}.id as group`])
+          .leftJoin(`${alias}.cards`, 'card')
+          .whereInIds(initialGroupIds.map((item) => item.group))
+          .having(`COUNT(card.groupId) = 0`)
+          .groupBy('"group"')
+          .getRawMany<Card>();
 
-          return ok<void>(null);
-        }),
-      );
+        if (emptyGroupIds && emptyGroupIds.length > 0) {
+          await queryRunner.manager.delete(CardGroup, {
+            id: In(emptyGroupIds.map((item) => item.group)),
+          });
+        }
+      }
+    };
 
     return transaction(this.dataSource, handler);
   }
 
   async cardsStatistic(
     input: CardsStatisticInput,
-  ): Promise<Result<CardsStatisticOutput, ValidationContainerException>> {
+  ): Promise<CardsStatisticOutput> {
     const wrapper = { type: CARDS_STATISTIC_INPUT, input };
 
-    return ClassValidator.validate(CardsStatisticInput, input).then(
-      proceed(async () => {
-        const query = this.getSimpleQuery(null, wrapper)
-          .addSelect(`COUNT(${this.alias}.id)::INTEGER`, 'totalCount')
-          .addSelect(
-            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)::INTEGER`,
-            'countLearned',
-          )
-          .addSelect(
-            `COUNT(CASE WHEN ${this.alias}.isLearned = FALSE THEN TRUE END)::INTEGER`,
-            'countNotLearned',
-          );
+    await ClassValidator.validate(CardsStatisticInput, input);
 
-        const rawResult = await new LanguagesFilter(
-          query,
-          input.languageFrom,
-          input.languageTo,
-        )
-          .filter()
-          .getRawOne();
+    const query = this.getSimpleQuery(null, wrapper)
+      .addSelect(`COUNT(${this.alias}.id)::INTEGER`, 'totalCount')
+      .addSelect(
+        `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)::INTEGER`,
+        'countLearned',
+      )
+      .addSelect(
+        `COUNT(CASE WHEN ${this.alias}.isLearned = FALSE THEN TRUE END)::INTEGER`,
+        'countNotLearned',
+      );
 
-        return ok(
-          ClassTransformer.toClassObject(CardsStatisticOutput, {
-            countLearned: rawResult?.countLearned || 0,
-            countNotLearned: rawResult?.countNotLearned || 0,
-            totalCount: rawResult?.totalCount || 0,
-          }),
-        );
-      }),
-    );
+    const rawResult = await new LanguagesFilter(
+      query,
+      input.languageFrom,
+      input.languageTo,
+    )
+      .filter()
+      .getRawOne<{
+        countLearned: number;
+        countNotLearned: number;
+        totalCount: number;
+      }>();
+
+    return ClassTransformer.toClassObject(CardsStatisticOutput, {
+      countLearned: rawResult?.countLearned || 0,
+      countNotLearned: rawResult?.countNotLearned || 0,
+      totalCount: rawResult?.totalCount || 0,
+    });
   }
 
   async cardsDictionaries(
     input: CardsDictionaryInput,
-  ): Promise<Result<CardsDictionariesOutput[], ValidationContainerException>> {
+  ): Promise<CardsDictionariesOutput[]> {
     const wrapper = { type: CARDS_DICTIONARIES_INPUT, input };
 
-    return ClassValidator.validate(CardsDictionaryInput, input).then(
-      proceed(async () => {
-        const query = this.getSimpleQuery(null, wrapper)
-          .addSelect(`${this.alias}.languageFrom`, 'languageFrom')
-          .addSelect(`${this.alias}.languageTo`, 'languageTo')
-          .addSelect(`COUNT(${this.alias}.id)::INTEGER`, 'totalCount')
-          .addSelect(
-            `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)::INTEGER`,
-            'countLearned',
-          )
-          .addGroupBy(`${this.alias}.languageFrom`)
-          .addGroupBy(`${this.alias}.languageTo`)
-          .addOrderBy('"totalCount"', 'DESC');
+    const query = this.getSimpleQuery(null, wrapper)
+      .addSelect(`${this.alias}.languageFrom`, 'languageFrom')
+      .addSelect(`${this.alias}.languageTo`, 'languageTo')
+      .addSelect(`COUNT(${this.alias}.id)::INTEGER`, 'totalCount')
+      .addSelect(
+        `COUNT(CASE WHEN ${this.alias}.isLearned = TRUE THEN FALSE END)::INTEGER`,
+        'countLearned',
+      )
+      .addGroupBy(`${this.alias}.languageFrom`)
+      .addGroupBy(`${this.alias}.languageTo`)
+      .addOrderBy('"totalCount"', 'DESC');
 
-        const rawResult = await query.getRawMany();
+    const rawResult = await query.getRawMany<{
+      languageFrom: string;
+      languageTo: string;
+      countLearned: number;
+      totalCount: number;
+    }>();
 
-        return ok(
-          ClassTransformer.toClassObjects(
-            CardsDictionariesOutput,
-            rawResult.map((item) => ({
-              languageFrom: item.languageFrom,
-              languageTo: item.languageTo,
-              countLearned: item.countLearned,
-              totalCount: item.totalCount,
-            })),
-          ),
-        );
-      }),
+    return ClassTransformer.toClassObjects(
+      CardsDictionariesOutput,
+      rawResult.map((item) => ({
+        languageFrom: item.languageFrom,
+        languageTo: item.languageTo,
+        countLearned: item.countLearned,
+        totalCount: item.totalCount,
+      })),
     );
   }
 
-  async learnCards(
-    input: LearnCardsInput,
-  ): Promise<Result<CardDto[], ValidationContainerException>> {
+  async learnCards(input: LearnCardsInput): Promise<CardDto[]> {
     if (!input.languages && !input.groupId) {
-      return ok([]);
+      return [];
     }
 
     const wrapper = { type: LEARN_CARDS_INPUT, input };
@@ -224,22 +200,16 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       });
     }
 
-    return ok(
-      ClassTransformer.toClassObjects(CardDto, await query.getMany(), {
-        groups: [CrudOperations.READ],
-      }),
-    );
+    return ClassTransformer.toClassObjects(CardDto, await query.getMany(), {
+      groups: [CrudOperations.READ],
+    });
   }
 
   protected async performCreateEntity(
     input: CreateInput<CardDto>,
     queryRunner: QueryRunner,
-  ): Promise<Result<Card, ValidationException>> {
-    const validateResult = await this.validateCard(input, null, queryRunner);
-    if (validateResult.isErr()) {
-      return validateResult;
-    }
-
+  ): Promise<Card> {
+    await this.validateCard(input, null, queryRunner);
     return super.performCreateEntity(input, queryRunner);
   }
 
@@ -247,12 +217,8 @@ export class CardService extends BaseCrudService<Card, CardDto> {
     input: UpdateInput<CardDto>,
     entity: Card,
     queryRunner: QueryRunner,
-  ): Promise<Result<Card, any>> {
-    const validateResult = await this.validateCard(input, entity, queryRunner);
-    if (validateResult.isErr()) {
-      return validateResult;
-    }
-
+  ): Promise<Card> {
+    await this.validateCard(input, entity, queryRunner);
     return super.performUpdateEntity(input, entity, queryRunner);
   }
 
@@ -260,7 +226,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
     input: DestroyInput,
     entity: Card,
     queryRunner: QueryRunner,
-  ): Promise<Result<Card, any>> {
+  ): Promise<Card> {
     const result = await super.performDestroyEntity(input, entity, queryRunner);
 
     const group = entity.group;
@@ -284,6 +250,9 @@ export class CardService extends BaseCrudService<Card, CardDto> {
   }
 
   protected getFilters(input: ListInput, qb: SelectQueryBuilder<Card>) {
+    const languageFrom = input.query.languageFrom as string;
+    const languageTo = input.query.languageTo as string;
+
     return [
       new OrderingFilter(qb, input, {
         orderingFields: ['id', 'textFrom'],
@@ -292,7 +261,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       new WhereFilter(qb, input, {
         filterFields: ['isLearned', 'group'],
       }),
-      new LanguagesFilter(qb, input.query.languageFrom, input.query.languageTo),
+      new LanguagesFilter(qb, languageFrom, languageTo),
     ];
   }
 
@@ -334,7 +303,7 @@ export class CardService extends BaseCrudService<Card, CardDto> {
   }
 
   protected async mapCreateInput(
-    input: CreateInput<CardDto>,
+    input: CreateInput<CardDto, UserDto>,
     queryRunner: QueryRunner,
   ): Promise<Card> {
     return {
@@ -344,10 +313,10 @@ export class CardService extends BaseCrudService<Card, CardDto> {
   }
 
   private async validateCard(
-    input: CreateInput<CardDto> | UpdateInput<CardDto>,
+    input: CreateInput<CardDto, UserDto> | UpdateInput<CardDto, UserDto>,
     entity: Card,
     queryRunner: QueryRunner,
-  ): Promise<Result<any, ValidationException>> {
+  ): Promise<void> {
     if (input.payload.groupId) {
       const group = await queryRunner.manager.findOne(CardGroup, {
         where: {
@@ -359,12 +328,10 @@ export class CardService extends BaseCrudService<Card, CardDto> {
       });
 
       if (!group) {
-        return err(
-          new ValidationException(
-            'groupId',
-            input.payload.groupId,
-            USER_GROUP_BELONG_CONSTRAINT,
-          ),
+        throw new ValidationException(
+          'groupId',
+          input.payload.groupId,
+          USER_GROUP_BELONG_CONSTRAINT,
         );
       }
 
@@ -383,16 +350,12 @@ export class CardService extends BaseCrudService<Card, CardDto> {
           );
 
       if (notBelongToGroup) {
-        return err(
-          new ValidationException(
-            'groupId',
-            input.payload.groupId,
-            CARD_LANGUAGES_GROUP_BELONG_CONSTRAINT,
-          ),
+        throw new ValidationException(
+          'groupId',
+          input.payload.groupId,
+          CARD_LANGUAGES_GROUP_BELONG_CONSTRAINT,
         );
       }
     }
-
-    return ok(null);
   }
 }

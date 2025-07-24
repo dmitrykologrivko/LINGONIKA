@@ -2,8 +2,8 @@ import { UseGuards, Get, Post, Patch, Body, UseFilters } from '@nestjs/common';
 import {
   ApiController,
   ValidationExceptionsFilter,
-  unwrapResult,
 } from '@nestjs-boilerplate/core';
+import { UserDto } from '@nestjs-boilerplate/user';
 import { JwtAuthGuard, AuthorizedUser } from '@nestjs-boilerplate/auth';
 import { ProfileService } from './profile.service';
 import { RegisterProfileInput } from './dto/register-profile.input';
@@ -15,22 +15,24 @@ export class ProfileController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getProfile(@AuthorizedUser() user) {
-    return unwrapResult(
-      await this.profileService.getProfile({ userId: user.id }),
-    );
+  async getProfile(@AuthorizedUser() user: UserDto) {
+    return this.profileService.getProfile({ userId: user.id });
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch()
-  async update(@Body() input: RegisterProfileInput, @AuthorizedUser() user) {
-    return unwrapResult(
-      await this.profileService.updateProfile({ ...input, userId: user.id }),
-    );
+  async update(
+    @Body() input: RegisterProfileInput,
+    @AuthorizedUser() user: UserDto,
+  ) {
+    return this.profileService.updateProfile({
+      ...input,
+      userId: user.id,
+    });
   }
 
   @Post('register')
   async register(@Body() input: RegisterProfileInput) {
-    return unwrapResult(await this.profileService.registerProfile(input));
+    return this.profileService.registerProfile(input);
   }
 }
