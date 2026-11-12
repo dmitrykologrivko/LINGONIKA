@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { translate, capitalizeFirstLetter } from '@/utils';
 import { BadRequestApiError } from './types';
 import { ValidationError } from './validation.error';
-import { getAuthenticationToken, clearAuthenticationToken } from './utils';
+import { getAuthenticationToken, clearAuthenticationToken } from './auth.service';
 
 export function addAuthorizationInterceptor(apiClient: AxiosInstance) {
   apiClient.interceptors.request.use(

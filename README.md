@@ -29,7 +29,7 @@ Custom flashcards sorted by language and topic to make learning simple and effec
 ```
 $ export SECRET_KEY=your_secret_key_for_backend_here
 $ npm install
-$ npm run migrate
+$ npm run migrate-dev
 $ npm run start-dev
 ```
 

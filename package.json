@@ -1,6 +1,6 @@
 {
   "name": "lingonika",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "engines": {
     "node": ">=20.14.0",
@@ -17,7 +17,7 @@
     "migrate-dev": "npm run --prefix backend migrate",
     "migrate": "npm run --prefix backend migrate:prod",
     "start": "npm run --prefix backend start:prod",
-    "start-dev": "npm run --prefix backend start | npm run --prefix client start"
+    "start-dev": "npm run --prefix backend start | npm run --prefix client dev"
   },
   "bugs": {
     "url": "https://github.com/dmitrykologrivko/LINGONIKA/issues"

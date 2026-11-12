@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
-import { setAuthenticationToken } from '../utils';
+import { setAuthenticationToken } from '../auth.service';
 
 const LoginSchema = z.object({
   accessToken: z.string()

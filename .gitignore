@@ -1,3 +1,6 @@
+# IDE
+.idea
+
 # Logs
 logs
 *.log
@@ -56,3 +59,6 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# Project
+backend/public

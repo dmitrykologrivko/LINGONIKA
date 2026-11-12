@@ -1,5 +1,6 @@
 export * from './api-client';
 export * from './query-client';
+export * from './auth.service';
 export * from './auth/login';
 export * from './auth/register';
 export * from './auth/get-profile';
